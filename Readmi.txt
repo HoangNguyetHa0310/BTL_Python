@@ -1,0 +1,19 @@
+# chạy lần lượt các lệnh sau
+
+- Cài django cho py (Lên trang chủ để download bản phù hợp )
+pip install Django==5.0.6
+
+- tạo Folder : VD: websiteBanGiay 
+django-admin startproject <Tên Folder>
+ 
+- tại 1 bất kì file nào thì đều phải chạy bằng lệnh sau:
+django-admin startapp <Tên File>
+
+- Build lại file vừa sửa 
+python manage.py migrate
+
+- Chạy lại server
+python manage.py runserver
+
+- khởi tạo folder
+django-admin startapp app
