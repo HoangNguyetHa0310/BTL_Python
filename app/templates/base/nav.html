@@ -1,6 +1,9 @@
-
+{% load static %}
 
 {% block main_nav %}
+
+</head>
+<body>
 
 <nav>
     <div id="clearance">
@@ -17,14 +20,17 @@
 
             <div id="navbaritems">
                 <div class="dropdown">
-                    <p class="dropbtn">Women</p>
+                    <p class="dropbtn">
+                        <a href="{% url 'product_woman' %}"> Women</a>
+                       
+                    </p>
                     <div id="dropdown-content-women" class="dropdown-content">
                         <div>
                             <h4> <i class="fa-solid fa-arrow-right"></i> SHOP ALL WOMEN'S</h4>
                             <hr>
                             <ul style="list-style-type:none">
                                 <h4>SHOP FEATURED</h4>
-                                <li > <a href="./newarrivals.html">New Arrivals</a></li>
+                                <li > <a >New Arrivals</a></li>
                                 <li id="bestSellers">Best Sellers</li>
                                 <li>Wide Fit</li>
                                 <li>Comfort</li>
@@ -76,7 +82,9 @@
                     </div>
                 </div>
                 <div class="dropdown">
-                    <p class="dropbtn">Men</p>
+                    <p class="dropbtn">
+                        <a href="{% url 'product_man' %}"> Men </a>
+                    </p>
                     <div id="dropdown-content-men" class="dropdown-content">
                         <div>
                             <h4> <i class="fa-solid fa-arrow-right"></i> SHOP ALL MEN'S</h4>
@@ -141,7 +149,9 @@
                     </div>
                 </div>
                 <div class="dropdown">
-                    <p class="dropbtn">Kids</p>
+                    <p class="dropbtn">
+                        <a href="{% url 'product_kid' %}"> Kids </a>
+                    </p>
                     <div id="dropdown-content-kids" class="dropdown-content">
                         <div>
                             <h4> <i class="fa-solid fa-arrow-right"></i> KIDS</h4>
