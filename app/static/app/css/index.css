@@ -70,16 +70,16 @@ nav {
   width: 100%;
 }
 
-#logo {
+#logo>a {
   height: 90%;
   /* border: 1px solid; */
 }
 
-#logo > img {
+#logo>a > img {
   height: 100%;
 }
 
-#logo:hover {
+#logo>a:hover {
   cursor: pointer;
 }
 
