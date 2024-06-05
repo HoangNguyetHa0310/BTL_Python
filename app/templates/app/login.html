@@ -14,28 +14,25 @@
     {% block main-header %}{% endblock main-header %}
 
     <div class="L1">
-        <div class="l1">
-            <div><p>Log In</p></div><div>Need help?</div>
-        </div>
-    </div>
-  <div class="login-form">
-   
-    <form action="">
-        <label for="E-mail">E-mail address</label>
-      <input  type="text"/>
-      <label for="Password">Password</label>
-      <input type="password" id="pass"/><span id="show">Show</span>
-      <a href="#">Forgot Your Password?</a><br>
-      <div style="display: flex; align-items: center;">
-        <input type="checkbox" id="check"><label style="color:#798188;">&nbsp; Remember Me</label>
+      <div class="l1">
+          <div><p>Đăng Nhập</p></div><div>Cần trợ giúp?</div>
       </div>
-      <input type="submit" value="LOG IN" />
-       <p>Don't have a Clarks account?<a href="./Reg.html"> CREATE AN ACCOUNT</a>  </p>
-      
-      
-    </form>
   </div>
-
+  <div class="login-form">
+      <form action="">
+          <label for="E-mail">Địa chỉ E-mail</label>
+          <input  type="text"/>
+          <label for="Password">Mật khẩu</label>
+          <input type="password" id="pass"/><span id="show">Hiển thị</span>
+          <a href="#">Quên mật khẩu của bạn?</a><br>
+          <div style="display: flex; align-items: center;">
+              <input type="checkbox" id="check"><label style="color:#798188;">&nbsp; Ghi nhớ đăng nhập</label>
+          </div>
+          <input type="submit" value="ĐĂNG NHẬP" />
+          <p>Bạn chưa có tài khoản Clarks?<a href="./Reg.html"> TẠO MỘT TÀI KHOẢN</a>  </p>
+      </form>
+  </div>
+  
     {% comment %} đây là phần footer  {% endcomment %}
     {% block main-footer %}{% endblock main-footer %}
 
