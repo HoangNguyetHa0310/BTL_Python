@@ -1,380 +1,97 @@
 {% load static %}
 
 {% block main_nav %}
-
 </head>
+
+<style>
+    .dropbtn a {
+        text-decoration: none;
+        color: black;
+    }
+</style>   
+
+    
 <body>
 
-<nav>
-    <div id="clearance">
-        <span>GIẢM GIÁ LÊN ĐẾN </span><span>80% CHO SẢN PHẨM XẢ KHO*</span><span>SỬ DỤNG MÃ GIẢM GIÁ: EXTRA</span>
-    </div>
-    <div id="scroll">
-        <div id="trackorder">
-            <span><img src="https://cdn-icons-png.flaticon.com/512/664/664468.png" alt="Error"> Theo dõi đơn hàng</span>
-            <span><img src="https://cdn-icons-png.flaticon.com/512/684/684809.png"> Tìm cửa hàng</span>
-            <span id="logIn"><img src="https://cdn-icons-png.flaticon.com/512/2609/2609282.png">Đăng nhập / Đăng ký</span>
+    <nav>
+        <div id="clearance">
+            <span>TIẾT KIỆM LÊN ĐẾN </span><span>GIẢM GIÁ 80%*</span><span>MÃ SỬ DỤNG: EXTRA</span>
         </div>
-        <div id="clarks">
-            <div id="logo"><img src="./img/clarks img.jpg" alt=""></div>
+        <div id="scroll">
+            <div id="trackorder">
+                <span><img src="https://cdn-icons-png.flaticon.com/512/664/664468.png" alt="Error"> Vị trí đơn hàng </span>
+                <span><img src="https://cdn-icons-png.flaticon.com/512/684/684809.png"> Vị trí cửa hàng </span>
+                <span id="logIn"><img
+                        src="https://cdn-icons-png.flaticon.com/512/2609/2609282.png">Đăng nhập / Đăng ký</span>
+            </div>
+            <div id="clarks">
+                <div id="logo">
+                    <a href="{% url 'index' %}">
+                        <img src="{% static 'app/img/logo.jpg' %}" alt="">
+                    </a>
 
-            <div id="navbaritems">
-                <div class="dropdown">
-                    <p class="dropbtn">
-                        <a href="{% url 'product_woman' %}"> Nữ </a>
+                </div>
 
-                    </p>
-                    <div id="dropdown-content-women" class="dropdown-content">
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> MUA SẮM TẤT CẢ SẢN PHẨM CHO NỮ</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>SẢN PHẨM NỔI BẬT</h4>
-                                <li > <a >Mới về</a></li>
-                                <li id="bestSellers">Bán chạy nhất</li>
-                                <li>Phù hợp với chân rộng</li>
-                                <li>Thoáng khí</li>
-                                <li>Phong cách thường ngày</li>
-                                <li>Giảm giá</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> MỚI VỀ</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>MUA THEO PHONG CÁCH</h4>
-                                <li>Giày bốt & Bốt ngắn</li>
-                                <li>Giày công sở</li>
-                                <li>Giày clogs & Mules</li>
-                                <li>Giày lười</li>
-                                <li>Giày cao gót</li>
-                                <li>Giày dép</li>
-                                <li>Giày đế xuồng & Gót nêm</li>
-                                <li>Giày bệt</li>
-                                <li>Giày sandal & Dép kẹp</li>
-                                <li>Giày slip-on</li>
-                                <li>Giày thể thao</li>
-                                <li>Originals</li>
-                                <li>Xem tất cả phong cách</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> BÁN CHẠY NHẤT</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>MUA THEO BỘ SƯU TẬP</h4>
-                                <li> Bộ sưu tập Clarkwell</li>
-                                <li> Bộ sưu tập GCDS</li>
-                                <li> Bộ sưu tập Breeze</li>
-                                <li> Bộ sưu tập ATL</li>
-                                <li> Bộ sưu tập Giày Pure</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> BÁN CHẠY NHẤT</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>BLOG</h4>
-                                <img src="https://clarks.scene7.com/is/image/Pangaea2Build/AW22WATLTrailUpWPOnsiteBannerMobile705?wid=286&fmt=pjpeg"
-                                    alt="">
-                            </ul>
-                        </div>
+                <div id="navbaritems">
+                    <div class="dropdown">
+                        <p class="dropbtn">
+                            <a href="{% url 'index' %}"> Trang chủ </a>
+                        </p>
+                        
+                    </div>
+                    <div class="dropdown">
+                        <p class="dropbtn">
+                            <a href="{% url 'product_man' %}"> Giày nam  </a>
+                        </p>
+                    </div>
+                    <div class="dropdown">
+                        <p class="dropbtn">
+                            <a href="{% url 'product_woman' %}"> Giày nữ  </a>
+                        </p>
+                    </div>
+                    <div class="dropdown">
+                        <p class="dropbtn">
+                            <a href="{% url 'product_kid' %}"> Giày trẻ em  </a>
+                        </p>
+                    </div>
+                    <div class="dropdown">
+                        <p class="dropbtn">
+                            <a href="{% url 'bestseller' %}"> Bán chạy </a>
+                        </p>
+                    </div>
+                    <div class="dropdown">
+                        <p class="dropbtn">
+                            <a href="{% url 'accessories' %}"> Phụ kiện </a>
+                        </p>
+                    </div>
+                    <div class="dropdown">
+                        <p class="dropbtn">
+                            <a href="{% url 'aboutUs' %}"> Giới thiệu </a>
+                        </p>
                     </div>
                 </div>
-                <div class="dropdown">
-                    <p class="dropbtn">
-                        <a href="{% url 'product_man' %}"> Nam </a>
-                    </p>
-                    <div id="dropdown-content-men" class="dropdown-content">
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> MUA SẮM TẤT CẢ SẢN PHẨM CHO NAM</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>SẢN PHẨM NỔI BẬT</h4>
-                                <li>Mới về</li>
-                                <li>Bán chạy nhất</li>
-                                <li>Phù hợp với chân rộng</li>
-                                <li>Thoáng khí</li>
-                                <li>Phong cách thường ngày</li>
-                                <li>Giảm giá</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> MỚI VỀ</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>MUA THEO PHONG CÁCH</h4>
-                                <li>Giày bốt</li>
-                                <li>Giày clogs & Mules</li>
-                                <li>Giày lười</li>
-                                <li>Giày dép</li>
-                                <li>Giày đế xuồng & Gót nêm</li>
-                                <li>Giày bệt</li>
-                                <li>Giày sandal & Dép kẹp</li>
-                                <li>Giày slip-on</li>
-                                <li>Giày thể thao</li>
-                                <li>Originals</li>
-                                <li>Xem tất cả phong cách</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> BÁN CHẠY NHẤT</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>MUA THEO BỘ SƯU TẬP</h4>
-                                <li> Bộ sưu tập Clarkwell</li>
-                                <li> Bộ sưu tập GCDS</li>
-                                <li> Bộ sưu tập Breeze</li>
-                                <li> Bộ sưu tập ATL</li>
-                                <li> Bộ sưu tập Giày Pure</li>
-                                <li>Biểu tượng tái hiện</li>
-                                <li>Giày đế xuồng & Gót nêm</li>
-                                <li>Cloudsteppers</li>
-                                <li>Bộ sưu tập Mini Me</li>
-                                <h3>MUA PHỤ KIỆN</h3>
-                                <li>Giày dép</li>
-                                <li>Chăm sóc giày</li>
-                                <li>Xem tất cả phong cách</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> BÁN CHẠY NHẤT</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>BLOG</h4>
-                                <img src="https://clarks.scene7.com/is/image/Pangaea2Build/AW22MATLTrailUpWPOnsiteBannerMobile705?wid=286&fmt=pjpeg"
-                                    alt="">
-                            </ul>
-                        </div>
+                <div id="searchCart">
+                    <div class="search-box">
+                        <button class="btn-search"><i class="fas fa-search"></i></button>
+                        <input type="text" class="input-search" placeholder="Tìm kiếm theo loại...">
                     </div>
-                </div>
-                <div class="dropdown">
-                    <p class="dropbtn">
-                        <a href="{% url 'product_kid' %}"> Trẻ em </a>
-                    </p>
-                    <div id="dropdown-content-kids" class="dropdown-content">
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> TRẺ EM</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>BÉ GÁI</h4>
-                                <li>Giày bốt</li>
-                                <li>Giày sandal</li>
-                                <li>Giày</li>
-                                <li>Giày thể thao</li>
-                                <li>Giày cho bé tập đi</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> </h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>BÉ TRAI</h4>
-                                <li>Giày bốt</li>
-                                <li>Giày sandal</li>
-                                <li>Giày</li>
-                                <li>Giày thể thao</li>
-                                <li>Giày cho bé tập đi</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> </h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>BỘ SƯU TẬP</h4>
-                                <li>Bộ sưu tập Cica</li>
-                                <li>Cloudsteppers</li>
-                                <li>Craft Sports</li>
-                                <li>Bộ sưu tập Mini Me</li>
-                                <li>Originals</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> </h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>XEM GIẢM GIÁ CHO TRẺ EM</h4>
-                                <li>Bộ sưu tập Cica</li>
 
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <p class="dropbtn">Originals</p>
-                    <div id="dropdown-content-originals" class="dropdown-content">
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> MUA ORIGINALS</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>MUA CHO NAM</h4>
-                                <li>Giày bốt</li>
-                                <li>Giày</li>
-                                <li>Giày thể thao</li>
-                                <li>Giày cho bé tập đi</li>
-                            </ul>
-                            <ul style="list-style-type:none">
-                                <h4>MUA CHO NỮ</h4>
-                                <li>Giày bốt</li>
-                                <li>Giày</li>
-                                <li>Wallabee</li>
-                                <li>Giày thể thao</li>
-                                <li>Giày cho bé tập đi</li>
-                                <h4>MUA CHO TRẺ EM</h4>
-                                <h4>GIẢM GIÁ ORIGINALS</h4>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> MỚI VỀ</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>MUA BIỂU TƯỢNG</h4>
-                                <li>Wallabee</li>
-                                <li>Giày Desert Boots</li>
-                                <li>Desert Trek</li>
-                                <li>Weaver</li>
-                            </ul>
-                            <ul style="list-style-type:none">
-                                <h4>BỘ SƯU TẬP</h4>
-                                <li>Bộ sưu tập Sashiko</li>
-                                <li>Bộ sưu tập Desert Trek 50th</li>
-                                <li>Paradise Forest</li>
-
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> TRẺ EM ORIGINALS</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>HỢP TÁC</h4>
-                                <li>8th Street</li>
-                                <li>Moncler</li>
-                                <li>Pokemon</li>
-                                <li>Salehe Bembury</li>
-                            </ul>
-
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> 8th STREET</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>BỘ SƯU TẬP 8TH STREET</h4>
-                                <img src="https://clarks.scene7.com/is/image/Pangaea2Build/ClarksHomepageBanner_8thSt_70505?wid=286&fmt=pjpeg"
-                                    alt="">
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <p class="dropbtn">Phụ kiện</p>
-                    <div id="dropdown-content-accesories" class="dropdown-content">
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> MUA PHỤ KIỆN</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>NỮ</h4>
-                                <li>Tất cả phụ kiện</li>
-                                <li>Giày dép</li>
-                                <li>Tất</li>
-                                <li>Chăm sóc giày</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> MUA GIẢM GIÁ</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>NAM</h4>
-                                <li>Tất cả phụ kiện</li>
-                                <li>Thắt lưng</li>
-                                <li>Giày dép</li>
-                                <li>Tất</li>
-                                <li>Chăm sóc giày</li>
-                                <li>Ví</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <p class="dropbtn">Giảm giá</p>
-                    <div id="dropdown-content-sale" class="dropdown-content">
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> MUA GIẢM GIÁ</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>NỔI BẬT</h4>
-                                <li>Giảm giá mới cho Nam</li>
-                                <li>Giảm giá mới cho Nữ</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> GIẢM GIÁ ORIGINALS</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>NỮ</h4>
-                                <li>Tất cả giảm giá</li>
-                                <li>Giày bốt</li>
-                                <li>Giày sandal</li>
-                                <li>Giày thường ngày</li>
-                                <li>Giày công sở</li>
-                                <li>Phụ kiện</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> MUA GIẢM GIÁ</h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>NAM</h4>
-                                <li>Tất cả giảm giá</li>
-                                <li>Giày bốt</li>
-                                <li>Giày thường ngày</li>
-                                <li>Giày công sở</li>
-                                <li>Phụ kiện</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <p class="dropbtn">Bền vững</p>
-                    <div id="dropdown-content-sustain" class="dropdown-content">
-                        <div>
-                            <h4> <i class="fa-solid fa-arrow-right"></i> </h4>
-                            <hr>
-                            <ul style="list-style-type:none">
-                                <h4>MỌI BƯỚC DI CHUYỂN ĐỀU CÓ Ý NGHĨA</h4>
-                                <li>Ngày Trái đất</li>
-                                <li>Nguồn gốc</li>
-                                <li>Da thuộc</li>
-                                <li>Originals</li>
-                                <li>Originals Sevens</li>
-                                <li>Tri Native</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <i id="cartA" class="fa-solid fa-bag-shopping"></i>
                 </div>
             </div>
-            <div id="searchCart">
-                <div class="search-box">
-                    <button class="btn-search"><i class="fas fa-search"></i></button>
-                    <input type="text" class="input-search" placeholder="Nhập để tìm kiếm...">
-                  </div>
-
-                <i id="cartA" class="fa-solid fa-bag-shopping"></i>
-            </div>
         </div>
-    </div>
         <hr>
 
         <div id="shipping">
             <div>
                 <span>MIỄN PHÍ VẬN CHUYỂN</span>
-                <span>CHO ĐƠN HÀNG TRÊN $75</span>
+                <span>TRÊN ĐƠN HÀNG TRÊN $75</span>
                 <span>|</span>
-                <span>TRẢ HÀNG MIỄN PHÍ</span>
-                <span>MỌI NGÀY</span>
+                <span>TRẢ LẠI MIỄN PHÍ</span>
+                <span>MỖI NGÀY</span>
             </div>
         </div>
 
-</nav>
+    </nav>
 
-{% endblock  %}
+{% endblock %}
