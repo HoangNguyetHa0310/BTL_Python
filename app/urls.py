@@ -9,8 +9,9 @@ urlpatterns = [
     path('product_woman/', views.product_woman, name="product_woman"),
     path('product_man/', views.product_man, name="product_man"),
     path('product_kid/', views.product_kid, name="product_kid"),
-    path('bestseller/', views.new_product, name="bestseller"),
-    path('accessories/', views.new_product, name="accessories"),
-    path('aboutUs/', views.new_product, name="aboutUs"),
+    path('detail_product/', views.detail_product, name="detail_product"),
+    path('bestseller/', views.bestseller, name="bestseller"),
+    path('accessories/', views.accessories, name="accessories"),
+    path('aboutUs/', views.aboutUs, name="aboutUs"),
 ]
 
