@@ -34,4 +34,12 @@ def product_kid(request):
 
 def new_product(request):
     context = {}
-    return render(request, 'app/new_product.html',context)
+    return render(request, 'app/bestseller.html',context)
+
+def new_product(request):
+    context = {}
+    return render(request, 'app/accessories.html',context)
+
+def new_product(request):
+    context = {}
+    return render(request, 'app/aboutUs.html',context)
