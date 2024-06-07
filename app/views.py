@@ -11,14 +11,13 @@ def cart(request):
     context = {}
     return render(request, 'app/cart.html',context)
 
-def cart(request):
+def login(request):
     context = {}
     return render(request, 'app/login.html',context)
 
-def cart(request):
+def register(request):
     context = {}
     return render(request, 'app/register.html',context)
-
 
 def checkout(request):
     context = {}
@@ -40,14 +39,18 @@ def product_kid(request):
     return render(request, 'app/product_kid.html',context)
 
 
-def new_product(request):
+def bestseller(request):
     context = {}
     return render(request, 'app/bestseller.html',context)
 
-def new_product(request):
+def accessories(request):
     context = {}
     return render(request, 'app/accessories.html',context)
 
-def new_product(request):
+def aboutUs(request):
     context = {}
     return render(request, 'app/aboutUs.html',context)
+
+def detail_product(request):
+    context = {}
+    return render(request, 'app/detail_product.html',context)

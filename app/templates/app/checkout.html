@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CHECKOUT</title>
-    <link rel="stylesheet" type="text/css" href="{%static 'app/css/checkout.css' %}" />
-  </head>
-  <body>
+{% load static %}
+
+{% include "base/header.html" %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/index.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/css/checkout.css' %}" />
+
+    {% include "base/nav.html" %}
+
     <div id="container">
       <img
         src="https://i.pinimg.com/originals/ba/3c/c8/ba3cc869f9add08aae7cf382826911c6.gif"
@@ -22,13 +20,11 @@
     
             <div class="K52">
                 <button>
-                    <a href="./index.html">Tiếp Tục Mua Sắm Với Chúng Tôi</a>
+                    <a href="{% url 'index' %}">Tiếp Tục Mua Sắm Với Chúng Tôi</a>
             </button>
           </div>
         </div>
       </div>
     </div>
-  </body>
-  <script></script>
-  <script src="insd"></script>
-</html>
+
+{% include "base/footer.html" %}
