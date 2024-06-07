@@ -38,7 +38,6 @@ def product_kid(request):
     context = {}
     return render(request, 'app/product_kid.html',context)
 
-
 def bestseller(request):
     context = {}
     return render(request, 'app/bestseller.html',context)

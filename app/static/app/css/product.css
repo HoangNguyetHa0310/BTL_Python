@@ -172,3 +172,19 @@ body{
   border: 1px solid #666;
   background-color: white;
 }
+
+.product-card > img {
+    width:100%;
+}
+
+#K722 > a {
+    color: inherit;
+    text-decoration: none;
+}
+#K722 > a:hover,
+#K722 > a:focus,
+#K722 > a:active {
+    color: inherit;
+    text-decoration: none;
+}
+

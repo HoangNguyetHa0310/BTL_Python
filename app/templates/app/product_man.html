@@ -2,78 +2,111 @@
 
 
 {% include "base/header.html" %}
-<link rel="stylesheet" type="text/css" href="{%static 'app/css/product.css' %}" />
+<link rel="stylesheet" type="text/css" href="{%static 'app/css/product.css' %}"/>
 
-    {% include "base/nav.html" %}
+{% include "base/nav.html" %}
 
-    {% comment %} {% include "base/nav.html" %} {% endcomment %}
+{% comment %} {% include "base/nav.html" %} {% endcomment %}
 
-    
-    <div class="K5">
-        <div class="K51">
-            <h1>SẢN PHẨM BÁN CHẠY NHẤT CHO PHỤ NỮ</h1>
-            <p>Các kiểu dáng phổ biến nhất của chúng tôi cho phụ nữ trong mùa này.
-            </p>
-            <div class="K52">
-                <button><a href="" onclick="return false">TẤT CẢ CÁC KIỂU DÁNG CHO PHỤ NỮ</a></button>
-                <button><a href="" onclick="return false">SẢN PHẨM MỚI NHẤT CHO PHỤ NỮ</a></button>
-            </div>
+
+<div class="K5">
+    <div class="K51">
+        <h1>SẢN PHẨM BÁN CHẠY NHẤT CHO NAM</h1>
+        <p>Các kiểu dáng phổ biến nhất của chúng tôi cho nam trong mùa này.
+        </p>
+        <div class="K52">
+            <button><a href="" onclick="return false">TẤT CẢ CÁC KIỂU DÁNG CHO NAM</a></button>
+            <button><a href="" onclick="return false">SẢN PHẨM MỚI NHẤT CHO NAM</a></button>
         </div>
     </div>
-    
-    <div class="K6">
-        <button><a href="./index.html">TRANG CHỦ</a></button>
-        <button><a href="./bestsellers.html">SẢN PHẨM BÁN CHẠY NHẤT CHO PHỤ NỮ</a></button>
+</div>
+
+<div class="K6">
+    <button><a href="{% url 'index' %}">TRANG CHỦ</a></button>
+    <button><a href="./bestsellers.html">SẢN PHẨM BÁN CHẠY NHẤT CHO NAM</a></button>
+</div>
+
+<div class="K7">
+    <div class="K71">
+        <select id="KS711">
+            <option value="">Chọn Chất Liệu</option>
+            <option value="Da Đen">Da Đen</option>
+            <option value="Màu Sừng Rùa">Màu Sừng Rùa</option>
+            <option value="Da Trắng">Da Trắng</option>
+            <option value="Hình Thêu Màu Tan">Hình Thêu Màu Tan</option>
+            <option value="Da Lưới Màu Xanh">Da Lưới Màu Xanh</option>
+            <option value="Kim Loại Màu Cát">Kim Loại Màu Cát</option>
+            <option value="Da Lưới Màu Phấn">Da Lưới Màu Phấn</option>
+            <option value="Da Nubuck Màu Rong">Da Nubuck Màu Rong</option>
+            <option value="Da Nubuck Màu Xám">Da Nubuck Màu Xám</option>
+            <option value="Kết Hợp Màu Xám Nhạt">Kết Hợp Màu Xám Nhạt</option>
+            <option value="Chữ Màu Trắng Bạch">Chữ Màu Trắng Bạch</option>
+        </select>
+        <select id="KS712">
+            <option value="">Chọn Phạm Vi Giá</option>
+            <option value="0-100">0-100</option>
+            <option value="100-200">100-200</option>
+        </select>
+        <select id="category">
+            <option value="">Chọn Kích Thước</option>
+            <option value="F">5-7</option>
+            <option value="S">7-8</option>
+            <option value="F">8-9</option>
+            <option value="F">Trên 9</option>
+        </select>
+        <select id="category">
+            <option value="">Chọn Loại</option>
+            <option value="F">X</option>
+            <option value="S">Y</option>
+            <option value="F">Z</option>
+        </select>
     </div>
-    
-    <div class="K7">
-        <div class="K71">
-            <select id="KS711">
-                <option value="">Chọn Chất Liệu</option>
-                <option value="Da Đen">Da Đen</option>
-                <option value="Màu Sừng Rùa">Màu Sừng Rùa</option>
-                <option value="Da Trắng">Da Trắng</option>
-                <option value="Hình Thêu Màu Tan">Hình Thêu Màu Tan</option>
-                <option value="Da Lưới Màu Xanh">Da Lưới Màu Xanh</option>
-                <option value="Kim Loại Màu Cát">Kim Loại Màu Cát</option>
-                <option value="Da Lưới Màu Phấn">Da Lưới Màu Phấn</option>
-                <option value="Da Nubuck Màu Rong">Da Nubuck Màu Rong</option>
-                <option value="Da Nubuck Màu Xám">Da Nubuck Màu Xám</option>
-                <option value="Kết Hợp Màu Xám Nhạt">Kết Hợp Màu Xám Nhạt</option>
-                <option value="Chữ Màu Trắng Bạch">Chữ Màu Trắng Bạch</option>
-            </select>
-            <select id="KS712">
-                <option value="">Chọn Phạm Vi Giá</option>
-                <option value="0-100">0-100</option>
-                <option value="100-200">100-200</option>
-            </select>
-            <select id="category">
-                <option value="">Chọn Kích Thước</option>
-                <option value="F">5-7</option>
-                <option value="S">7-8</option>
-                <option value="F">8-9</option>
-                <option value="F">Trên 9</option>
-            </select>
-            <select id="category">
-                <option value="">Chọn Loại</option>
-                <option value="F">X</option>
-                <option value="S">Y</option>
-                <option value="F">Z</option>
+    <div class="K72">
+        <div class="K721">
+            <h3><span id="count">0</span> KIỂU DÁNG ĐƯỢC TÌM THẤY</h3>
+            <select id="KS1">
+                <option value="">Sắp Xếp Theo:</option>
+                <option value="ascending">A-Z</option>
+                <option value="descending">Z-A</option>
             </select>
         </div>
-        <div class="K72">
-            <div class="K721">
-                <h3><span id="count">0</span> KIỂU DÁNG ĐƯỢC TÌM THẤY</h3>
-                <select id="KS1">
-                    <option value="">Sắp Xếp Theo: </option>
-                    <option value="ascending">A-Z</option>
-                    <option value="descending">Z-A</option>
-                </select>
-            </div>
-            <div id="K722">
-            </div>
+        <div id="K722">
+            <a href="{% url 'detail_product' %}" class="product-card">
+                <!--                <div class="discount-label">33% OFF</div>-->
+                <img src="{% static 'app/img/p1.png' %}" alt="Desert Boot" class="product-image">
+
+                <h2>DESERT BOOT</h2>
+                <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
+                <p class="price" style="font-size: 24px;"><strike class="original-price"
+                                                                  style="font-size: 18px; opacity: 0.6; ">$150.00</strike>
+                    <b>$99.99</b></p>
+            </a>
+
+            <a href="{% url 'detail_product' %}" class="product-card">
+                <!--                <div class="discount-label">33% OFF</div>-->
+                <img src="{% static 'app/img/p1.png' %}" alt="Desert Boot" class="product-image">
+
+                <h2>DESERT BOOT</h2>
+                <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
+                <p class="price" style="font-size: 24px;"><strike class="original-price"
+                                                                  style="font-size: 18px; opacity: 0.6; ">$150.00</strike>
+                    <b>$99.99</b></p>
+            </a>
+
+            <a href="{% url 'detail_product' %}" class="product-card">
+                <!--                <div class="discount-label">33% OFF</div>-->
+                <img src="{% static 'app/img/p1.png' %}" alt="Desert Boot" class="product-image">
+
+                <h2>DESERT BOOT</h2>
+                <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
+                <p class="price" style="font-size: 24px;"><strike class="original-price"
+                                                                  style="font-size: 18px; opacity: 0.6; ">$150.00</strike>
+                    <b>$99.99</b></p>
+            </a>
+
         </div>
     </div>
-    
+</div>
+
 
 {% include "base/footer.html" %}
