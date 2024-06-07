@@ -11,19 +11,19 @@
 
 <div class="K5">
     <div class="K51">
-        <h1>SẢN PHẨM BÁN CHẠY NHẤT CHO PHỤ NỮ</h1>
-        <p>Các kiểu dáng phổ biến nhất của chúng tôi cho phụ nữ trong mùa này.
+        <h1>SẢN PHẨM BÁN CHẠY NHẤT CHO NAM</h1>
+        <p>Các kiểu dáng phổ biến nhất của chúng tôi cho nam trong mùa này.
         </p>
         <div class="K52">
-            <button><a href="" onclick="return false">TẤT CẢ CÁC KIỂU DÁNG CHO PHỤ NỮ</a></button>
-            <button><a href="" onclick="return false">SẢN PHẨM MỚI NHẤT CHO PHỤ NỮ</a></button>
+            <button><a href="" onclick="return false">TẤT CẢ CÁC KIỂU DÁNG CHO NAM</a></button>
+            <button><a href="" onclick="return false">SẢN PHẨM MỚI NHẤT CHO NAM</a></button>
         </div>
     </div>
 </div>
 
 <div class="K6">
-    <button><a href="./index.html">TRANG CHỦ</a></button>
-    <button><a href="./bestsellers.html">SẢN PHẨM BÁN CHẠY NHẤT CHO PHỤ NỮ</a></button>
+    <button><a href="{% url 'index' %}">TRANG CHỦ</a></button>
+    <button><a href="./bestsellers.html">SẢN PHẨM BÁN CHẠY NHẤT CHO NAM</a></button>
 </div>
 
 <div class="K7">
@@ -71,23 +71,38 @@
             </select>
         </div>
         <div id="K722">
-            <div class="product-card">
-<!--                <div class="discount-label">33% OFF</div>-->
-                <img src="{% static 'app/img/p1.png' %}" alt="Desert Boot" class="product-image" >
+            <a href="{% url 'detail_product' %}" class="product-card">
+                <!--                <div class="discount-label">33% OFF</div>-->
+                <img src="{% static 'app/img/p1.png' %}" alt="Desert Boot" class="product-image">
 
-                <h1 >DESERT BOOT</h1>
-                <p style="font-size: 25px;">Brown Suede<br>Mens Originals</p>
-                <p class="price" style="font-size: 30px;"><strike class="original-price" style="font-size: 24px; opacity: 0.6; ">$150.00</strike> <b>$99.99</b></p>
-            </div>
+                <h2>DESERT BOOT</h2>
+                <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
+                <p class="price" style="font-size: 24px;"><strike class="original-price"
+                                                                  style="font-size: 18px; opacity: 0.6; ">$150.00</strike>
+                    <b>$99.99</b></p>
+            </a>
 
-             <div class="product-card">
-<!--                <div class="discount-label">33% OFF</div>-->
-                <img src="{% static 'app/img/p1.png' %}" alt="Desert Boot" class="product-image" >
+            <a href="{% url 'detail_product' %}" class="product-card">
+                <!--                <div class="discount-label">33% OFF</div>-->
+                <img src="{% static 'app/img/p1.png' %}" alt="Desert Boot" class="product-image">
 
-                <h1>DESERT BOOT</h1>
-               <p style="font-size: 25px;">Brown Suede<br>Mens Originals</p>
-                <p class="price" style="font-size: 30px;"><strike class="original-price" style="font-size: 24px; opacity: 0.6; ">$150.00</strike> <b>$99.99</b></p>
-            </div>
+                <h2>DESERT BOOT</h2>
+                <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
+                <p class="price" style="font-size: 24px;"><strike class="original-price"
+                                                                  style="font-size: 18px; opacity: 0.6; ">$150.00</strike>
+                    <b>$99.99</b></p>
+            </a>
+
+            <a href="{% url 'detail_product' %}" class="product-card">
+                <!--                <div class="discount-label">33% OFF</div>-->
+                <img src="{% static 'app/img/p1.png' %}" alt="Desert Boot" class="product-image">
+
+                <h2>DESERT BOOT</h2>
+                <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
+                <p class="price" style="font-size: 24px;"><strike class="original-price"
+                                                                  style="font-size: 18px; opacity: 0.6; ">$150.00</strike>
+                    <b>$99.99</b></p>
+            </a>
 
         </div>
     </div>
