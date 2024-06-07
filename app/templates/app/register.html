@@ -1,19 +1,11 @@
-<!DOCTYPE html>
-<html>
+{% load static %}
 
-<head>
-    <title>Clarks Login</title>
-    <meta charset="utf-8">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+{% include "base/header.html" %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{%static 'app/css/index.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{%static 'app/css/Reg.css' %}" />
-</head>
+    <link rel="stylesheet" type="text/css" href="{%static 'app/css/register.css' %}" />
 
-<body>
-
-    {% comment %} đây là phần header {% endcomment %}
-    {% block main-header %}{% endblock main-header %}
+    {% include "base/nav.html" %}
 
     <div class="L1">
         <div class="l1">
@@ -38,17 +30,11 @@
             </div>
             <input type="submit" value="TẠO TÀI KHOẢN" />
             <p>Bằng cách tạo tài khoản này, bạn đồng ý với <a href="#"> Điều khoản và Điều kiện của chúng tôi.</a> </p>
-            <p>Đã có một tài khoản Clarks? <a href="#">Đăng nhập</a></p>
+            <p>Đã có một tài khoản Clarks? <a href="{% url 'login' %}">Đăng nhập</a></p>
         </form>
     </div>
     
 
-
-    {% comment %} đây là phần footer  {% endcomment %}
-    {% block main-footer %}{% endblock main-footer %}
-
-</body>
-</html>
 <script>
 
     document.getElementById("show").addEventListener("click",()=>{
@@ -60,3 +46,6 @@
 })
 </script>
 <script src="https://kit.fontawesome.com/d6704551e9.js" crossorigin="anonymous"></script>
+
+
+{% include "base/footer.html" %}
