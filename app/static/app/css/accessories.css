@@ -39,7 +39,7 @@
 }
 .btn {
     display: block;
-    margin-left: 570px;
+    align-items: center;
 }
 .text{
     text-align: center; /* Căn nội dung vào giữa theo chiều ngang */
@@ -87,5 +87,11 @@
     border: 1px solid #b8daff; /* Viền cho alert */
     border-radius: 4px; /* Bo góc cho alert */
     margin: 20px; /* Khoảng cách với các phần tử xung quanh */
+}
+
+#shop_care {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
