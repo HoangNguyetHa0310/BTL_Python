@@ -1,0 +1,149 @@
+
+.banner {
+    padding: 20px;
+    background-color: #ffffff3b;
+    border: 2px solid #cccccc54;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+.brand {
+    font-size: 50px;
+    font-weight: bold;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.brand:hover {
+    color: #333; /* Màu chữ khi nổi lên */
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.247); /* Hiệu ứng nổi lên */
+    transform: scale(1.1); /* Phóng to chữ khi nổi lên */
+}
+
+
+.card {
+    display: inline-block;
+    margin-right: 10px; /* Khoảng cách giữa các card */
+}
+
+.card-group {
+    white-space: nowrap; /* Ngăn chặn các card bị xuống dòng */
+}
+
+.img1 {
+    width: 190%; /* Kích thước ảnh đầy đủ theo chiều rộng */
+    height: 400px; /* Chiều cao tự động theo tỷ lệ */
+}
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.image-container .text-over-image {
+    position: relative;
+}
+
+.image-container .image-text {
+    position: absolute;
+    top: 30%;  /* Hiển thị chữ ở giữa theo chiều dọc */
+    left: 40%; /* Hiển thị chữ ở giữa theo chiều ngang */
+    transform: translate(-50%, -50%); /* Dịch chuyển vị trí để căn giữa chữ */
+    color: white;  /* Màu chữ là trắng */
+    font-size: 50px; /* Kích thước chữ */
+    font-weight: bold; /* Chữ in đậm */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Đổ bóng cho chữ */
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.image-container {
+    flex: 1;
+    text-align: center;
+}
+
+.text-container {
+    flex: 1;
+    padding: 20px;
+}
+.img2 {
+    max-width: 100%;
+    height: auto;
+}
+.accordion-body {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+    flex-direction: column;
+    margin: 0 50px;
+}
+.accordion-body strong {
+    font-weight: bold;
+}
+/* Để cung cấp một border bottom cho strong */
+.accordion-body strong::after {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 2px;
+    background-color: black;
+    margin: 5px auto;
+}
+h2 {
+    font-size: 24px;
+    color: #0a0a0a;
+}
+p {
+    font-size: 16px;
+    color: #302b2b;
+}
+.container1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.image-container1{
+    flex: 1;
+    text-align: center;
+    order: 2; /* Đổi thứ tự hiển thị sang sau */
+}
+
+.text-container1 {
+    flex: 1;
+    padding: 20px;
+    order: 1; /* Đổi thứ tự hiển thị sang trước */
+}
+.img3{
+    max-width: 100%;
+    height: auto;
+}
+h2 {
+    font-size: 24px;
+    color: #333;
+}
+p {
+    font-size: 16px;
+    color: #777;
+}
+.alert {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    flex-direction: column;
+    background-color: #cce5ff; /* Màu nền cho alert */
+    color: #004085; /* Màu chữ cho alert */
+    padding: 20px; /* Khoảng cách giữa nội dung và viền */
+    border: 1px solid #b8daff; /* Viền cho alert */
+    border-radius: 4px; /* Bo góc cho alert */
+    margin: 20px; /* Khoảng cách với các phần tử xung quanh */
+}
