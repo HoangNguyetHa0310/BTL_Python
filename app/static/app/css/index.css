@@ -43,6 +43,15 @@ nav {
   color: #333333;
 }
 
+
+#trackorder span {
+  display: flex;
+}
+
+#trackorder>span>p {
+  margin: 4px;
+}
+
 #trackorder img {
   width: 20px;
   height: 20px;
@@ -753,7 +762,6 @@ input {
 }
 
 .one {
-  width: 22%;
   justify-content: space-evenly;
   font-family: Arial, Helvetica, sans-serif;
 }

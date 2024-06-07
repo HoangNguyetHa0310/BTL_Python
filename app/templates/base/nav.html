@@ -19,16 +19,29 @@
         </div>
         <div id="scroll">
             <div id="trackorder">
-                <span><img src="https://cdn-icons-png.flaticon.com/512/664/664468.png" alt="Error"> Vị trí đơn hàng </span>
-                <span><img src="https://cdn-icons-png.flaticon.com/512/684/684809.png"> Vị trí cửa hàng </span>
-                <span id="logIn"><img
-                        src="https://cdn-icons-png.flaticon.com/512/2609/2609282.png">Đăng nhập / Đăng ký</span>
+                <span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/664/664468.png" alt="Error">
+                     <p>Trạng thái vận chuyển </p> 
+                </span>
+
+                <span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/684/684809.png">
+                     <p>Vị trí cửa hàng </p> 
+                </span>
+
+                <span id="logIn">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2609/2609282.png">
+                    <p>
+                        <a style="text-decoration: none; color:black;" href="{% url 'login' %}">Đăng nhập</a> / 
+                        <a style="text-decoration: none; color:black;" href="{% url 'register' %}">Đăng ký</a> 
+                    </p>
+                </span>
             </div>
             <div id="clarks">
                 <div id="logo">
                     <a href="{% url 'index' %}">
                         <img src="{% static 'app/img/logo.jpg' %}" alt="">
-                    </a>
+                    </a>  
 
                 </div>
 
