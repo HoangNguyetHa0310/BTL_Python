@@ -1,0 +1,91 @@
+.banner {
+    padding: 20px;
+    background-color: #ffffff3b;
+    border: 2px solid #cccccc54;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+.brand {
+    font-size: 30px;
+    font-weight: bold;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.brand1 {
+    font-size: 20px;
+    font-weight: bold;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.brand2 {
+    font-size: 15px;
+}
+.brand:hover {
+    color: #333; /* Màu chữ khi nổi lên */
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.247); /* Hiệu ứng nổi lên */
+    transform: scale(1.1); /* Phóng to chữ khi nổi lên */
+}
+.img4 {
+    width: 100%; /* Kích thước ảnh đầy đủ theo chiều rộng */
+    height: 500px; /* Chiều cao tự động theo tỷ lệ */
+}
+.img5 {
+    margin: 40px;
+    width: 100%; /* Kích thước ảnh đầy đủ theo chiều rộng */
+    height: 500px; /* Chiều cao tự động theo tỷ lệ */
+}
+.btn {
+    display: block;
+    margin-left: 570px;
+}
+.text{
+    text-align: center; /* Căn nội dung vào giữa theo chiều ngang */
+    display: flex; /* Sử dụng flexbox để căn giữa nội dung */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    height: 10vh; /* Chiều cao 100% của màn hình */
+}
+.btn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.btn1 {
+    margin: 0 5px; /* Khoảng cách giữa các button */
+}
+
+.card {
+    display: inline-block;
+    margin-right: 30px; /* Khoảng cách giữa các card */
+}
+.card-group {
+    white-space: nowrap; /* Ngăn chặn các card bị xuống dòng */
+    margin-top: 40px;
+    margin-left: 30px;
+}
+.card-title{
+    font-size: 20px;
+    text-align: center; /* Căn nội dung vào giữa theo chiều ngang */
+    display: flex; /* Sử dụng flexbox để căn giữa nội dung */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    height: 8vh; /* Chiều cao 100% của màn hình */
+}
+.alert {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    flex-direction: column;
+    background-color: #cce5ff; /* Màu nền cho alert */
+    color: #004085; /* Màu chữ cho alert */
+    padding: 20px; /* Khoảng cách giữa nội dung và viền */
+    border: 1px solid #b8daff; /* Viền cho alert */
+    border-radius: 4px; /* Bo góc cho alert */
+    margin: 20px; /* Khoảng cách với các phần tử xung quanh */
+}
+
