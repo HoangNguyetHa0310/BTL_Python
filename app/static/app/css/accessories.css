@@ -58,7 +58,7 @@
 }
 
 .card {
-    display: inline-block;
+    display: inline-flexbox;
     margin-right: 30px; /* Khoảng cách giữa các card */
 }
 .card-group {
@@ -79,11 +79,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 10vh;
+    height: 25vh;
     flex-direction: column;
     background-color: #cce5ff; /* Màu nền cho alert */
     color: #004085; /* Màu chữ cho alert */
-    padding: 20px; /* Khoảng cách giữa nội dung và viền */
+    padding: 50px; /* Khoảng cách giữa nội dung và viền */
     border: 1px solid #b8daff; /* Viền cho alert */
     border-radius: 4px; /* Bo góc cho alert */
     margin: 20px; /* Khoảng cách với các phần tử xung quanh */

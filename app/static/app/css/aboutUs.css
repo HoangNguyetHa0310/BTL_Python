@@ -1,6 +1,5 @@
 
 .banner {
-    padding: 20px;
     background-color: #ffffff3b;
     border: 2px solid #cccccc54;
     display: flex;
@@ -13,6 +12,7 @@
     position: relative;
     cursor: pointer;
     transition: all 0.3s;
+    
 }
 .brand:hover {
     color: #333; /* Màu chữ khi nổi lên */
@@ -31,34 +31,32 @@
 }
 
 .img1 {
-    width: 190%; /* Kích thước ảnh đầy đủ theo chiều rộng */
-    height: 400px; /* Chiều cao tự động theo tỷ lệ */
+    width: 100%; /* Kích thước ảnh đầy đủ theo chiều rộng */
+    height: 500px; /* Chiều cao tự động theo tỷ lệ */
 }
 .image-container {
     position: relative;
-    display: inline-block;
+    display: inline-flexbox;
+    
 }
-
 .image-container .text-over-image {
     position: relative;
 }
-
 .image-container .image-text {
     position: absolute;
-    top: 30%;  /* Hiển thị chữ ở giữa theo chiều dọc */
-    left: 40%; /* Hiển thị chữ ở giữa theo chiều ngang */
-    transform: translate(-50%, -50%); /* Dịch chuyển vị trí để căn giữa chữ */
+    top: 8%;  /* Hiển thị chữ ở giữa theo chiều dọc */
+    left: 30%; /* Hiển thị chữ ở giữa theo chiều ngang */
+    transform: translate(-50%,-50%); /* Dịch chuyển vị trí để căn giữa chữ */
     color: white;  /* Màu chữ là trắng */
-    font-size: 50px; /* Kích thước chữ */
+    font-size: 40px; /* Kích thước chữ */
     font-weight: bold; /* Chữ in đậm */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Đổ bóng cho chữ */
 }
-
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 80vh;
 }
 
 .image-container {
@@ -107,7 +105,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 80vh;
 }
 
 .image-container1{
