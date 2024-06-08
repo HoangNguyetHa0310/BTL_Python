@@ -1,12 +1,12 @@
 
-.banner {
+.banner1 {
     background-color: #ffffff3b;
     border: 2px solid #cccccc54;
     display: flex;
     align-items: center;
     justify-content: center; 
 }
-.brand {
+.brand1 {
     font-size: 50px;
     font-weight: bold;
     position: relative;
@@ -14,7 +14,7 @@
     transition: all 0.3s;
     
 }
-.brand:hover {
+.brand1:hover {
     color: #333; /* Màu chữ khi nổi lên */
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.247); /* Hiệu ứng nổi lên */
     transform: scale(1.1); /* Phóng to chữ khi nổi lên */
@@ -97,7 +97,7 @@ h2 {
     font-size: 24px;
     color: #0a0a0a;
 }
-p {
+p1 {
     font-size: 16px;
     color: #302b2b;
 }
@@ -123,14 +123,6 @@ p {
     max-width: 100%;
     height: auto;
 }
-h2 {
-    font-size: 24px;
-    color: #333;
-}
-p {
-    font-size: 16px;
-    color: #777;
-}
 .alert {
     text-align: center;
     display: flex;
@@ -144,4 +136,7 @@ p {
     border: 1px solid #b8daff; /* Viền cho alert */
     border-radius: 4px; /* Bo góc cho alert */
     margin: 20px; /* Khoảng cách với các phần tử xung quanh */
+}
+.form-control{
+    margin: 2px 500px;
 }
