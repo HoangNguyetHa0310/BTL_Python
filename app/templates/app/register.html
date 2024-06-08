@@ -9,8 +9,8 @@
 
     <div class="L1">
         <div class="l1">
-            <div>
-                <p>TẠO TÀI KHOẢN</p>
+            <div class="taotaikhoan">
+                <p style="font-size:40px;">Tạo tài khoản</p>
             </div>
             <div>Cần trợ giúp?</div>
         </div>
@@ -24,13 +24,13 @@
             <label for="Lname">Họ</label><br>
             <input type="text"><br>
             <label for="Password">Tạo mật khẩu của bạn</label>
-            <input type="password" id="pass"/><span id="show">Hiển thị</span>
+            <input type="password" id="pass"/>
             <div style="display: flex; align-items: center;">
                 <input type="checkbox" id="check"><label style="color:#798188;">&nbsp; Ghi nhớ tôi</label>
             </div>
-            <input type="submit" value="TẠO TÀI KHOẢN" />
-            <p>Bằng cách tạo tài khoản này, bạn đồng ý với <a href="#"> Điều khoản và Điều kiện của chúng tôi.</a> </p>
-            <p>Đã có một tài khoản Clarks? <a href="{% url 'login' %}">Đăng nhập</a></p>
+            <input type="submit" value="TẠO TÀI KHOẢN" style="width: 91%; background: #000000;" />
+            <p>Bạn đồng ý với <a href="#" style="font-size:14px;"> Điều khoản và Điều kiện của chúng tôi.</a> </p>
+            <p>Đã có một tài khoản Clarks? <a href="{% url 'login' %}" style="margin-left:1%; font-size:15px">Đăng nhập</a></p>
         </form>
     </div>
     

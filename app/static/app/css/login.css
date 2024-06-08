@@ -7,12 +7,13 @@ body {
   font-size: 16px;
 }
 .login-form {
-  margin: 40px auto;
+  margin: 10px auto;
   padding: 20px;
   width: 33%;
   /* background:#f9f9f9; */
   border-radius: 10px;
   height: 50vh ;
+  background-color:;
 }
 
 .login-form input[type="text"],
@@ -67,7 +68,7 @@ a{
 }
 .l1 p{
     font-size: 3rem;
-    font-weight: 50% ;
+    font-weight: 500 ;
     color: #333333;
 }
 #show{
@@ -76,4 +77,12 @@ a{
     font-size: smaller;
     text-decoration: underline;
     cursor: pointer;
+}
+.l1 .dangnhap{
+width:30%;
+margin-top:-4%;
+}
+.l1 .help {
+margin-top:-4%;
+margin-right:4%;
 }

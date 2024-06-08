@@ -345,6 +345,7 @@ nav {
 #trackorder img {
   width: 20px;
   height: 20px;
+  margin-top:4px;
 }
 
 #trackorder span {
@@ -355,7 +356,7 @@ nav {
 #clarks {
   display: flex;
   background-color: white;
-  /* justify-content: space-between;  */
+  justify-content: space-between;
   padding: 5px 5px 10px 150px;
   gap: 2%;
   height: 70px;
@@ -385,8 +386,6 @@ nav {
 #navbaritems {
   display: flex;
   /* border: 1px solid; */
-  align-items: center;
-  justify-content: center;
 }
 
 /* shivansh css */
@@ -504,7 +503,6 @@ h3 {
   align-items: center;
   justify-content: end;
   font-size: 25px;
-  width: 50%;
   padding-right: 50px;
 }
 

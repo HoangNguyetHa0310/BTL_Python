@@ -12,21 +12,22 @@
 
     <div class="L1">
       <div class="l1">
-          <div><p>Đăng Nhập</p></div><div>Cần trợ giúp?</div>
+          <div class="dangnhap"><p >Đăng nhập</p></div>
+          <div class="help">Cần trợ giúp?</div>
       </div>
   </div>
   <div class="login-form">
       <form action="">
           <label for="E-mail">Địa chỉ E-mail</label>
-          <input  type="text"/>
+          <input  type="text"/> <br>
           <label for="Password">Mật khẩu</label>
-          <input type="password" id="pass"/><span id="show">Hiển thị</span>
+          <input type="password" id="pass"/> <br>
           <a href="#">Quên mật khẩu của bạn?</a><br>
           <div style="display: flex; align-items: center;">
               <input type="checkbox" id="check"><label style="color:#798188;">&nbsp; Ghi nhớ đăng nhập</label>
           </div>
-          <input type="submit" value="ĐĂNG NHẬP" />
-          <p>Bạn chưa có tài khoản Clarks?<a href="{% url 'register' %}"> TẠO MỘT TÀI KHOẢN</a>  </p>
+          <input type="submit" value="ĐĂNG NHẬP" style ="background: #000000;" />
+          <p>Bạn chưa có tài khoản Clarks?<a href="{% url 'register' %}" style="margin-left:5%;"> TẠO MỘT TÀI KHOẢN</a>  </p>
       </form>
   </div>
   
