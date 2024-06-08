@@ -17,43 +17,56 @@
         <span class="brand2">Hãy lấy lại phong độ trong bước đi của bạn với bộ sưu tập chăm sóc giày chuyên nghiệp của chúng tôi.</span>
     </div>
     <div id="shop_care">
-      <button type="button" class="btn btn-outline-dark" >CHĂM SÓC GIÀY</button>
+      <button type="button" class="btn btn-outline-dark" >
+        <a style="text-decoration: none" href="{% url 'product_man' %} ">
+          <div class="t">CHĂM SÓC GIÀY</div>
+        </a>    
+      </button>
     </div>
     <img src="{% static 'app/img/Capture3.PNG' %}" class="img5" alt="">
     <div class="banner" id="banner">
-        <span class="brand">CHỈNH SỬA TẤT</span>
+        <span class="brand">CỬA HÀNG TẤT</span>
     </div>
     <div class="text">
         <span class="brand2">
           Được thiết kế dành cho những đôi chân bận rộn cần một chút TLC, những đôi tất nhung lông của chúng tôi là loại tất tốt nhất (và rất mềm nhất!) mang lại cảm giác thoải mái ấm cúng.</span>
     </div>
     <div class="btn-container">
-        <button type="button" class="btn1 btn-outline-dark">CỬA HÀNG TẤT NAM</button>
-        <button type="button" class="btn1 btn-outline-dark">CỬA HÀNG TẤT NỮ</button>
+        <button type="button" class="btn1 btn-outline-dark">
+          <a style="text-decoration: none" href="{% url 'product_man' %} ">
+            <div class="t">MUA TẤT NAM</div>    
+            </a>
+        </button>
+        <button type="button" class="btn1 btn-outline-dark">
+          <a style="text-decoration: none"  href="{% url 'product_man' %} ">
+            <div class="t">MUA TẤT NỮ</div>  
+          </a>
+        </button>
+
     </div>
     <div class="card-group">
       <div class="card" style="width: 18rem;">
         <img src="{% static 'app/img/Capture4.PNG' %}" class="card-img-top" alt="">
       <div class="card-body">
-        <h5 class="card-title">MUA SẮM VÍ</h5>
+        <a style="text-decoration: none" href="{% url 'product_man' %} " class="card-title">MUA SẮM VÍ</a>
       </div>
     </div>
     <div class="card" style="width: 18rem;">
       <img src="{% static 'app/img/Capture5.PNG' %}" class="card-img-top" alt="">
       <div class="card-body">
-        <h5 class="card-title">THIẾT BỊ CỬA HÀNG</h5>
+        <a style="text-decoration: none" href="{% url 'product_man' %} " class="card-title">MUA THẮT LƯNG</a>
       </div>
     </div>
     <div class="card" style="width: 18rem;">
       <img src="{% static 'app/img/Capture6.PNG' %}" class="card-img-top" alt="">
       <div class="card-body">
-        <h5 class="card-title">CHĂM SÓC GIÀY</h5>
+        <a style="text-decoration: none" href="{% url 'product_man' %} " class="card-title">CHĂM SÓC GIẦY</a>
       </div>
     </div>
     <div class="card" style="width: 18rem;">
       <img src="{% static 'app/img/Capture7.PNG' %}" class="card-img-top" alt="">
       <div class="card-body">
-        <h5 class="card-title">MUA SẮM TẤT</h5>
+        <a style="text-decoration: none" href="{% url 'product_man' %} " class="card-title">MUA SẮM TẤT</a>
       </div>
     </div>
     </div>
