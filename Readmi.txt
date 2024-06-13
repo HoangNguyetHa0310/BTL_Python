@@ -12,8 +12,18 @@ django-admin startapp <Tên File>
 - Build lại file vừa sửa 
 python manage.py migrate
 
+- thêm sau khi update hình ảnh cần tải thư viện
+pip install pillow
+
 - Chạy lại server
 python manage.py runserver
 
 - khởi tạo folder
 django-admin startapp app
+
+- tạo lại bảng cơ sở dữ liệu
+python manage.py makemigrations
+
+- cấu hính user admin
+python manage.py createsuperuser
+
