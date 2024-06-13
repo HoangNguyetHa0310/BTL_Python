@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import *
 
 
 
@@ -8,7 +9,13 @@ def index(request):
 
 
 def cart(request):
-    context = {}
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order,created = Order.objects.get_or_create(customer=customer,complete=False)
+        items = order.orderitem_set.all()
+    else:
+        item = []
+    context = {'item':items,'order':order}
     return render(request, 'app/cart.html',context)
 
 def login(request):
@@ -23,23 +30,24 @@ def checkout(request):
     context = {}
     return render(request, 'app/checkout.html',context)
 
-
-def product_woman(request):
-    context = {}
-    return render(request, 'app/product_woman.html',context)
-
-
 def product_man(request):
-    context = {}
+    products = Product.objects.all()
+    context = {'products': products}
     return render(request, 'app/product_man.html',context)
 
+def product_woman(request):
+    products = Product.objects.all()
+    context = {'products': products}
+    return render(request, 'app/product_woman.html',context)
 
 def product_kid(request):
-    context = {}
+    products = Product.objects.all()
+    context = {'products': products}
     return render(request, 'app/product_kid.html',context)
 
 def bestseller(request):
-    context = {}
+    products = Product.objects.all()
+    context = {'products': products}
     return render(request, 'app/bestseller.html',context)
 
 def accessories(request):

@@ -63,7 +63,6 @@
     </div>
     <div class="K72">
         <div class="K721">
-            <h3><span id="count">0</span> KIỂU DÁNG ĐƯỢC TÌM THẤY</h3>
             <select id="KS1">
                 <option value="">Sắp Xếp Theo:</option>
                 <option value="ascending">A-Z</option>
@@ -71,39 +70,17 @@
             </select>
         </div>
         <div id="K722">
+            {% for product in products %}
             <a href="{% url 'detail_product' %}" class="product-card">
-                <!--                <div class="discount-label">33% OFF</div>-->
-                <img src="{% static 'app/img/p1.png' %}" alt="Desert Boot" class="product-image">
-
-                <h2>DESERT BOOT</h2>
+                <img src="{{ product.ImageUrl }}" alt="Desert Boot" class="product-image">
+                <h2>{{ product.name}}</h2>
                 <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
-                <p class="price" style="font-size: 24px;"><strike class="original-price"
-                                                                  style="font-size: 18px; opacity: 0.6; ">$150.00</strike>
-                    <b>$99.99</b></p>
+                <p class="price" style="font-size: 24px;">
+                    <strike class="original-price" style="font-size: 18px; opacity: 0.6; ">150.00 VND</strike>
+                    <b>${{ product.price | floatformat}} VND</b>
+                </p>
             </a>
-
-            <a href="{% url 'detail_product' %}" class="product-card">
-                <!--                <div class="discount-label">33% OFF</div>-->
-                <img src="{% static 'app/img/p1.png' %}" alt="Desert Boot" class="product-image">
-
-                <h2>DESERT BOOT</h2>
-                <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
-                <p class="price" style="font-size: 24px;"><strike class="original-price"
-                                                                  style="font-size: 18px; opacity: 0.6; ">$150.00</strike>
-                    <b>$99.99</b></p>
-            </a>
-
-            <a href="{% url 'detail_product' %}" class="product-card">
-                <!--                <div class="discount-label">33% OFF</div>-->
-                <img src="{% static 'app/img/p1.png' %}" alt="Desert Boot" class="product-image">
-
-                <h2>DESERT BOOT</h2>
-                <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
-                <p class="price" style="font-size: 24px;"><strike class="original-price"
-                                                                  style="font-size: 18px; opacity: 0.6; ">$150.00</strike>
-                    <b>$99.99</b></p>
-            </a>
-
+            {% endfor %}
         </div>
     </div>
 </div>
