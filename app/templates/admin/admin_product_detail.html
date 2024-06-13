@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết sản phẩm</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Chi tiết sản phẩm</h2>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h3>{{ product.name }}</h3>
+                <p><strong>Mô tả:</strong> {{ product.description }}</p>
+                <p><strong>Giá:</strong> {{ product.price }}</p>
+                <p><strong>Giảm giá:</strong> {{ product.discount }}</p>
+                <p><strong>Số lượng:</strong> {{ product.stock }}</p>
+                <p><strong>Hoạt động:</strong> {% if product.active %}Có{% else %}Không{% endif %}</p>
+                <p><strong>Danh mục:</strong> {{ product.category.name }}</p>
+                <p><strong>Thương hiệu:</strong> {{ product.brand.name }}</p>
+                <p><strong>Size:</strong> {{ product.size.name }}</p>
+                <p><strong>Màu sắc:</strong> {{ product.color.name }}</p>
+            </div>
+        </div>
+
+        <a href="{% url 'admin_product_list' %}" class="btn btn-secondary mt-3">Trở về danh sách sản phẩm</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

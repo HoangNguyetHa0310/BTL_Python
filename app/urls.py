@@ -16,5 +16,13 @@ urlpatterns = [
     path('aboutUs/', views.aboutUs, name="aboutUs"),
     path('detail_product/', views.detail_product, name="detail_product"),
 
+
+    ###################### admin ###################
+    path('admin_product_create/', views.admin_product_create, name="admin_product_create"),
+    path('admin_product_delete/', views.admin_product_delete, name="admin_product_delete"),
+    path('admin_product_detail/', views.admin_product_detail, name="admin_product_detail"),
+    path('admin_product_list/', views.admin_product_list, name="admin_product_list"),
+    path('admin_product_update/', views.admin_product_update, name="admin_product_update"),
+
 ]
 

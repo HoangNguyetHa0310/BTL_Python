@@ -12,6 +12,8 @@ class Category(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True,
                                related_name='children')
 
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
+
     class Meta:
         verbose_name_plural = "Categories"
 
@@ -33,6 +35,8 @@ class Brand(models.Model):
     name = models.CharField(max_length=100, unique=True)
     logo = models.ImageField(upload_to='brand_logos', blank=True)
     description = models.TextField(blank=True)
+
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -65,6 +69,27 @@ class AttributeValue(models.Model):
     def __str__(self):
         return f"{self.attribute.name}: {self.value}"
 
+# ------------------------------ Size ------------------------------ #
+class Size(models.Model):
+    """
+    Mô hình size sản phẩm.
+    """
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+# ------------------------------ Màu sắc ------------------------------ #
+class Color(models.Model):
+    """
+    Mô hình màu sắc sản phẩm.
+    """
+    name = models.CharField(max_length=50)
+    code = models.CharField(max_length=7, blank=True)  # Mã màu (ví dụ: #FFFFFF)
+
+    def __str__(self):
+        return self.name
+
 # ------------------------------ Sản phẩm ------------------------------ #
 class Product(models.Model):
     """
@@ -80,6 +105,10 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)
     date_added = models.DateTimeField(auto_now_add=True)
+
+    # Thêm trường size và color
+    size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         ordering = ['-date_added']  # Sắp xếp sản phẩm theo ngày thêm mới nhất

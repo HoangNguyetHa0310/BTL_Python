@@ -10,23 +10,30 @@ from .models import (
     CartItem,
     Order,
     OrderItem,
+    Size,
+    Color
 )
+
 
 # ------------------------------ Danh mục sản phẩm ------------------------------ #
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'parent')
-    list_filter = ('parent',)
+    list_display = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
+
 
 # ------------------------------ Thương hiệu ------------------------------ #
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ('name',)
+    prepopulated_fields = {'slug': ('name',)}
+
 
 # ------------------------------ Thuộc tính sản phẩm ------------------------------ #
 @admin.register(Attribute)
 class AttributeAdmin(admin.ModelAdmin):
     list_display = ('name',)
+
 
 # ------------------------------ Giá trị thuộc tính ------------------------------ #
 @admin.register(AttributeValue)
@@ -34,38 +41,68 @@ class AttributeValueAdmin(admin.ModelAdmin):
     list_display = ('attribute', 'value')
     list_filter = ('attribute',)
 
+
 # ------------------------------ Sản phẩm ------------------------------ #
+class ProductAttributeInline(admin.TabularInline):
+    model = ProductAttribute
+    extra = 1
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'discount', 'category', 'brand', 'stock', 'active')
-    list_filter = ('category', 'brand', 'active')
+    list_display = ('name', 'price', 'discount', 'category', 'brand', 'stock', 'active', 'size', 'color')
+    list_filter = ('category', 'brand', 'active', 'size', 'color')
     search_fields = ('name',)
     list_editable = ('price', 'discount', 'stock', 'active')
+    readonly_fields = ('date_added',)  # Ngày thêm là readonly
+
+    # Tạo inline cho ProductAttribute
+    inlines = [
+        ProductAttributeInline,
+    ]
+
 
 # ------------------------------ Sản phẩm - Thuộc tính ------------------------------ #
-@admin.register(ProductAttribute)
-class ProductAttributeAdmin(admin.ModelAdmin):
-    list_display = ('product', 'attribute_value')
+class ProductAttributeInline(admin.TabularInline):
+    model = ProductAttribute
+    extra = 1
+
 
 # ------------------------------ Khách hàng ------------------------------ #
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ('user', 'phone', 'address', 'city', 'country')
 
+
 # ------------------------------ Giỏ hàng ------------------------------ #
 @admin.register(CartItem)
 class CartItemAdmin(admin.ModelAdmin):
     list_display = ('customer', 'product', 'quantity')
 
+
 # ------------------------------ Đơn hàng ------------------------------ #
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'order_date', 'status', 'total_price', 'shipping_address', 'payment_method', 'tracking_number')
+    list_display = (
+    'customer', 'order_date', 'status', 'total_price', 'shipping_address', 'payment_method', 'tracking_number')
     list_filter = ('status',)
     list_editable = ('status',)
     readonly_fields = ('order_date',)
+
 
 # ------------------------------ Chi tiết đơn hàng ------------------------------ #
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('order', 'product', 'quantity', 'price')
+
+
+# ------------------------------ Size ------------------------------ #
+@admin.register(Size)
+class SizeAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+# ------------------------------ Màu sắc ------------------------------ #
+@admin.register(Color)
+class ColorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'code')
