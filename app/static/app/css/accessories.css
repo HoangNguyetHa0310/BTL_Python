@@ -33,7 +33,7 @@
     height: 500px; /* Chiều cao tự động theo tỷ lệ */
 }
 .img5 {
-    margin: 40px;
+    margin-top: 40px;
     width: 100%; /* Kích thước ảnh đầy đủ theo chiều rộng */
     height: 500px; /* Chiều cao tự động theo tỷ lệ */
 }
@@ -51,6 +51,7 @@
 .btn-container {
     display: flex;
     justify-content: center;
+    z-index: 2;
 }
 
 .btn1 {
@@ -95,5 +96,22 @@
     justify-content: center;
 }
 .t{
-    color: #333;
+    color: #0e0d0d;
+    z-index: 1;
 }
+#shop_care .btn {
+    position: relative;
+    overflow: hidden;
+    background-color: rgb(245, 239, 239); /* Màu nền ban đầu */
+    color: white; /* Màu chữ ban đầu */
+    transition: background-color 0.3s, color 0.3s; /* Thêm hiệu ứng chuyển tiếp */
+}
+#shop_care .btn:hover {
+    background-color: rgba(0, 0, 0, 0.5); /* Màu nền nhạt hơn khi hover */
+    color: black; /* Đổi màu chữ nếu cần để đảm bảo dễ đọc */
+}
+
+#shop_care .btn:hover .highlight-text {
+    color: black; /* Đổi màu chữ khi hover */
+}
+
