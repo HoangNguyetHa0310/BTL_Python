@@ -9,21 +9,7 @@
 
     {% include "base/nav.html" %}
 
-    <div class="K10">
-        <button> TIẾP TỤC DUYỆT</button>
-    </div>
-    
-    <div id="K1111">
-        <div class="K111"><h1 id="MyShoppingBag">Giỏ Hàng Của Tôi</h1></div>
-        <div class="K112">
-            <p>Mã Giỏ: 679787725</p>
-            <p> Cần giúp đỡ? </p>
-            <button><a href="" onclick="return false">THANH TOÁN NGAY</a></button>
-        </div>
-    </div>
-    
-    <div class="Kbreakline"></div>
-    
+
     <div class="K12">
         <img src="https://www.clarksusa.com/_ui/responsive/common/images/icons/white-truck.png" alt="">
         <p>MIỄN PHÍ GIAO HÀNG CHO ĐƠN HÀNG TỪ $50 TRỞ LÊN + MIỄN PHÍ TRẢ HÀNG HÀNG NGÀY</p>
@@ -43,9 +29,8 @@
                 <input type="text" id="cupon" placeholder="Nhập Mã Khuyến Mãi Của Bạn">
                 <button id="cuponbtn"><a href="" onclick="return false">Áp Dụng</a></button>
             </div>
-            <button id="CHECKOUTNOW"><a href="{% url 'checkout' %}">THANH TOÁN NGAY</a></button>
+            <button id="CHECKOUTNOW" style="margin-bottom:20px;"><a href="{% url 'checkout' %}" >THANH TOÁN NGAY</a></button>
         </div>
     </div>
-
 
 {% include "base/footer.html" %}
