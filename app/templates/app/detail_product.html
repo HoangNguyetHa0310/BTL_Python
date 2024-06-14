@@ -33,36 +33,14 @@
 
     </div>
     <div id="tillpinkbar">
-
-
-        <div id="left">
-            <div>
-                <div class="make90" id="firstdiv"><img
-                        src="https://clarks.scene7.com/is/image/Pangaea2Build/26085071_W_1?wid=2000&hei=2000&fmt=jpg"
-                        id="first" alt=""></div>
-                <div class="make90" id="seconddiv"><img
-                        src="https://clarks.scene7.com/is/image/Pangaea2Build/26085071_W_1?wid=2000&hei=2000&fmt=jpg"
-                        id="second" alt=""></div>
-                <div class="make90" id="thirddiv"><img
-                        src="https://clarks.scene7.com/is/image/Pangaea2Build/26085071_W_1?wid=2000&hei=2000&fmt=jpg"
-                        id="third" alt=""></div>
-                <div class="make90" id="forthdiv"><img
-                        src="https://clarks.scene7.com/is/image/Pangaea2Build/26085071_W_1?wid=2000&hei=2000&fmt=jpg"
-                        id="forth" alt=""></div>
-                <div class="make90" id="fifthdiv"><img
-                        src="https://clarks.scene7.com/is/image/Pangaea2Build/26085071_W_1?wid=2000&hei=2000&fmt=jpg"
-                        id="fifth" alt=""></div>
-            </div>
-        </div>
-
         <div id="mid">
-            <img src="https://clarks.scene7.com/is/image/Pangaea2Build/26085071_W_1?wid=2000&hei=2000&fmt=jpg"
+            <img src="{{ product.ImageUrl }}"
                  alt="error">
         </div>
 
         <div id="toright">
-            <h1>UN.LOOP Đen</h1>
-            <p>$130.00</p>
+            <h1>{{ product.name }}</h1>
+            <p>${{ product.price | floatformat}} VND</p>
             <span style="display: inline-block; font-size: 20px; color: #175fd3;" class="star">★</span>
             <span style="display: inline-block; font-size: 20px; color: #175fd3;" class="star">★</span>
             <span style="display: inline-block; font-size: 20px; color: #175fd3;" class="star">★</span>
@@ -80,7 +58,7 @@
                 <option value="3">Đen</option>
             </select>
             <div id="Roundbox" class="mt-3"><img
-                    src="https://clarks.scene7.com/is/image/Pangaea2Build/26085071_W_1?wid=2000&hei=2000&fmt=jpg" alt=""
+                    src="{{ product.ImageUrl }}" alt=""
                     id="roundimg"></div>
 
             <div id="sizediv">
@@ -104,15 +82,13 @@
             <br>
 
             <button id="Shoppingbagbtn">Thêm vào giỏ hàng</button>
-
-            <div id="pinkbar">
-                <p>Klarna.</p>
-                <p>4 khoản thanh toán không lãi suất, mỗi khoản $32.50.</p>
-                <p>Tìm hiểu thêm</p>
-            </div>
+            <button id="Buybtn" >
+                <a href="{% url 'payProduct' %}" style="text-decoration:none; color:white;">Mua hàng</a>
+            </button>
         </div>
-
     </div>
+
+
     <div id="ProdDesc">
         <div>
             <h2>Mô tả sản phẩm</h2>

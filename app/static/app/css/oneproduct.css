@@ -146,6 +146,17 @@
   margin: 20px 5px 10px 0px;
   font-family: "Montserrat", sans-serif;
 }
+#Buybtn {
+  color: #ffffff;
+  font-size: 17px;
+  background-color: #198754;
+  border-radius: 5px;
+  height: 50px;
+  border: none;
+  width: 100%;
+  margin: 20px 5px 10px 0px;
+  font-family: "Montserrat", sans-serif;
+}
 #pinkbar {
   display: flex;
   background-color: #fcb3c7;
