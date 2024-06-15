@@ -14,7 +14,6 @@ from .models import (
     Color
 )
 
-
 # ------------------------------ Danh mục sản phẩm ------------------------------ #
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -50,22 +49,18 @@ class ProductAttributeInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'discount', 'category', 'brand', 'stock', 'active', 'size', 'color')
-    list_filter = ('category', 'brand', 'active', 'size', 'color')
-    search_fields = ('name',)
-    list_editable = ('price', 'discount', 'stock', 'active')
-    readonly_fields = ('date_added',)  # Ngày thêm là readonly
+    list_display = ('name', 'price', 'category', 'brand', 'stock', 'active', 'date_added', 'get_sizes', 'get_colors')
+    list_filter = ('category', 'brand', 'active')
+    search_fields = ('name', 'description')
+    inlines = [ProductAttributeInline]
 
-    # Tạo inline cho ProductAttribute
-    inlines = [
-        ProductAttributeInline,
-    ]
+    def get_sizes(self, obj):
+        return ", ".join([str(size) for size in obj.size.all()])
+    get_sizes.short_description = 'Sizes'
 
-
-# ------------------------------ Sản phẩm - Thuộc tính ------------------------------ #
-class ProductAttributeInline(admin.TabularInline):
-    model = ProductAttribute
-    extra = 1
+    def get_colors(self, obj):
+        return ", ".join([str(color) for color in obj.color.all()])
+    get_colors.short_description = 'Colors'
 
 
 # ------------------------------ Khách hàng ------------------------------ #
@@ -77,14 +72,14 @@ class CustomerAdmin(admin.ModelAdmin):
 # ------------------------------ Giỏ hàng ------------------------------ #
 @admin.register(CartItem)
 class CartItemAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'product', 'quantity')
+    list_display = ('customer', 'product', 'quantity', 'size', 'color')
 
 
 # ------------------------------ Đơn hàng ------------------------------ #
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
-    'customer', 'order_date', 'status', 'total_price', 'shipping_address', 'payment_method', 'tracking_number')
+        'customer', 'order_date', 'status', 'total_price', 'shipping_address', 'payment_method', 'tracking_number')
     list_filter = ('status',)
     list_editable = ('status',)
     readonly_fields = ('order_date',)
@@ -93,7 +88,7 @@ class OrderAdmin(admin.ModelAdmin):
 # ------------------------------ Chi tiết đơn hàng ------------------------------ #
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ('order', 'product', 'quantity', 'price')
+    list_display = ('order', 'product', 'quantity', 'price', 'size', 'color')
 
 
 # ------------------------------ Size ------------------------------ #

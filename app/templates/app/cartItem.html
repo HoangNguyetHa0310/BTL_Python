@@ -18,9 +18,41 @@
         <div class="K112">
             <p>Mã Giỏ: 679787725</p>
             <p> Cần giúp đỡ? </p>
-            <button><a href="{% url 'payProduct' %}" >THANH TOÁN NGAY</a></button>
+            <button>
+                <a href="{% url 'payProduct' product.pk %}" >THANH TOÁN NGAY</a>
+            </button>
         </div>
     </div>
-    
+
+    <div id="cart-items">
+        <h2>Danh sách sản phẩm</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Hình ảnh</th>
+                    <th>Size</th>
+                    <th>Màu sắc</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+               {% for item in cartItems %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td><img src="{{ item.product.ImageUrl }}" alt="{{ item.product.name }}" width="100"></td>
+                    <td>{{ item.size }}</td>
+                    <td>{{ item.color }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.product.price | floatformat }} VND</td>
+                    <td><a href="{% url 'remove_from_cart' item.pk %}">Xóa</a></td>
+                    <td><a href="{% url 'payProduct' item.product.pk %}">Thanh Toán</a></td> 
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     
 {% include "base/footer.html" %}
