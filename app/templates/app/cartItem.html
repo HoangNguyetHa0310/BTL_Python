@@ -15,10 +15,18 @@
     
     <div id="K1111">
         <div class="K111"><h1 id="MyShoppingBag">Giỏ Hàng Của Tôi</h1></div>
-        <div class="K112">
-            <p>Mã Giỏ: 679787725</p>
-            <p> Cần giúp đỡ? </p>
+        
             <button><a href="{% url 'payProduct' %}" >THANH TOÁN NGAY</a></button>
+        </div>
+    </div>
+    <div class="product-order">
+        <h1>Sản phẩm đã đặt</h1>
+        <div class="bank">
+            <p id="detail_bank">Size: {{ size.name }}</p>
+            <p id="detail_bank">Màu: {{ color.name }}</p>
+            <img src="{{ product.ImageUrl }}" alt="error" id="detail_bank">
+            <h1 id="detail_bank">{{ product.name }}</h1>
+            <p id="detail_bank">${{ product.price | floatformat }} VND</p>
         </div>
     </div>
     

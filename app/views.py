@@ -9,10 +9,29 @@ from .forms import *
 def index(request):
     return render(request, 'app/index.html')
 
-
 def cartItem(request):
-    context = {}
-    return render(request, 'app/cartItem.html',context)
+    size_id = request.POST.get('size')
+    color_id = request.POST.get('color')
+    size = get_object_or_404(Size, id=size_id)
+    color = get_object_or_404(Color, id=color_id)
+    context = {
+            'size': size,
+            'color': color,
+        }
+    return render(request, 'app/cartItem.html', context)
+
+def cartItem1(request,pk):
+    product = Product.objects.get(pk=pk)
+    size_id = request.POST.get('size')
+    color_id = request.POST.get('color')
+    size = get_object_or_404(Size, id=size_id)
+    color = get_object_or_404(Color, id=color_id)
+    context = {
+        'size': size,
+        'color': color,
+        'product':product,
+    }
+    return render(request, 'app/cartItem.html', context)
 
 def payProduct(request):
     context = {}
@@ -58,12 +77,46 @@ def aboutUs(request):
     context = {}
     return render(request, 'app/aboutUs.html',context)
 
-def detail_product(request):
-    # product = get_object_or_404(Product)
-    # context = {'product': product}
+def product_protect(request):
     context = {}
+    return render(request, 'app/product_protect.html',context)
+
+def socks(request):
+    context = {}
+    return render(request, 'app/socks.html',context)
+
+def wallet(request):
+    context = {}
+    return render(request, 'app/wallet.html',context)
+
+
+def yourorder(request):
+    context = {}
+    return render(request, 'app/yourorder.html',context)
+
+def detail_product(request):
+    # products = get_object_or_404(Product,id=pk)
+    # context = {'product': product}
+    # products = Product.objects.get(id=pk)
+    sizes = Size.objects.all()
+    colors = Color.objects.all()
+    context = {
+        'sizes': sizes,
+        'colors' : colors,
+        # 'products':products,
+    }
     return render(request, 'app/detail_product.html', context)
 
+def detail_product1(request,pk):
+    product = Product.objects.get(id=pk)
+    sizes = Size.objects.all()
+    colors = Color.objects.all()
+    context ={
+        'product':product,
+        'sizes': sizes,
+        'colors' : colors,
+    }
+    return render(request, 'app/detail_product.html', context)
 
 
 
