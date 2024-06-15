@@ -23,8 +23,7 @@ urlpatterns = [
     path('socks/', views.socks, name="socks"),
     path('wallet/', views.wallet, name="wallet"),
     path('yourorder/', views.yourorder, name="yourorder"),
-    
-    
+   
 
     
     ###################### admin ###################

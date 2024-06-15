@@ -1,10 +1,13 @@
-from django.contrib.auth.decorators import *
-from django.shortcuts import *
-from django.http import HttpResponse
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib import messages  # Import messages
+
 from .models import *
 from .forms import *
-
-
 
 def index(request):
     return render(request, 'app/index.html')
@@ -33,9 +36,12 @@ def cartItem1(request,pk):
     }
     return render(request, 'app/cartItem.html', context)
 
-def payProduct(request):
-    context = {}
-    return render(request, 'app/payProduct.html',context)
+def payProduct(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    selected_size = request.session.get('selected_size')
+    selected_color = request.session.get('selected_color')
+    context = {'product': product, 'selected_size': selected_size, 'selected_color': selected_color}
+    return render(request, 'app/payProduct.html', context)
 
 def login(request):
     context = {}
@@ -117,8 +123,6 @@ def detail_product1(request,pk):
         'colors' : colors,
     }
     return render(request, 'app/detail_product.html', context)
-
-
 
 ########################### view cho admin #########################
 
