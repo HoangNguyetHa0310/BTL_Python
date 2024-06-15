@@ -69,19 +69,22 @@
                 <option value="descending">Z-A</option>
             </select>
         </div>
+
+        
         <div id="K722">
             {% for product in products %}
-                <a href="{% url 'detail_product' product.pk %}" class="product-card">
-                    <img src="{{ product.ImageUrl }}" alt="Desert Boot" class="product-image" style="height: 50%">
-                    <h2>{{ product.name }}</h2>
-                    <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
-                    <p class="price" style="font-size: 24px;">
-                        <strike class="original-price" style="font-size: 18px; opacity: 0.6; ">150.00 VND</strike>
-                        <b>${{ product.price | floatformat }} VND</b>
-                    </p>
-                </a>
+            <a href="{% url 'detail_product1' product.id %}" class="product-card">
+               <img  src="{{ product.ImageUrl }}" alt="Desert Boot" class="product-image"> 
+                <h2 >{{ product.name}}</h2>
+                <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
+                <p class="price" style="font-size: 24px;">
+                    <strike class="original-price" style="font-size: 18px; opacity: 0.6; ">150.00 VND</strike>
+                    <b>${{ product.price | floatformat}} VND</b> 
+                </p>
+            </a>
             {% endfor %}
         </div>
+
     </div>
 </div>
 
