@@ -46,7 +46,7 @@
             <span id="ratingcount">(219)</span>
     
 
-            <form action="{% url 'cartItem1' product.id %}" method="post">
+            <form action="{% url 'cartItem' product.id %}" method="post">
             {% csrf_token %}
             <h3>MÀU </h3>
                 <select id="color" name="color" class="form-select" aria-label="Default select example">

@@ -73,7 +73,7 @@
         
         <div id="K722">
             {% for product in products %}
-            <a href="{% url 'detail_product1' product.id %}" class="product-card">
+            <a href="{% url 'detail_product' product.pk%}" class="product-card">
                <img  src="{{ product.ImageUrl }}" alt="Desert Boot" class="product-image"> 
                 <h2 >{{ product.name}}</h2>
                 <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
