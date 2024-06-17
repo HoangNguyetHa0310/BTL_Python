@@ -5,7 +5,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages  # Import messages
-
+from django.contrib.auth import login, authenticate
+from django.contrib import messages
 from .models import *
 from .forms import *
 
@@ -13,7 +14,28 @@ def index(request):
     return render(request, 'app/index.html')
 
 def cartItem(request):
-    context = {}
+    # size_id = request.POST.get('size')
+    # color_id = request.POST.get('color')
+    # size = get_object_or_404(Size, id=size_id)
+    # color = get_object_or_404(Color, id=color_id)
+    
+    context = {
+            # 'size': size,
+            # 'color': color,
+        }
+    return render(request, 'app/cartItem.html', context)
+
+def cartItem1(request,pk):
+    product = Product.objects.get(pk=pk)
+    size_id = request.POST.get('size')
+    color_id = request.POST.get('color')
+    size = get_object_or_404(Size, id=size_id)
+    color = get_object_or_404(Color, id=color_id)
+    context = {
+        'size': size,
+        'color': color,
+        'product':product,
+    }
     return render(request, 'app/cartItem.html', context)
 
 def payProduct(request, pk):
@@ -23,13 +45,75 @@ def payProduct(request, pk):
     context = {'product': product, 'selected_size': selected_size, 'selected_color': selected_color}
     return render(request, 'app/payProduct.html', context)
 
-def login(request):
-    context = {}
-    return render(request, 'app/login.html',context)
 
 def register(request):
-    context = {}
-    return render(request, 'app/register.html',context)
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        password = request.POST.get('password')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        country = request.POST.get('country')
+
+        # Kiểm tra xem email đã tồn tại hay chưa
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email đã tồn tại. Vui lòng chọn email khác.')
+            return render(request, 'app/register.html', {})
+
+        # Tạo user mới
+        user = User.objects.create_user(
+            username=email,
+            password=password,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+        )
+
+        # Lưu thông tin khách hàng
+        user.save() # Lưu user vào database
+        customer = Customer.objects.create(
+            user=user,
+            phone=phone,
+            address=address,
+            city=city,
+            country=country,
+        )
+        # Đăng nhập user tự động sau khi tạo tài khoản
+        user = authenticate(username=email, password=password)
+        if user is not None:
+             # Đăng nhập user vào hệ thống
+            messages.success(request, 'Tạo tài khoản thành công!')
+            return redirect('login')
+        else:
+            messages.error(request, 'Lỗi tạo tài khoản.')
+            return render(request, 'app/register.html', {})
+
+    else:
+        context = {}
+        return render(request, 'app/register.html', context)
+
+
+
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            
+            return redirect('index')  # Chuyển hướng đến trang index
+        else:
+            messages.error(request, 'Tên đăng nhập hoặc mật khẩu không chính xác.')
+            return render(request, 'app/login.html', {})
+
+    else:
+        context = {}
+        return render(request, 'app/login.html', context)
+
 
 def checkout(request):
     context = {}

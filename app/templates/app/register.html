@@ -15,13 +15,15 @@
             <div>Cần trợ giúp?</div>
         </div>
     </div>
-    <div class="login-form">
+    {% comment %} <div class="login-form">
         <form action="">
             <label for="E-mail">Địa chỉ email</label><br>
             <input type="email" /><br>
             <label for="Fname">Tên</label><br>
             <input type="text"><br>
             <label for="Lname">Họ</label><br>
+            <input type="text"><br>
+            <label for="address">Địa cchỉ</label><br>
             <input type="text"><br>
             <label for="Password">Tạo mật khẩu của bạn</label>
             <input type="password" id="pass"/>
@@ -32,7 +34,47 @@
             <p>Bạn đồng ý với <a href="#" style="font-size:14px;"> Điều khoản và Điều kiện của chúng tôi.</a> </p>
             <p>Đã có một tài khoản Clarks? <a href="{% url 'login' %}" style="margin-left:1%; font-size:15px">Đăng nhập</a></p>
         </form>
-    </div>
+    </div> {% endcomment %}
+
+<!-- register.html -->
+<div class="login-form">
+    <form method="POST">
+        {% csrf_token %}
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <label for="E-mail">Địa chỉ email</label><br>
+        <input type="email" name="email" required /><br>
+        <label for="Fname">Tên</label><br>
+        <input type="text" name="first_name" required><br>
+        <label for="Lname">Họ</label><br>
+        <input type="text" name="last_name" required><br>
+        <label for="phone">Số điện thoại</label><br>
+        <input type="text" name="phone"><br>
+        <label for="address">Địa chỉ</label><br>
+        <input type="text" name="address"><br>
+        <label for="city">Thành phố</label><br>
+        <input type="text" name="city"><br>
+        <label for="country">Quốc gia</label><br>
+        <input type="text" name="country"><br>
+        <label for="Password">Tạo mật khẩu của bạn</label>
+        <input type="password" id="pass" name="password" required />
+        <div style="display: flex; align-items: center;">
+            <input type="checkbox" id="check"><label style="color:#798188;">&nbsp; Ghi nhớ tôi</label>
+        </div>
+        <input type="submit" value="TẠO TÀI KHOẢN" style="width: 91%; background: #000000;" />
+        <p>Bạn đồng ý với <a href="#" style="font-size:14px;"> Điều khoản và Điều kiện của chúng tôi.</a> </p>
+        <p>Đã có một tài khoản Clarks? <a href="{% url 'login' %}" style="margin-left:1%; font-size:15px">Đăng nhập</a></p>
+    </form>
+</div>
+
+
+
+
     
 
 <script>
