@@ -106,9 +106,9 @@ class Product(models.Model):
     active = models.BooleanField(default=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
-    # Thêm trường size và color
-    size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
-    color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
+    # Sử dụng ManyToManyField cho size và color
+    size = models.ManyToManyField(Size, blank=True)
+    color = models.ManyToManyField(Color, blank=True)
 
     class Meta:
         ordering = ['-date_added']  # Sắp xếp sản phẩm theo ngày thêm mới nhất
@@ -130,7 +130,6 @@ class Product(models.Model):
     # Lấy các thuộc tính sản phẩm
     def get_attributes(self):
         return self.productattribute_set.all()
-
 # ------------------------------ Sản phẩm - Thuộc tính ------------------------------ #
 class ProductAttribute(models.Model):
     """
@@ -164,6 +163,8 @@ class CartItem(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return f"{self.customer.user.username} - {self.product.name} x {self.quantity}"
@@ -199,6 +200,8 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return f"{self.order} - {self.product.name} x {self.quantity}"
