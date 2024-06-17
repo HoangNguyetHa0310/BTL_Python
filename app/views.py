@@ -11,32 +11,83 @@ from .models import *
 from .forms import *
 
 def index(request):
-    return render(request, 'app/index.html')
+    if request.user.is_authenticated:
+        try:
+            customer = request.user.customer
+        except Customer.DoesNotExist:
+            messages.warning(request, "You need to create a customer profile to continue.")
+            return redirect('create_customer_profile')  # Replace with your URL
+    else:
+        customer = None
+    context = {'customer': customer}
+    return render(request, 'app/index.html', context)
 
-def cartItem(request):
-    # size_id = request.POST.get('size')
-    # color_id = request.POST.get('color')
-    # size = get_object_or_404(Size, id=size_id)
-    # color = get_object_or_404(Color, id=color_id)
-    
-    context = {
-            # 'size': size,
-            # 'color': color,
-        }
-    return render(request, 'app/cartItem.html', context)
 
-def cartItem1(request,pk):
-    product = Product.objects.get(pk=pk)
+@login_required
+def cart(request, customer_id):
+    customer = get_object_or_404(Customer, pk=customer_id)
+    try:
+        cart = Cart.objects.get(customer=customer)
+        cart_items = cart.get_cart_items()
+        total_price = cart.get_total_price()
+    except Cart.DoesNotExist:
+        cart_items = []
+        total_price = 0
+
+    context = {'cart_items': cart_items, 'total_price': total_price}
+    return render(request, 'app/cart.html', context)
+
+
+@login_required
+def add_to_cart(request, product_id, customer_id):
+    product = get_object_or_404(Product, pk=product_id)
+    customer = get_object_or_404(Customer, pk=customer_id)
+
     size_id = request.POST.get('size')
     color_id = request.POST.get('color')
-    size = get_object_or_404(Size, id=size_id)
-    color = get_object_or_404(Color, id=color_id)
-    context = {
-        'size': size,
-        'color': color,
-        'product':product,
-    }
-    return render(request, 'app/cartItem.html', context)
+    size = get_object_or_404(Size, id=size_id) if size_id else None
+    color = get_object_or_404(Color, id=color_id) if color_id else None
+
+    cart, created = Cart.objects.get_or_create(customer=customer)
+    cart_item, created = CartItem.objects.get_or_create(
+        cart=cart,
+        product=product,
+        size=size,
+        color=color,
+        defaults={'quantity': 1}
+    )
+
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+
+    messages.success(request, f"Sản phẩm {product.name} đã được thêm vào giỏ hàng")
+    return redirect('cart', customer_id=customer_id)
+
+@login_required
+def update_cart(request):
+    if request.method == 'POST':
+        cart_item_id = request.POST.get('cart_item_id')
+        quantity = int(request.POST.get('quantity'))
+        cart_item = get_object_or_404(CartItem, pk=cart_item_id)
+
+        if quantity > 0:
+            cart_item.quantity = quantity
+            cart_item.save()
+        else:
+            cart_item.delete()
+
+        # Get customer_id from the cart item
+        customer_id = cart_item.cart.customer.id
+        return redirect('cart', customer_id=customer_id)
+    return redirect('cart')
+
+@login_required
+def delete_cart_item(request, cart_item_id):
+    cart_item = get_object_or_404(CartItem, pk=cart_item_id)
+    customer_id = cart_item.cart.customer.id
+    cart_item.delete()
+    return redirect('cart', customer_id=customer_id)
 
 def payProduct(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -115,9 +166,63 @@ def login(request):
         return render(request, 'app/login.html', context)
 
 
+@login_required
 def checkout(request):
-    context = {}
-    return render(request, 'app/checkout.html',context)
+    customer = request.user.customer
+    cart = None
+    cart_items = []
+    total_price = 0
+
+    try:
+        cart = Cart.objects.get(customer=customer)
+        cart_items = cart.get_cart_items()
+        total_price = cart.get_total_price()
+    except Cart.DoesNotExist:
+        pass
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.customer = customer
+            order.total_price = total_price
+            # Lưu trữ phương thức thanh toán vào order
+            order.payment_method = request.POST.get('payment_method')
+            order.save()
+
+            for cart_item in cart_items:
+                order.items.add(cart_item)
+                OrderItem.objects.create(
+                    order=order,
+                    product=cart_item.product,
+                    quantity=cart_item.quantity,
+                    price=cart_item.product.price,
+                    size=cart_item.size,
+                    color=cart_item.color,
+                )
+
+            if cart:  # Only delete the cart if it exists
+                cart.delete()
+
+            messages.success(request, "Đơn hàng của bạn đã được đặt thành công! Cảm ơn bạn.")
+            # Chuyển hướng đến trang xác nhận đơn hàng
+            return redirect('order_confirmation', order_id=order.pk)
+    else:
+        form = OrderForm(initial={'customer': customer})
+
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'form': form,
+        'customer': customer
+    }
+    return render(request, 'app/checkout.html', context)
+
+# Trang xác nhận đơn hàng
+def order_confirmation(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    context = {'order': order, 'order_items': order.items.all()}
+    return render(request, 'app/order_confirmation.html', context)
 
 def product_man(request):
     products = Product.objects.all()
@@ -160,18 +265,23 @@ def wallet(request):
     return render(request, 'app/wallet.html',context)
 
 
+@login_required
 def yourorder(request):
-    context = {}
-    return render(request, 'app/yourorder.html',context)
+    customer = request.user.customer
+    orders = Order.objects.filter(customer=customer)
+    context = {'orders': orders}
+    return render(request, 'app/yourorder.html', context)
 
-def detail_product(request,pk):
-    product = Product.objects.get(pk=pk)
+def detail_product(request, pk):
+    product = get_object_or_404(Product, pk=pk)
     sizes = Size.objects.all()
     colors = Color.objects.all()
-    context ={
-        'product':product,
+    customer_id = request.user.customer.id  # Lấy customer_id từ request.user
+    context = {
+        'product': product,
         'sizes': sizes,
-        'colors' : colors,
+        'colors': colors,
+        'customer_id': customer_id
     }
     return render(request, 'app/detail_product.html', context)
 

@@ -1,98 +1,131 @@
-html,
+/* General Styles */
 body {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  background: #666;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  background-color: #f2f2f2;
 }
-#container {
-  width: 400px;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  background-color: whitesmoke;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
 
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+.container {
+  max-width: 960px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Cart Items */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.table img {
+  max-width: 50px;
+  height: auto;
+  margin-right: 10px;
+}
+
+/* Order Summary */
+.card {
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px 5px 0 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-body p {
+  margin-bottom: 10px;
+}
+
+.card-body strong {
+  color: #333;
+}
+
+/* Checkout Form */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
   border-radius: 4px;
-}
-#container > img {
-  width: 50%;
-  border-radius: 50%;
-}
-.K5 {
-  width: 100%;
-
-  padding: 0px 0px 0px 0px;
+  box-sizing: border-box;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
-.K51 {
-  margin-top: 0px;
-  margin: 0px;
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.form-control:focus {
+  outline: none;
+  border-color: #175fd3;
+  box-shadow: 0 0 5px rgba(23, 95, 211, 0.2);
 }
 
-.K51 > h1 {
-  text-align: center;
-  color: #333333;
+.btn-success {
+  background-color: #175fd3;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.K51 > p {
-  text-align: center;
-  color: #666;
+.btn-success:hover {
+  background-color: #114799;
 }
 
-.K52 {
-  display: flex;
-  justify-content: space-between;
-}
-.K52 button,
-.K6 button {
-  padding: 7px 30px;
-  border-radius: 2px;
-  white-space: nowrap;
-  text-align: center;
-  color: #666;
-  border: 1px solid #666;
-  background-color: white;
-}
-.K52 > button {
-  margin-right: 30px;
-}
-.K52 > button:last-child {
-  margin-right: 0px;
-}
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
 
-.K52 a,
-.K6 a {
-  color: black;
-}
+  .col-md-8,
+  .col-md-4 {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 
-.K52 a,
-.K6 a:link {
-  text-decoration: none;
-}
-.K52 a,
-.K6 a:visited {
-  text-decoration: none;
-}
-.K52 a,
-.K6 a:hover {
-  text-decoration: none;
-}
-.K52 a,
-.K6 a:active {
-  text-decoration: none;
+  .table th,
+  .table td {
+    font-size: 14px;
+  }
 }

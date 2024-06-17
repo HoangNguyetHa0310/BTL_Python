@@ -1,6 +1,5 @@
 {% load static %}
 
-
 {% include "base/header.html" %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/css/oneproduct.css' %}"/>
 <!-- for font family: -->
@@ -20,7 +19,6 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 {% include "base/nav.html" %}
-
 
 <div id="mainbody">
     <div id="bluebar">
@@ -44,11 +42,11 @@
             <span style="display: inline-block; font-size: 20px; color: #175fd3;" class="star">★</span>
             <span style="display: inline-block; font-size: 20px; color: #175fd3;" class="star">★</span>
             <span id="ratingcount">(219)</span>
-    
 
-            <form action="{% url 'cartItem' product.id %}" method="post">
-            {% csrf_token %}
-            <h3>MÀU </h3>
+            <!-- Form thêm vào giỏ hàng -->
+            <form action="{% url 'add_to_cart' product.id customer_id %}" method="post">
+                {% csrf_token %}
+                <h3>MÀU </h3>
                 <select id="color" name="color" class="form-select" aria-label="Default select example">
                     <option value="">--Chọn Color--</option>
                     {% for color in colors %}
@@ -67,9 +65,10 @@
             </div>
                 <button id="Shoppingbagbtn" type="submit">Thêm vào giỏ hàng</button>
             </form>
-             <button id="Buybtn">
-                 <a href="{% url 'payProduct' product.pk %}" style="text-decoration:none; color:white;">Thanh Toán</a>
-              </button>
+            <!-- Nút thanh toán -->
+            <button id="Buybtn">
+                <a href="{% url 'payProduct' product.pk %}" style="text-decoration:none; color:white;">Thanh Toán</a>
+            </button>
         </div>
     </div>
 

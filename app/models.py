@@ -156,18 +156,37 @@ class Customer(models.Model):
         return f"{self.user.username} - {self.user.first_name} {self.user.last_name}"
 
 # ------------------------------ Giỏ hàng ------------------------------ #
-class CartItem(models.Model):
+class Cart(models.Model):
     """
     Mô hình giỏ hàng.
     """
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
-    size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
-    color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.customer.user.username} - {self.product.name} x {self.quantity}"
+        return f"Cart for {self.customer.user.username}"
+
+    def get_cart_items(self):
+        return self.cartitem_set.all()
+
+    def get_total_price(self):
+        total = 0
+        for item in self.get_cart_items():
+            total += item.product.price * item.quantity
+        return total
+
+class CartItem(models.Model):
+    """
+    Mô hình chi tiết giỏ hàng.
+    """
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    size = models.ForeignKey(Size, on_delete=models.SET_NULL, blank=True, null=True)
+    color = models.ForeignKey(Color, on_delete=models.SET_NULL, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name} - Size: {self.size} - Color: {self.color}"
 
 # ------------------------------ Đơn hàng ------------------------------ #
 class Order(models.Model):
@@ -187,9 +206,19 @@ class Order(models.Model):
     shipping_address = models.CharField(max_length=255)
     payment_method = models.CharField(max_length=50)
     tracking_number = models.CharField(max_length=50, blank=True)
+    items = models.ManyToManyField(CartItem)
+    city = models.CharField(max_length=100, blank=True)
+    phone = models.CharField(max_length=20, blank=True)
+    country = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return f"Order #{self.id}"
+
+    def get_total_price(self):
+        total = 0
+        for item in self.items.all():
+            total += item.product.price * item.quantity
+        return total
 
 # ------------------------------ Chi tiết đơn hàng ------------------------------ #
 class OrderItem(models.Model):
@@ -200,8 +229,8 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    size = models.ForeignKey(Size, on_delete=models.CASCADE, blank=True, null=True)
-    color = models.ForeignKey(Color, on_delete=models.CASCADE, blank=True, null=True)
+    size = models.ForeignKey(Size, on_delete=models.SET_NULL, blank=True, null=True)
+    color = models.ForeignKey(Color, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return f"{self.order} - {self.product.name} x {self.quantity}"

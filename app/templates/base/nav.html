@@ -1,6 +1,5 @@
 {% load static %}
 
-{% block main_nav %}
 </head>
 
 <style>
@@ -94,10 +93,11 @@
                         <input type="text" class="input-search" placeholder="Tìm kiếm theo loại...">
                     </div>
 
-                    <a href="{% url 'cartItem' %}">
-                        <i id="cartA" class="fa-solid fa-bag-shopping"></i>
-                    </a>
-                    
+                    {% if customer.pk %}
+                        <a href="{% url 'cart' customer.pk %}">
+                            <i id="cartA" class="fa-solid fa-bag-shopping"></i>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -114,5 +114,3 @@
         </div>
 
     </nav>
-
-{% endblock %}

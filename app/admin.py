@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib import admin
 from .models import (
     Category,
     Brand,
@@ -7,6 +8,7 @@ from .models import (
     Product,
     ProductAttribute,
     Customer,
+    Cart,
     CartItem,
     Order,
     OrderItem,
@@ -70,9 +72,24 @@ class CustomerAdmin(admin.ModelAdmin):
 
 
 # ------------------------------ Giỏ hàng ------------------------------ #
-@admin.register(CartItem)
-class CartItemAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'product', 'quantity', 'size', 'color')
+
+class cartAdmin(admin.ModelAdmin):
+    list_display = ('customer', 'get_cart_items_summary')
+    readonly_fields = ('get_cart_items_summary',)  # Ensure it's read-only
+
+    def get_cart_items_summary(self, obj):
+        """Returns a summary of items in the cart."""
+        cart_items = obj.cartitem_set.all()
+        summary = []
+        for item in cart_items:
+            summary.append(
+                f"{item.quantity} x {item.product.name} - Size: {item.size} - Color: {item.color}"
+            )
+        return "<br>".join(summary)  # Join items with line breaks
+    get_cart_items_summary.short_description = 'Cart Items'
+    get_cart_items_summary.allow_tags = True  # Allow HTML in the summary
+
+admin.site.register(Cart, cartAdmin)
 
 
 # ------------------------------ Đơn hàng ------------------------------ #

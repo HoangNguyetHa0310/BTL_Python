@@ -1,28 +1,124 @@
 {% load static %}
-
 {% include "base/header.html" %}
-    <link rel="stylesheet" type="text/css" href="{% static 'app/css/index.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'app/css/checkout.css' %}" />
-</head>
-<body>
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/checkout.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <div id="container">
-      <img
-        src="https://i.pinimg.com/originals/ba/3c/c8/ba3cc869f9add08aae7cf382826911c6.gif"
-        alt=""
-      />
+{% include "base/nav.html" %}
 
-      <div class="K5">
-        <div class="K51">
-            <h1>Cảm ơn bạn đã mua sắm với chúng tôi</h1>
-            <p>Vui lòng kiểm tra hộp thư điện tử của bạn để lấy Mã Theo Dõi Đơn Hàng</p>
-            <p></p>
-    
-            <div class="K52">
-                <button>
-                    <a href="{% url 'index' %}">Tiếp Tục Mua Sắm Với Chúng Tôi</a>
-            </button>
-          </div>
+<div class="container mt-5">
+    <h2 class="mb-4">Thanh toán</h2>
+
+    {% if cart_items %}
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h4>Sản phẩm trong giỏ hàng</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Sản phẩm</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Tổng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for cart_item in cart_items %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'detail_product' cart_item.product.pk %}">
+                                                <img src="{{ cart_item.product.image.url }}" alt="{{ cart_item.product.name }}" width="50">
+                                                {{ cart_item.product.name }}
+                                            </a>
+                                            <br>
+                                            <small>
+                                                {% if cart_item.size %}
+                                                    Kích cỡ: {{ cart_item.size }}
+                                                {% endif %}
+                                                {% if cart_item.color %}
+                                                    Màu sắc: {{ cart_item.color }}
+                                                {% endif %}
+                                            </small>
+                                        </td>
+                                        <td>{{ cart_item.quantity }}</td>
+                                        <td>{{ cart_item.product.price }}</td>
+                                        <td>{{ cart_item.quantity }} * {{ cart_item.product.price }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Thông tin đơn hàng</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Tổng giá: <strong>{{ total_price }}</strong></p>
+                        <!-- Display any additional order information like shipping costs or discounts -->
+                        <hr>
+                        <p>Địa chỉ giao hàng:</p>
+                        <p class="mb-1">{{ customer.address }}</p>
+                        <p class="mb-1">{{ customer.city }}, {{ customer.country }}</p>
+                        <p class="mb-1">Số điện thoại: {{ customer.phone }}</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <form method="POST" action="{% url 'checkout' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="shipping_address">Địa chỉ giao hàng:</label>
+                        {{ form.shipping_address }}
+                        {% for error in form.shipping_address.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        <label for="payment_method">Phương thức thanh toán:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment_method" id="cod" value="COD" checked> 
+                            <label class="form-check-label" for="cod">Thanh toán khi nhận hàng</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment_method" id="momo" value="Momo">
+                            <label class="form-check-label" for="momo">Momo</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment_method" id="vnpay" value="VNPay">
+                            <label class="form-check-label" for="vnpay">VNPay</label>
+                        </div>
+                    </div>
+                    <!-- Add other relevant form fields (e.g., billing address, discount codes, etc.) -->
+                    <button type="submit" class="btn btn-success">Xác nhận đơn hàng</button>
+                </form>
+            </div>
+        </div>
+        
+         <div id="order-success" class="alert alert-success" style="display: none;">
+            <p>Đơn hàng của bạn đã được đặt thành công! Cảm ơn bạn.</p>
+            <a href="{% url 'index' %}" class="btn btn-primary">Trở về trang chủ</a>
+        </div>
+
+    {% else %}
+        <p>Giỏ hàng của bạn hiện đang trống.</p>
+    {% endif %}
+</div>
+<script>
+    // Function to display the success message and redirect
+    function handleOrderSuccess() {
+        document.getElementById("order-success").style.display = "block";
+    }
+</script>
+{% include "base/footer.html" %}
