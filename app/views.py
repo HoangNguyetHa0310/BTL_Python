@@ -12,17 +12,8 @@ from .forms import *
 def index(request):
     return render(request, 'app/index.html')
 
-def cartItem(request,pk):
-    product = Product.objects.get(pk=pk)
-    size_id = request.POST.get('size')
-    color_id = request.POST.get('color')
-    size = get_object_or_404(Size, id=size_id)
-    color = get_object_or_404(Color, id=color_id)
-    context = {
-        'size': size,
-        'color': color,
-        'product':product,
-    }
+def cartItem(request):
+    context = {}
     return render(request, 'app/cartItem.html', context)
 
 def payProduct(request, pk):
