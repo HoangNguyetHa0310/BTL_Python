@@ -1,0 +1,138 @@
+#payProduct {
+    padding: 20px;
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #f9f9f9;
+}
+
+#payProduct div {
+    margin-bottom: 20px;
+}
+
+#payProduct hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#orderInfo table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#orderInfo td {
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+#payMethods input[type="radio"] {
+    margin-right: 5px;
+}
+
+#userInfo input[type="text"],
+#userInfo input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+#confirmPayment {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+#mid {
+    width: 40%;
+    float: left;
+}
+
+#payProduct {
+    width: 50%;
+    float: right;
+}
+
+#mid img {
+    width: 100%;
+    height: auto;
+}
+
+#payProduct h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+#payProduct h3 {
+    margin-top: 20px;
+}
+
+#size-color-selection {
+    display: flex;
+    justify-content: space-between;
+}
+
+#size-color-selection select {
+    width: 48%;
+}
+
+#selected-size-color {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#Shoppingbagbtn {
+    background-color: #175fd3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 48%;
+    margin-bottom: 10px;
+    float: left;
+}
+
+#Buybtn {
+    background-color: #175fd3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    width: 48%;
+    margin-bottom: 10px;
+    float: right;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    #mid {
+        width: 100%;
+    }
+
+    #payProduct {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    #size-color-selection {
+        flex-direction: column;
+    }
+
+    #size-color-selection select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    #Shoppingbagbtn, #Buybtn {
+        width: 100%;
+        margin-bottom: 10px;
+        float: none;
+    }
+}

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib import admin
 from .models import (
     Category,
     Brand,
@@ -7,13 +8,13 @@ from .models import (
     Product,
     ProductAttribute,
     Customer,
+    Cart,
     CartItem,
     Order,
     OrderItem,
     Size,
     Color
 )
-
 
 # ------------------------------ Danh mục sản phẩm ------------------------------ #
 @admin.register(Category)
@@ -50,22 +51,18 @@ class ProductAttributeInline(admin.TabularInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'discount', 'category', 'brand', 'stock', 'active', 'size', 'color')
-    list_filter = ('category', 'brand', 'active', 'size', 'color')
-    search_fields = ('name',)
-    list_editable = ('price', 'discount', 'stock', 'active')
-    readonly_fields = ('date_added',)  # Ngày thêm là readonly
+    list_display = ('name', 'price', 'category', 'brand', 'stock', 'active', 'date_added', 'get_sizes', 'get_colors')
+    list_filter = ('category', 'brand', 'active')
+    search_fields = ('name', 'description')
+    inlines = [ProductAttributeInline]
 
-    # Tạo inline cho ProductAttribute
-    inlines = [
-        ProductAttributeInline,
-    ]
+    def get_sizes(self, obj):
+        return ", ".join([str(size) for size in obj.size.all()])
+    get_sizes.short_description = 'Sizes'
 
-
-# ------------------------------ Sản phẩm - Thuộc tính ------------------------------ #
-class ProductAttributeInline(admin.TabularInline):
-    model = ProductAttribute
-    extra = 1
+    def get_colors(self, obj):
+        return ", ".join([str(color) for color in obj.color.all()])
+    get_colors.short_description = 'Colors'
 
 
 # ------------------------------ Khách hàng ------------------------------ #
@@ -75,16 +72,31 @@ class CustomerAdmin(admin.ModelAdmin):
 
 
 # ------------------------------ Giỏ hàng ------------------------------ #
-@admin.register(CartItem)
-class CartItemAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'product', 'quantity')
+
+class cartAdmin(admin.ModelAdmin):
+    list_display = ('customer', 'get_cart_items_summary')
+    readonly_fields = ('get_cart_items_summary',)  # Ensure it's read-only
+
+    def get_cart_items_summary(self, obj):
+        """Returns a summary of items in the cart."""
+        cart_items = obj.cartitem_set.all()
+        summary = []
+        for item in cart_items:
+            summary.append(
+                f"{item.quantity} x {item.product.name} - Size: {item.size} - Color: {item.color}"
+            )
+        return "<br>".join(summary)  # Join items with line breaks
+    get_cart_items_summary.short_description = 'Cart Items'
+    get_cart_items_summary.allow_tags = True  # Allow HTML in the summary
+
+admin.site.register(Cart, cartAdmin)
 
 
 # ------------------------------ Đơn hàng ------------------------------ #
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
-    'customer', 'order_date', 'status', 'total_price', 'shipping_address', 'payment_method', 'tracking_number')
+        'customer', 'order_date', 'status', 'total_price', 'shipping_address', 'payment_method', 'tracking_number')
     list_filter = ('status',)
     list_editable = ('status',)
     readonly_fields = ('order_date',)
@@ -93,7 +105,7 @@ class OrderAdmin(admin.ModelAdmin):
 # ------------------------------ Chi tiết đơn hàng ------------------------------ #
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ('order', 'product', 'quantity', 'price')
+    list_display = ('order', 'product', 'quantity', 'price', 'size', 'color')
 
 
 # ------------------------------ Size ------------------------------ #
