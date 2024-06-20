@@ -1,0 +1,23 @@
+.search-suggestions {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    display: none;
+  }
+  
+  .search-suggestions li {
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  
+  .search-suggestions li:hover {
+    background-color: #f0f0f0;
+  }
+  a {
+    text-decoration: none; /* Loại bỏ gạch chân */
+    color: inherit; /* Kế thừa màu từ phần tử cha */
+  }
