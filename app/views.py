@@ -5,6 +5,7 @@ from .models import *
 from .forms import *
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
+from django.db.models import Q
 
 
 def index(request):
@@ -112,11 +113,50 @@ def login(request):
 def checkout(request):
     context = {}
     return render(request, 'app/checkout.html',context)
-
+# (THÊM PHẦN DƯỚI NÀY VÀO THÔI NGÀY 20/2/2024 )
 def product_man(request):
+    sizes = Size.objects.all()
+    prices = Product.objects.values_list('price', flat=True).distinct()
+    colors = Color.objects.all()
+    brands = Brand.objects.all()
+
+    # Lấy dữ liệu từ request
+    selected_size = request.GET.get('size')
+    selected_price = request.GET.get('price')
+    selected_color = request.GET.get('color')
+    selected_brand = request.GET.get('brand')
+    sort_by = request.GET.get('sort')  # Lấy giá trị sort
+
+    # Lọc sản phẩm
     products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'app/product_man.html',context)
+    if selected_size:
+        products = products.filter(size_id=selected_size)
+    if selected_price:
+        products = products.filter(price=selected_price)
+    if selected_color:
+        products = products.filter(color_id=selected_color)
+    if selected_brand:
+        products = products.filter(brand_id=selected_brand)
+
+    # Sắp xếp sản phẩm
+    if sort_by == 'ascending':
+        products = products.order_by('name')  # Sắp xếp theo tên A-Z
+    elif sort_by == 'descending':
+        products = products.order_by('-name')  # Sắp xếp theo tên Z-A
+
+    context = {
+        'products': products,
+        'sizes': sizes,
+        'prices': prices,
+        'colors': colors,
+        'brands': brands,
+        'selected_size': selected_size,
+        'selected_price': selected_price,
+        'selected_color': selected_color,
+        'selected_brand': selected_brand,
+        'sort_by': sort_by,  # Truyền giá trị sort_by vào template
+    }
+    return render(request, 'app/product_man.html', context)
 
 def product_woman(request):
     products = Product.objects.all()
@@ -172,11 +212,11 @@ def detail_product(request):
     return render(request, 'app/detail_product.html', context)
 
 def detail_product1(request,pk):
-    product = Product.objects.get(id=pk)
+    products = Product.objects.get(id=pk)
     sizes = Size.objects.all()
     colors = Color.objects.all()
     context ={
-        'product':product,
+        'products':products,
         'sizes': sizes,
         'colors' : colors,
     }
@@ -186,11 +226,11 @@ def detail_product1(request,pk):
 
 ########################### view cho admin #########################
 
-@login_required
-def admin_product_list(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'admin/admin_product_list.html', context)
+# @login_required
+# def admin_product_list(request):
+#     products = Product.objects.all()
+#     context = {'products': products}
+#     return render(request, 'admin/admin_product_list.html', context)
 
 @login_required
 def admin_product_detail(request, pk):
@@ -215,47 +255,47 @@ def admin_product_create(request):
 
 @login_required
 def admin_product_update(request, pk):
-    product = get_object_or_404(Product, pk=pk)
+    products = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES, instance=product)
+        form = ProductForm(request.POST, request.FILES, instance=products)
         if form.is_valid():
             form.save()
             return redirect('admin_product_list')
     else:
-        form = ProductForm(instance=product)
-    context = {'form': form, 'product': product}
+        form = ProductForm(instance=products)
+    context = {'form': form, 'product': products}
     return render(request, 'admin/admin_product_update.html', context)
 
 @login_required
 def admin_product_delete(request, pk):
-    product = get_object_or_404(Product, pk=pk)
+    products = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
-        product.delete()
+        products.delete()
         return redirect('admin_product_list')
-    context = {'product': product}
+    context = {'product': products}
     return render(request, 'admin/admin_product_delete.html', context)
 
 @login_required
 def admin_product_list(request):
-    orders = Order.objects.all()
-    context = {'orders': orders}
+    products = Product.objects.all()
+    context = {'product': products}
     return render(request, 'admin/admin_product_list.html', context)
 
 @login_required
 def admin_product_detail(request, pk):
-    order = get_object_or_404(Order, pk=pk)
-    context = {'order': order}
+    products = get_object_or_404(Product, pk=pk)
+    context = {'product': products}
     return render(request, 'admin/admin_product_detail.html', context)
 
 @login_required
 def admin_product_update(request, pk):
-    order = get_object_or_404(Order, pk=pk)
+    products = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
-        form = OrderForm(request.POST, instance=order)
+        form = OrderForm(request.POST, instance=products)
         if form.is_valid():
             form.save()
             return redirect('admin_product_list')
     else:
-        form = OrderForm(instance=order)
-    context = {'form': form, 'order': order}
+        form = OrderForm(instance=products)
+    context = {'form': form, 'order': products}
     return render(request, 'admin/admin_product_update.html', context)

@@ -6,8 +6,6 @@
 
 {% include "base/nav.html" %}
 
-{% comment %} {% include "base/nav.html" %} {% endcomment %}
-
 
 <div class="K5">
     <div class="K51">
@@ -25,68 +23,115 @@
     <button><a href="{% url 'index' %}">TRANG CHỦ</a></button>
     <button><a href="./bestsellers.html">SẢN PHẨM BÁN CHẠY NHẤT CHO NAM</a></button>
 </div>
-
 <div class="K7">
-    <div class="K71">
-        <select id="KS711">
-            <option value="">Chọn Chất Liệu</option>
-            <option value="Da Đen">Da Đen</option>
-            <option value="Màu Sừng Rùa">Màu Sừng Rùa</option>
-            <option value="Da Trắng">Da Trắng</option>
-            <option value="Hình Thêu Màu Tan">Hình Thêu Màu Tan</option>
-            <option value="Da Lưới Màu Xanh">Da Lưới Màu Xanh</option>
-            <option value="Kim Loại Màu Cát">Kim Loại Màu Cát</option>
-            <option value="Da Lưới Màu Phấn">Da Lưới Màu Phấn</option>
-            <option value="Da Nubuck Màu Rong">Da Nubuck Màu Rong</option>
-            <option value="Da Nubuck Màu Xám">Da Nubuck Màu Xám</option>
-            <option value="Kết Hợp Màu Xám Nhạt">Kết Hợp Màu Xám Nhạt</option>
-            <option value="Chữ Màu Trắng Bạch">Chữ Màu Trắng Bạch</option>
-        </select>
-        <select id="KS712">
-            <option value="">Chọn Phạm Vi Giá</option>
-            <option value="0-100">0-100</option>
-            <option value="100-200">100-200</option>
-        </select>
-        <select id="category">
-            <option value="">Chọn Kích Thước</option>
-            <option value="F">5-7</option>
-            <option value="S">7-8</option>
-            <option value="F">8-9</option>
-            <option value="F">Trên 9</option>
-        </select>
-        <select id="category">
-            <option value="">Chọn Loại</option>
-            <option value="F">X</option>
-            <option value="S">Y</option>
-            <option value="F">Z</option>
+<div class="K71">
+<div class="K72">
+    <div class="K721">
+        <select id="KS1" name="sort"> 
+            <option value="">Sắp Xếp Theo:</option>
+            <option value="ascending" {% if sort_by == 'ascending' %}selected{% endif %}>A-Z</option>
+            <option value="descending" {% if sort_by == 'descending' %}selected{% endif %}>Z-A</option>
         </select>
     </div>
-    <div class="K72">
-        <div class="K721">
-            <select id="KS1">
-                <option value="">Sắp Xếp Theo:</option>
-                <option value="ascending">A-Z</option>
-                <option value="descending">Z-A</option>
+
+    <div class="filter-options">
+        <div>
+            Chọn Kích Thước
+            <select id="size-filter" name="size">
+                <option value="">Chọn size</option>
+                {% for size in sizes %}
+                    <option value="{{ size.id }}" {% if selected_size == size.id %}selected{% endif %}>{{ size.name }}</option>
+                {% endfor %}
             </select>
         </div>
 
-        
-        <div id="K722">
-            {% for product in products %}
-            <a href="{% url 'detail_product1' product.id %}" class="product-card">
-               <img  src="{{ product.ImageUrl }}" alt="Desert Boot" class="product-image"> 
-                <h2 >{{ product.name}}</h2>
-                <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
-                <p class="price" style="font-size: 24px;">
-                    <strike class="original-price" style="font-size: 18px; opacity: 0.6; ">150.00 VND</strike>
-                    <b>${{ product.price | floatformat}} VND</b> 
-                </p>
-            </a>
-            {% endfor %}
+        <div>
+            Chọn Phạm Vi Giá
+            <select id="price-filter" name="price">
+                <option value="">Mức giá</option>
+                {% for price in prices %}
+                    <option value="{{ price }}" {% if selected_price == price %}selected{% endif %}>${{ price|floatformat }}</option>
+                {% endfor %}
+            </select>
         </div>
 
+        <div>
+            Chọn Màu Sắc
+            <select id="color-filter" name="color">
+                <option value="">Màu</option>
+                {% for color in colors %}
+                    <option value="{{ color.id }}" {% if selected_color == color.id %}selected{% endif %}>{{ color.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            Chọn Nhãn Hiệu
+            <select id="brand-filter" name="brand">
+                <option value="">Nhãn hiệu</option>
+                {% for brand in brands %}
+                    <option value="{{ brand.id }}" {% if selected_brand == brand.id %}selected{% endif %}>{{ brand.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+</div>
+</div>
+
+
+    <div id="K722">
+        {% if products %}
+            {% for product in products %}
+                <a href="{% url 'detail_product1' product.id %}" class="product-card">
+                    <img src="{{ product.image.url }}" alt="Product Image" class="product-image"> 
+                    <h2>{{ product.name }}</h2>
+                    <p class="price" style="font-size: 24px;">
+                        <strike class="original-price" style="font-size: 18px; opacity: 0.6;">150.00 VND</strike>
+                        <b>${{ product.price|floatformat }} VND</b> 
+                    </p>
+                </a>
+            {% endfor %}
+        {% else %}
+            <h2 >HẾT HÀNG VUI LÒNG CHỌN LẠI GIÚP SHOP<br>XIN CẢM ƠN.</h2>
+        {% endif %}
     </div>
 </div>
 
 
-{% include "base/footer.html" %}
+<script>
+    // Xử lý thay đổi bộ lọc và sắp xếp
+    const filterOptions = document.querySelector('.filter-options');
+    const sortSelect = document.getElementById('KS1');
+    const sizeFilter = document.getElementById('size-filter');
+    const priceFilter = document.getElementById('price-filter');
+    const colorFilter = document.getElementById('color-filter');
+    const brandFilter = document.getElementById('brand-filter');
+
+    filterOptions.addEventListener('change', function() {
+        // Lấy giá trị của các bộ lọc
+        const size = sizeFilter.value;
+        const price = priceFilter.value;
+        const color = colorFilter.value;
+        const brand = brandFilter.value;
+        const sort = sortSelect.value;
+
+        // Tạo URL mới với các giá trị bộ lọc
+        const newUrl = `?size=${size}&price=${price}&color=${color}&brand=${brand}&sort=${sort}`;
+
+        // Chuyển hướng đến URL mới
+        window.location.href = newUrl;
+    });
+
+    sortSelect.addEventListener('change', function() {
+        // Lấy giá trị của sắp xếp
+        const sort = sortSelect.value;
+
+        // Tạo URL mới với giá trị sắp xếp
+        const newUrl = `?size=${selected_size}&price=${selected_price}&color=${selected_color}&brand=${selected_brand}&sort=${sort}`;
+
+        // Chuyển hướng đến URL mới
+        window.location.href = newUrl;
+    });
+</script>
+    {% include "base/footer.html" %}
+
