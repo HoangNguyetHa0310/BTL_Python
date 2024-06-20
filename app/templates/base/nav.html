@@ -1,15 +1,9 @@
 {% load static %}
 
+<link rel="stylesheet" type="text/css" href="{%static 'app/css/nav.css' %}"/>
+{% block main_nav %}
 </head>
 
-<style>
-    .dropbtn a {
-        text-decoration: none;
-        color: black;
-    }
-</style>   
-
-    
 <body>
 
     <nav>
@@ -87,17 +81,78 @@
                         </p>
                     </div>
                 </div>
-                <div id="searchCart">
+            
+                  <div id="searchCart">
                     <div class="search-box">
-                        <button class="btn-search"><i class="fas fa-search"></i></button>
-                        <input type="text" class="input-search" placeholder="Tìm kiếm theo loại...">
+                      <button class="btn-search"><i class="fas fa-search"></i></button>
+                      <input type="text" class="input-search" placeholder="Tìm kiếm theo loại...">
+                      <ul class="search-suggestions"></ul>
                     </div>
-
-                    {% if customer.pk %}
-                        <a href="{% url 'cart' customer.pk %}">
-                            <i id="cartA" class="fa-solid fa-bag-shopping"></i>
-                        </a>
-                    {% endif %}
+                  </div>
+                
+                  <script>
+                    const searchInput = document.querySelector('.input-search');
+                    const suggestionsList = document.querySelector('.search-suggestions');
+                    const suggestions = [
+                      'Trang chủ', 
+                      'Giày nam', 
+                      'Giày nữ', 
+                      'Bán chạy', 
+                      'Phụ kiện', 
+                      'Giới thiệu', 
+                    ];
+                
+                    searchInput.addEventListener('input', function () {
+                      const inputValue = this.value.toLowerCase();
+                      const filteredSuggestions = suggestions.filter(suggestion => suggestion.toLowerCase().includes(inputValue));
+                
+                      suggestionsList.innerHTML = ''; 
+                      filteredSuggestions.forEach(suggestion => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = suggestion;
+                        listItem.addEventListener('click', function () {
+                          // Thay đổi URL dựa vào suggestion:
+                          let url = '';
+                          switch (suggestion) {
+                            case 'Trang chủ':
+                              url = ''; // Trang chủ
+                              break;
+                            case 'Giày nam':
+                              url = '/product_man'; // Trang giày nam
+                              break;
+                            case 'Giày nữ':
+                              url = '/product_woman'; // Trang giày nữ
+                              break;
+                            case 'Bán chạy':
+                              url = '/bestseller'; // Trang bán chạy
+                              break;
+                            case 'Phụ kiện':
+                              url = '/accessories'; // Trang phụ kiện
+                              break;
+                            case 'Giới thiệu':
+                              url = '/aboutUs'; // Trang giới thiệu
+                              break;
+                          }
+                          window.location.href = url;
+                        });
+                        suggestionsList.appendChild(listItem);
+                      });
+                
+                      if (inputValue === '') {
+                        suggestionsList.style.display = 'none'; 
+                      } else if (filteredSuggestions.length === 0) {
+                        // Không có gợi ý phù hợp
+                        suggestionsList.innerHTML = '<li>Không tìm thấy kết quả</li>';
+                        suggestionsList.style.display = 'block';
+                      } else {
+                        suggestionsList.style.display = 'block'; 
+                      }
+                    });
+                  </script>
+                    <a href="{% url 'cartItem' %}">
+                        <i id="cartA" class="fa-solid fa-bag-shopping"></i>
+                    </a>
+                  
                 </div>
             </div>
         </div>
@@ -114,3 +169,6 @@
         </div>
 
     </nav>
+   
+{% endblock %}
+
