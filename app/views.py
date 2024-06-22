@@ -9,6 +9,12 @@ from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from .models import *
 from .forms import *
+from django.http import JsonResponse
+import unicodedata
+from django.db.models import Case, When, F, BooleanField
+from django.db.models import Count
+from django.db.models import Count, Sum
+from datetime import datetime, timedelta
 
 def index(request):
     if request.user.is_authenticated:
@@ -64,6 +70,7 @@ def add_to_cart(request, product_id, customer_id):
     messages.success(request, f"Sản phẩm {product.name} đã được thêm vào giỏ hàng")
     return redirect('cart', customer_id=customer_id)
 
+
 @login_required
 def update_cart(request):
     if request.method == 'POST':
@@ -82,12 +89,14 @@ def update_cart(request):
         return redirect('cart', customer_id=customer_id)
     return redirect('cart')
 
+
 @login_required
 def delete_cart_item(request, cart_item_id):
     cart_item = get_object_or_404(CartItem, pk=cart_item_id)
     customer_id = cart_item.cart.customer.id
     cart_item.delete()
     return redirect('cart', customer_id=customer_id)
+
 
 def payProduct(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -123,7 +132,7 @@ def register(request):
         )
 
         # Lưu thông tin khách hàng
-        user.save() # Lưu user vào database
+        user.save()  # Lưu user vào database
         customer = Customer.objects.create(
             user=user,
             phone=phone,
@@ -134,7 +143,7 @@ def register(request):
         # Đăng nhập user tự động sau khi tạo tài khoản
         user = authenticate(username=email, password=password)
         if user is not None:
-             # Đăng nhập user vào hệ thống
+            # Đăng nhập user vào hệ thống
             messages.success(request, 'Tạo tài khoản thành công!')
             return redirect('login')
         else:
@@ -146,7 +155,6 @@ def register(request):
         return render(request, 'app/register.html', context)
 
 
-
 def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -155,7 +163,6 @@ def login(request):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            
             return redirect('index')  # Chuyển hướng đến trang index
         else:
             messages.error(request, 'Tên đăng nhập hoặc mật khẩu không chính xác.')
@@ -218,51 +225,120 @@ def checkout(request):
     }
     return render(request, 'app/checkout.html', context)
 
+
 # Trang xác nhận đơn hàng
 def order_confirmation(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
     context = {'order': order, 'order_items': order.items.all()}
     return render(request, 'app/order_confirmation.html', context)
 
+
 def product_man(request):
+    sizes = Size.objects.all()
+    prices = Product.objects.values_list('price', flat=True).distinct()
+    colors = Color.objects.all()
+    brands = Brand.objects.all()
+
+    # Lấy dữ liệu từ request
+    selected_size = request.GET.get('size')
+    selected_price = request.GET.get('price')
+    selected_color = request.GET.get('color')
+    selected_brand = request.GET.get('brand')
+    sort_by = request.GET.get('sort')  # Lấy giá trị sort
+    q = request.GET.get('q')
+
+    # Lọc sản phẩm
     products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'app/product_man.html',context)
+    if selected_size:
+        products = products.filter(size=selected_size)
+    if selected_price:
+        products = products.filter(price=selected_price)
+    if selected_color:
+        products = products.filter(color=selected_color)
+    if selected_brand:
+        products = products.filter(brand=selected_brand)
+    if q:
+        # q_normalized = unicodedata.normalize('NFKD', q).encode('ascii', 'ignore').decode('ascii').lower()
+        # products = products.filter(
+        #     # Kiểm tra xem name có chứa bất kỳ ký tự nào trong q hay không
+        #     name__iregex=r'.*[' + q_normalized + r'].*'
+        # )
+        products = products.filter(name__icontains=q)
+
+        # Sắp xếp sản phẩm
+    if sort_by == 'ascending':
+        products = products.order_by('name')  # Sắp xếp theo tên A-Z
+    elif sort_by == 'descending':
+        products = products.order_by('-name')  # Sắp xếp theo tên Z-A
+
+    context = {
+        'products': products,
+        'sizes': sizes,
+        'prices': prices,
+        'colors': colors,
+        'brands': brands,
+        'selected_size': selected_size,
+        'selected_price': selected_price,
+        'selected_color': selected_color,
+        'selected_brand': selected_brand,
+        'sort_by': sort_by,  # Truyền giá trị sort_by vào template
+        'search_term': q,
+
+    }
+    return render(request, 'app/product_man.html', context)
+
 
 def product_woman(request):
     products = Product.objects.all()
     context = {'products': products}
-    return render(request, 'app/product_woman.html',context)
+    return render(request, 'app/product_woman.html', context)
+
 
 def product_kid(request):
     products = Product.objects.all()
     context = {'products': products}
-    return render(request, 'app/product_kid.html',context)
+    return render(request, 'app/product_kid.html', context)
 
+
+# def bestseller(request):
+#     products = Product.objects.all()
+#     context = {'products': products}
+#     return render(request, 'app/bestseller.html', context)
 def bestseller(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'app/bestseller.html',context)
+    # Sử dụng .annotate để thêm trường tính toán
+    hot_products = Product.objects.annotate(
+        is_low_stock=Case(
+            When(stock__lte=F('stock') * 0.5, then=True),
+            default=False,
+            output_field=BooleanField(),
+        )
+    ).filter(is_low_stock=True).order_by('-date_added')
+    context = {'hot_products': hot_products}
+    return render(request, 'app/bestseller.html', context)
 
 def accessories(request):
     context = {}
-    return render(request, 'app/accessories.html',context)
+    return render(request, 'app/accessories.html', context)
+
 
 def aboutUs(request):
     context = {}
-    return render(request, 'app/aboutUs.html',context)
+    return render(request, 'app/aboutUs.html', context)
+
 
 def product_protect(request):
     context = {}
-    return render(request, 'app/product_protect.html',context)
+    return render(request, 'app/product_protect.html', context)
+
 
 def socks(request):
     context = {}
-    return render(request, 'app/socks.html',context)
+    return render(request, 'app/socks.html', context)
+
 
 def wallet(request):
     context = {}
-    return render(request, 'app/wallet.html',context)
+    return render(request, 'app/wallet.html', context)
 
 
 @login_required
@@ -271,6 +347,7 @@ def yourorder(request):
     orders = Order.objects.filter(customer=customer)
     context = {'orders': orders}
     return render(request, 'app/yourorder.html', context)
+
 
 def detail_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -284,14 +361,21 @@ def detail_product(request, pk):
         'customer_id': customer_id
     }
     return render(request, 'app/detail_product.html', context)
+def get_products(request):
+    products = Product.objects.all()
+    product_data = [{'name': p.name, 'id': p.id} for p in products]  # Thêm ID sản phẩm
+    return JsonResponse(product_data, safe=False)
+
 
 ########################### view cho admin #########################
 
 @login_required
 def admin_product_list(request):
     products = Product.objects.all()
+    print("Products:", products)  # Thêm lệnh in ở đây
     context = {'products': products}
     return render(request, 'admin/admin_product_list.html', context)
+
 
 @login_required
 def admin_product_detail(request, pk):
@@ -313,7 +397,6 @@ def admin_product_create(request):
     return render(request, 'admin/admin_product_create.html', context)
 
 
-
 @login_required
 def admin_product_update(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -327,6 +410,7 @@ def admin_product_update(request, pk):
     context = {'form': form, 'product': product}
     return render(request, 'admin/admin_product_update.html', context)
 
+
 @login_required
 def admin_product_delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -337,26 +421,84 @@ def admin_product_delete(request, pk):
     return render(request, 'admin/admin_product_delete.html', context)
 
 @login_required
-def admin_product_list(request):
-    orders = Order.objects.all()
-    context = {'orders': orders}
+def admin_product_management(request):
+    products = Product.objects.all()
+    print("Products:", products)  # Thêm lệnh in ở đây
+    context = {'products': products}
     return render(request, 'admin/admin_product_list.html', context)
 
-@login_required
-def admin_product_detail(request, pk):
-    order = get_object_or_404(Order, pk=pk)
-    context = {'order': order}
-    return render(request, 'admin/admin_product_detail.html', context)
+@login_required()
+def admin_category_management(request):
+    products = Product.objects.all()
+    context = {'products': products}
+    return render(request, 'admin/admin_category_management.html', context)
 
-@login_required
-def admin_product_update(request, pk):
-    order = get_object_or_404(Order, pk=pk)
-    if request.method == 'POST':
-        form = OrderForm(request.POST, instance=order)
-        if form.is_valid():
-            form.save()
-            return redirect('admin_product_list')
-    else:
-        form = OrderForm(instance=order)
-    context = {'form': form, 'order': order}
-    return render(request, 'admin/admin_product_update.html', context)
+@login_required()
+def admin_brand_management(request):
+    products = Product.objects.all()
+    context = {'products': products}
+    return render(request, 'admin/admin_brand_management.html', context)
+
+@login_required()
+def admin_order_management(request):
+    products = Product.objects.all()
+    context = {'products': products}
+    return render(request, 'admin/admin_order_management.html', context)
+
+@login_required()
+def admin_user_management(request):
+    products = Product.objects.all()
+    context = {'products': products}
+    return render(request, 'admin/admin_user_management.html', context)
+
+@login_required()
+def dashboard(request):
+    context = {}
+    return render(request, 'admin/dashboard.html', context)
+
+
+@login_required()
+def dashboard(request):
+    today = datetime.now().date()
+    last_month = today - timedelta(days=30)
+
+    # Tổng số đơn hàng trong tháng này
+    total_orders_this_month = Order.objects.filter(order_date__month=today.month).count()
+
+    # Tổng doanh thu trong tháng này
+    total_revenue_this_month = Order.objects.filter(order_date__month=today.month).aggregate(
+        sum=Sum('total_price')
+    )['sum'] or 0  # Trả về 0 nếu không có đơn hàng nào
+
+    # Tổng số sản phẩm
+    total_products = Product.objects.count()
+
+    # Tổng số khách hàng
+    total_customers = Customer.objects.count()
+
+    # 5 sản phẩm bán chạy nhất (trong tháng)
+    top_selling_products = Product.objects.annotate(
+        total_sold=Count('orderitem', filter=models.Q(orderitem__order__order_date__gte=last_month))
+    ).order_by('-total_sold')[:5]
+
+    # Order items trong tháng này
+    recent_order_items = OrderItem.objects.select_related(
+        'order', 'product', 'size', 'color'
+    ).filter(order__order_date__month=today.month)
+
+    context = {
+        'total_orders_this_month': total_orders_this_month,
+        'total_revenue_this_month': total_revenue_this_month,
+        'total_products': total_products,
+        'total_customers': total_customers,
+        'top_selling_products': top_selling_products,
+        'recent_order_items': recent_order_items,
+    }
+    return render(request, 'admin/dashboard.html', context)
+
+
+def admin_order_management(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    context = {'order': order}
+    return render(request, 'admin/admin_order_management.html', context)
+

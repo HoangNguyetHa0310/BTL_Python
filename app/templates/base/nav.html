@@ -1,6 +1,5 @@
 {% load static %}
-
-</head>
+<link rel="stylesheet" type="text/css" href="{%static 'app/css/nav.css' %}"/></head>
 
 <style>
     .dropbtn a {
@@ -87,12 +86,99 @@
                         </p>
                     </div>
                 </div>
-                <div id="searchCart">
-                    <div class="search-box">
-                        <button class="btn-search"><i class="fas fa-search"></i></button>
-                        <input type="text" class="input-search" placeholder="Tìm kiếm theo loại...">
-                    </div>
+<!--                <div id="searchCart">-->
+<!--                    <div class="search-box">-->
+<!--                        <button class="btn-search"><i class="fas fa-search"></i></button>-->
+<!--                        <input type="text" class="input-search" placeholder="Tìm kiếm theo loại...">-->
+<!--                        <ul class="search-suggestions"></ul>-->
+<!--                    </div>-->
+<!--                </div>-->
 
+<!--                <script>-->
+<!--                    const searchInput = document.querySelector('.input-search');-->
+<!--                    const suggestionsList = document.querySelector('.search-suggestions');-->
+<!--                    -->
+
+<!--                    searchInput.addEventListener('input', function() {-->
+<!--                      const inputValue = this.value.toLowerCase();-->
+
+<!--                      fetch('/get_products/') // Endpoint API-->
+<!--                        .then(response => response.json())-->
+<!--                        .then(products => {-->
+<!--                          const filteredSuggestions = products.filter(product => product.name.toLowerCase().includes(inputValue));-->
+
+<!--                          suggestionsList.innerHTML = '';-->
+<!--                          if (filteredSuggestions.length > 0) {-->
+<!--                            filteredSuggestions.forEach(suggestion => {-->
+<!--                              const listItem = document.createElement('li');-->
+<!--                              listItem.textContent = suggestion.name;-->
+<!--                              // Thêm thuộc tính href cho link-->
+<!--                              listItem.innerHTML = `<a href="/detail_product/${suggestion.id}/">${suggestion.name}</a>`;-->
+<!--                              listItem.addEventListener('click', function () {-->
+<!--                                searchInput.value = suggestion.name;-->
+<!--                                suggestionsList.innerHTML = '';-->
+<!--                              });-->
+<!--                              suggestionsList.appendChild(listItem);-->
+<!--                            });-->
+<!--                          } else {-->
+<!--                            suggestionsList.innerHTML = '<li>Không tìm thấy kết quả</li>';-->
+<!--                          }-->
+<!--                          suggestionsList.style.display = 'block';-->
+<!--                        })-->
+<!--                        .catch(error => {-->
+<!--                          console.error('Lỗi khi lấy dữ liệu:', error);-->
+<!--                        });-->
+<!--                    });-->
+<!--                </script>-->
+              <div id="searchCart">
+    <div class="search-box">
+        <button class="btn-search"><i class="fas fa-search"></i></button>
+        <input type="text" class="input-search" placeholder="Tìm kiếm theo loại...">
+        <ul class="search-suggestions"></ul>
+    </div>
+</div>
+
+<script>
+    const searchInput = document.querySelector('.input-search');
+    const suggestionsList = document.querySelector('.search-suggestions');
+
+    searchInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            const searchTerm = this.value;
+            window.location.href = `/product_man?q=${searchTerm}`; // Chuyển hướng đến trang product_man với tham số tìm kiếm
+        }
+    });
+
+    searchInput.addEventListener('input', function() {
+        const inputValue = this.value.toLowerCase();
+
+        fetch('/get_products/') // Endpoint API
+            .then(response => response.json())
+            .then(products => {
+                const filteredSuggestions = products.filter(product => product.name.toLowerCase().includes(inputValue));
+
+                suggestionsList.innerHTML = '';
+                if (filteredSuggestions.length > 0) {
+                    filteredSuggestions.forEach(suggestion => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = suggestion.name;
+                        listItem.innerHTML = `<a href="/detail_product/${suggestion.id}/">${suggestion.name}</a>`;
+                        listItem.addEventListener('click', function () {
+                            searchInput.value = suggestion.name;
+                            suggestionsList.innerHTML = '';
+                        });
+                        suggestionsList.appendChild(listItem);
+                    });
+                } else {
+                    suggestionsList.innerHTML = '<li>Không tìm thấy kết quả</li>';
+                }
+                suggestionsList.style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Lỗi khi lấy dữ liệu:', error);
+            });
+    });
+</script>
                     {% if customer.pk %}
                         <a href="{% url 'cart' customer.pk %}">
                             <i id="cartA" class="fa-solid fa-bag-shopping"></i>
