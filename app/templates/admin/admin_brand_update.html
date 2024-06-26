@@ -1,23 +1,43 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Chỉnh sửa Thương hiệu</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-{% extends 'admin/base/nav.html' %}
+
+ <h1 class="h3 mb-2 text-gray-800">Chỉnh sửa Thương hiệu</h1>
+
 <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Chỉnh sửa Thương hiệu</h1>
-    <div class="card shadow mb-4">
-        <div class="card-body">
-            <form method="post" enctype="multipart/form-data"> 
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Lưu</button>
-                <a href="{% url 'admin_brand_list' %}" class="btn btn-secondary">Hủy</a>
-            </form>
+ 
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Tên thương hiệu:</label>
+          {{ form.name }} 
+          <p>Giá trị hiện tại: {{ brand.name }}</p> 
         </div>
+        <div class="form-group">
+          <label for="logo">Logo:</label>
+          {% if brand.logo %}
+            <img src="{{ brand.logo.url }}" alt="{{ brand.name }}" height="50">
+          {% endif %}
+          {{ form.logo }}
+        </div>
+        <div class="form-group">
+          <label for="description">Mô tả:</label>
+          {{ form.description }}
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a href="{% url 'admin_brand_list' %}" class="btn btn-secondary">Hủy</a>
+      </form>
     </div>
+  </div>
 </div>
 </body>
 </html>

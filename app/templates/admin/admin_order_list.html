@@ -1,3 +1,4 @@
+{% load static %}
 {% load humanize %} 
 
 <!DOCTYPE html>
@@ -5,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý Sản phẩm</title>
+    <title>Quản lý Đơn hàng</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         .container {
@@ -19,56 +20,61 @@
     {% include "admin/base/nav.html" %}
 
     <hr>
-    <!-- Nội dung hiển thị danh sách sản phẩm -->
     <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Chi tiết Đơn hàng #{{ order.id }}</h1>
+        <h1 class="h3 mb-2 text-gray-800">Danh sách Đơn hàng</h1>
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Thông tin Đơn hàng</h6>
-        </div>
-        <div class="card-body">
-            <p><strong>Khách hàng:</strong> {{ order.customer.user.username }}</p>
-            <p><strong>Ngày đặt:</strong> {{ order.order_date }}</p>
-            <p><strong>Tổng tiền:</strong> {{ order.total_price|intcomma }} VND</p>
-            <p><strong>Trạng thái:</strong> {{ order.status }}</p>
-            <p><strong>Phương thức thanh toán:</strong> {{ order.payment_method }}</p>
-            <p><strong>Địa chỉ giao hàng:</strong> {{ order.shipping_address }}</p>
-        </div>
-    </div>
-
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Sản phẩm đã đặt</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Sản phẩm</th>
-                            <th>Số lượng</th>
-                            <th>Size</th>
-                            <th>Màu sắc</th>
-                            <th>Giá</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for order_item in order.items.all %}
-                        <tr>
-                            <td>{{ order_item.product.name }}</td>
-                            <td>{{ order_item.quantity }}</td>
-                            <td>{{ order_item.size }}</td>
-                            <td>{{ order_item.color }}</td>
-                            <td>{{ order_item.price|intcomma }} VND</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Tất cả Đơn hàng</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>ID Đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Ngày đặt</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Chi tiết</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td>{{ order.id }}</td>
+                                    <td>{{ order.customer.user.username }}</td>
+                                    <td>{{ order.order_date }}</td>
+                                    <td>{{ order.total_price|intcomma }} VND</td>
+                                    <td>{{ order.status }}</td>
+                                    <td>
+                                        <a href="{% url 'admin_order_detail' order.id %}" class="btn btn-primary btn-sm">
+                                            Xem chi tiết
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="{% url 'admin_update_order_status' order.id %}">
+                                            {% csrf_token %}
+                                            <select name="new_status" class="form-control">
+                                                <option value="Chờ xử lý" {% if order.status == 'Chờ xử lý' %}selected{% endif %}>Chờ xử lý</option>
+                                                <option value="Đang xử lý" {% if order.status == 'Đang xử lý' %}selected{% endif %}>Đang xử lý</option>
+                                                <option value="Đang giao hàng" {% if order.status == 'Đang giao hàng' %}selected{% endif %}>Đang giao hàng</option>
+                                                <option value="Hoàn thành" {% if order.status == 'Hoàn thành' %}selected{% endif %}>Hoàn thành</option>
+                                                <option value="Hủy đơn" {% if order.status == 'Hủy đơn' %}selected{% endif %}>Hủy đơn</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-sm btn-success mt-2">Cập nhật</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>

@@ -16,6 +16,7 @@ from django.db.models import Case, When, F, BooleanField
 from django.db.models import Count
 from django.db.models import Count, Sum
 from datetime import datetime, timedelta
+from django.db.models.functions import TruncMonth, TruncYear, TruncDay
 
 def index(request):
     if request.user.is_authenticated:
@@ -391,6 +392,13 @@ def dashboard(request):
     today = datetime.now().date()
     last_month = today - timedelta(days=30)
 
+    revenue_by_day = Order.objects.annotate(day=TruncDay('order_date')).values('day').annotate(
+        total=Sum('total_price')).order_by('day')
+    revenue_by_month = Order.objects.annotate(month=TruncMonth('order_date')).values('month').annotate(
+        total=Sum('total_price')).order_by('month')
+    revenue_by_year = Order.objects.annotate(year=TruncYear('order_date')).values('year').annotate(
+        total=Sum('total_price')).order_by('year')
+
     total_orders_this_month = Order.objects.filter(order_date__month=today.month).count()
     total_revenue_this_month = Order.objects.filter(order_date__month=today.month).aggregate(sum=Sum('total_price'))['sum'] or 0
     total_products = Product.objects.count()
@@ -411,6 +419,9 @@ def dashboard(request):
         'total_customers': total_customers,
         'top_selling_products': top_selling_products,
         'recent_order_items': recent_order_items,
+        'revenue_by_day': revenue_by_day,
+        'revenue_by_month': revenue_by_month,
+        'revenue_by_year': revenue_by_year,
     }
     return render(request, 'admin/dashboard.html', context)
 
@@ -546,7 +557,8 @@ def admin_brand_detail(request, brand_id):
 
 @login_required
 def admin_brand_update(request, brand_id):
-    brand = get_object_or_404(Brand, pk=brand_id)
+    brand = get_object_or_404(Brand, pk=brand_id)  # Lấy đối tượng Brand
+
     if request.method == 'POST':
         form = BrandForm(request.POST, request.FILES, instance=brand)
         if form.is_valid():
@@ -554,7 +566,9 @@ def admin_brand_update(request, brand_id):
             messages.success(request, "Thương hiệu đã được cập nhật thành công!")
             return redirect('admin_brand_list')
     else:
-        form = BrandForm(instance=brand)
+        form = BrandForm(instance=brand)  # Khởi tạo form với dữ liệu của Brand
+
+    # Dòng code cần sửa: Thêm 'brand': brand vào context
     context = {'form': form, 'brand': brand}
     return render(request, 'admin/admin_brand_update.html', context)
 
@@ -572,7 +586,7 @@ def admin_brand_delete(request, brand_id):
 
 @login_required
 def admin_order_list(request):
-    orders = Order.objects.all()
+    orders = Order.objects.all()  # Lấy tất cả các đơn hàng
     context = {'orders': orders}
     return render(request, 'admin/admin_order_list.html', context)
 
@@ -585,6 +599,18 @@ def admin_order_detail(request, order_id):
         'order_items': order_items,
     }
     return render(request, 'admin/admin_order_detail.html', context)
+
+@login_required
+def admin_update_order_status(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+
+    if request.method == 'POST':
+        new_status = request.POST.get('new_status')
+        order.status = new_status
+        order.save()
+        messages.success(request, f"Trạng thái đơn hàng #{order_id} đã được cập nhật thành công!")
+
+    return redirect('admin_order_list')
 
 #----------------------- Admin User Views ------------------------------#
 

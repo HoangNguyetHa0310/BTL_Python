@@ -1,74 +1,106 @@
+{% load static %}
+{% load humanize %} 
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi"> 
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết Đơn hàng #{{ order.id }}</title>
+    <!-- Thêm các thẻ meta và link CSS cần thiết từ template ban đầu -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> 
+    <style>
+        .container {
+            width: auto; 
+            max-width: none;
+        }
+    </style>
 </head>
 <body>
-{% extends 'admin/base/nav.html' %}
-<div class="container-fluid">
-  <h1 class="h3 mb-2 text-gray-800">Chi tiết đơn hàng #{{ order.id }}</h1>
+<div class="container">
+    {% include "admin/base/nav.html" %} 
 
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Thông tin khách hàng</h6>
-    </div>
-    <div class="card-body">
-      <p>
-        <strong>Tên khách hàng:</strong>
-        {{ order.customer.user.first_name }}
-        {{ order.customer.user.last_name }}
-      </p>
-      <p><strong>Số điện thoại:</strong> {{ order.phone }}</p>
-      <p><strong>Địa chỉ:</strong> {{ order.shipping_address }}</p>
-      <p><strong>Thành phố:</strong> {{ order.city }}</p>
-      <p><strong>Quốc gia:</strong> {{ order.country }}</p>
-    </div>
-  </div>
+    <hr>
+    <div class="container-fluid">
+        <h1 class="h3 mb-2 text-gray-800">Chi tiết Đơn hàng #{{ order.id }}</h1>
 
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Chi tiết đơn hàng</h6>
+        <div class="row">
+            <div class="col-md-6"> 
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Thông tin Khách hàng</h6>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Khách hàng:</strong> {{ order.customer.user.username }}</p>
+                        <p><strong>Họ và tên:</strong> {{ order.customer.user.first_name }} {{ order.customer.user.last_name }}</p> 
+                        <p><strong>Số điện thoại:</strong> {{ order.phone }}</p> 
+                        <p><strong>Địa chỉ:</strong> {{ order.shipping_address }}</p>
+                        <p><strong>Thành phố:</strong> {{ order.city }}</p> 
+                        <p><strong>Quốc gia:</strong> {{ order.country }}</p> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Thông tin Đơn hàng</h6>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Ngày đặt:</strong> {{ order.order_date }}</p>
+                        <p><strong>Tổng tiền:</strong> {{ order.total_price|intcomma }} VND</p> 
+                        <p><strong>Trạng thái:</strong> {{ order.status }}</p>
+                        <p><strong>Phương thức thanh toán:</strong> {{ order.payment_method }}</p> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Sản phẩm đã đặt</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Size</th>
+                                <th>Màu sắc</th>
+                                <th>Giá</th>
+                                <th>Thành tiền</th> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                           {% for order_item in order.orderitem_set.all %} <div class="product-item">
+                                <!-- Hiển thị thông tin sản phẩm -->
+                            <tr>
+                                <td>{{ order_item.product.name }}</td>
+                                <td>{{ order_item.quantity }}</td>
+                                <td>{{ order_item.size }}</td>
+                                <td>{{ order_item.color }}</td>
+                                <td>{{ order_item.price|intcomma }} VND</td> 
+                                {% widthratio order_item.price 1 order_item.quantity as total_item_price %}
+                                <td>{{ total_item_price|intcomma }} VND</td> 
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <a href="{% url 'admin_order_list' %}" class="btn btn-secondary">
+            Quay lại danh sách đơn hàng
+        </a> 
     </div>
-    <div class="card-body">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Sản phẩm</th>
-            <th>Size</th>
-            <th>Màu sắc</th>
-            <th>Số lượng</th>
-            <th>Giá</th>
-            <th>Thành tiền</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for order_item in order_items %}
-          <tr>
-            <td>{{ order_item.product.name }}</td>
-            <td>{{ order_item.size }}</td>
-            <td>{{ order_item.color }}</td>
-            <td>{{ order_item.quantity }}</td>
-            <td>{{ order_item.price }}</td>
-            <td>
-              {% widthratio order_item.price 1 order_item.quantity as total_item_price %}
-              {{ total_item_price }}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="5" class="text-right"><strong>Tổng cộng:</strong></td>
-            <td><strong>{{ order.get_total_price }}</strong></td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </div>
-  <a href="{% url 'admin_order_list' %}" class="btn btn-secondary"
-    >Quay lại danh sách đơn hàng</a
-  >
 </div>
+
+<!-- Thêm các thẻ script cần thiết từ template ban đầu -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

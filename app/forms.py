@@ -32,9 +32,10 @@ class OrderForm(forms.ModelForm):
 class BrandForm(forms.ModelForm):
     class Meta:
         model = Brand
-        fields = ['name', 'logo', 'description']
+        fields = '__all__'
 
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ['name', 'image', 'description', 'parent']
+        fields = '__all__'
+

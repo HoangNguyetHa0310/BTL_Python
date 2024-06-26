@@ -1,27 +1,31 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Chi tiết Thương hiệu</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-{% extends 'admin/base/nav.html' %}
 <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Chi tiết Thương hiệu</h1>
-    <div class="card shadow mb-4">
-        <div class="card-body">
-            <p><strong>Tên thương hiệu:</strong> {{ brand.name }}</p>
-            <p><strong>Logo:</strong> 
-                {% if brand.LogoUrl %}
-                    <img src="{{ brand.LogoUrl }}" alt="{{ brand.name }}" height="100">
-                {% else %}
-                    N/A
-                {% endif %}
-            </p>
-            <p><strong>Mô tả:</strong> {{ brand.description }}</p>
-            <a href="{% url 'admin_brand_list' %}" class="btn btn-secondary">Quay lại</a>
-        </div>
+  <h1 class="h3 mb-2 text-gray-800">Chi tiết Thương hiệu</h1>
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <p><strong>ID:</strong> {{ brand.id }}</p>
+      <p><strong>Tên thương hiệu:</strong> {{ brand.name }}</p>
+      <p><strong>Logo:</strong>
+        {% if brand.logo %}
+          <img src="{{ brand.logo.url }}" alt="{{ brand.name }}" height="100">
+        {% else %}
+          N/A
+        {% endif %}
+      </p>
+      <p><strong>Mô tả:</strong> {{ brand.description }}</p>
+      <a href="{% url 'admin_brand_list' %}" class="btn btn-secondary">Quay lại</a>
+      <a href="{% url 'admin_brand_update' brand.id %}" class="btn btn-warning">Chỉnh sửa</a>
     </div>
+  </div>
 </div>
 </body>
 </html>

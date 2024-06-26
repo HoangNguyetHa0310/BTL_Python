@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Doanh thu theo ngày</div>
+            <div class="card-body">
+                <canvas id="revenueByDayChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Doanh thu theo tháng</div>
+            <div class="card-body">
+                <canvas id="revenueByMonthChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Doanh thu theo năm</div>
+            <div class="card-body">
+                <canvas id="revenueByYearChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Chuẩn bị dữ liệu cho biểu đồ
+    const revenueByDayData = {
+        labels: [{% for item in revenue_by_day %}"{{ item.day|date:'d/m/Y' }}", {% endfor %}],
+        datasets: [{
+            label: 'Doanh thu',
+            data: [{% for item in revenue_by_day %}{{ item.total }}, {% endfor %}],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    const revenueByMonthData = {
+        labels: [{% for item in revenue_by_month %}"{{ item.month|date:'m/Y' }}", {% endfor %}],
+        datasets: [{
+            label: 'Doanh thu',
+            data: [{% for item in revenue_by_month %}{{ item.total }}, {% endfor %}],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    const revenueByYearData = {
+        labels: [{% for item in revenue_by_year %}"{{ item.year|date:'Y' }}", {% endfor %}],
+        datasets: [{
+            label: 'Doanh thu',
+            data: [{% for item in revenue_by_year %}{{ item.total }}, {% endfor %}],
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            borderColor: 'rgba(255, 206, 86, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Tạo biểu đồ
+    const ctxDay = document.getElementById('revenueByDayChart').getContext('2d');
+    new Chart(ctxDay, {
+        type: 'bar',
+        data: revenueByDayData,
+    });
+
+    const ctxMonth = document.getElementById('revenueByMonthChart').getContext('2d');
+    new Chart(ctxMonth, {
+        type: 'line',
+        data: revenueByMonthData,
+    });
+
+    const ctxYear = document.getElementById('revenueByYearChart').getContext('2d');
+    new Chart(ctxYear, {
+        type: 'bar',
+        data: revenueByYearData,
+    });
+</script>
+</html>

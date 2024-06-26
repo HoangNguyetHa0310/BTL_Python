@@ -53,6 +53,7 @@ urlpatterns = [
     # Order
     path('admin_order_list/', views.admin_order_list, name='admin_order_list'),
     path('admin_order_detail/<int:order_id>/', views.admin_order_detail, name='admin_order_detail'),
+    path('admin_update_order_status/<int:order_id>/', views.admin_update_order_status, name='admin_update_order_status'),
 
     # User
     path('admin_user_management/', views.admin_user_management, name='admin_user_management'),
