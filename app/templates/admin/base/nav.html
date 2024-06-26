@@ -1,0 +1,32 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white" href="{%url 'admin_product_list'%}">Admin Management</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 aline-item-center">
+                <li class="nav-item">
+                    <a class="nav-link active text-white" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                     <a class="nav-link text-white" href="{% url 'admin_product_management' %}">Quản lý sản phẩm</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'admin_category_management' %}">Quản lý danh mục</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{% url 'admin_brand_management' %}">Quản lý thương hiệu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{%url 'admin_order_management'%}">Quản lý đơn hàng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{%url 'admin_user_management'%}">Quản lý người dùng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/logout">Đăng xuất</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

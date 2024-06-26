@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Sản phẩm</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            width: auto;
+            max-width: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% include "admin/base/nav.html" %}
+
+        <hr>
+        <!-- Nội dung hiển thị danh sách sản phẩm -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+
+                    <th>Thương hiệu</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+
+                    <td>{{ product.category.name }}</td>
+
+                    <td>
+                        <a href="{% url 'admin_product_detail' product.pk %}" class="btn btn-sm btn-primary">Chi tiết</a>
+                        <a href="{% url 'admin_product_update' product.pk %}" class="btn btn-sm btn-warning">Sửa</a>
+                        <form method="POST" action="{% url 'admin_product_delete' product.pk %}" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="_method" value="DELETE"/>
+                            <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

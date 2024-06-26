@@ -8,12 +8,12 @@
     z-index: 10;
     display: none;
   }
-  
+
   .search-suggestions li {
     padding: 8px 12px;
     cursor: pointer;
   }
-  
+
   .search-suggestions li:hover {
     background-color: #f0f0f0;
   }

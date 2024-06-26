@@ -8,7 +8,21 @@
 </head>
 <body>
     <div class="container">
-        <h2>Sửa sản phẩm</h2>
+         <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" href="{% url 'admin_product_update' product.pk %}">Sửa sản phẩm </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'admin_product_list' %}">Trở về danh sách sản phẩm</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'admin_product_detail' product.pk %}">Chi tiết sản phẩm</a>
+        </li>
+
+
+    </ul>
+
         <hr>
 
         <form method="post" enctype="multipart/form-data">
