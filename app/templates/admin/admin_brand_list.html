@@ -51,14 +51,14 @@
                                 </td>
                                 <td>{{ brand.description|truncatechars:50 }}</td>
                                 <td>
-                                    <a href="{% url 'admin_brand_detail' brand.id %}" class="btn btn-sm btn-primary">
+                                    <a href="{% url 'admin_brand_detail' brand.id %}" class="btn btn-sm btn-primary">Chi tiết 
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{% url 'admin_brand_update' brand.id %}" class="btn btn-sm btn-warning">
+                                    <a href="{% url 'admin_brand_update' brand.id %}" class="btn btn-sm btn-warning"> Sửa 
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <a href="{% url 'admin_brand_delete' brand.id %}" class="btn btn-sm btn-danger"
-                                       onclick="return confirm('Bạn có chắc chắn muốn xóa thương hiệu này?')">
+                                       onclick="return confirm('Bạn có chắc chắn muốn xóa thương hiệu này?')">Xóa 
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
