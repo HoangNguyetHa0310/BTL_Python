@@ -44,27 +44,31 @@
             <span id="ratingcount">(219)</span>
 
             <!-- Form thêm vào giỏ hàng -->
-            <form action="{% url 'add_to_cart' product.id customer_id %}" method="post">
-                {% csrf_token %}
-                <h3>MÀU </h3>
-                <select id="color" name="color" class="form-select" aria-label="Default select example">
-                    <option value="">--Chọn Color--</option>
-                    {% for color in colors %}
-                        <option value="{{ color.id }}">{{ color.name }}</option>
-                    {% endfor %}
-                </select>
-                <div id="sizediv">
-                    <div id="sidetoside"><h3>CHỌN CỠ</h3>
-                        <h3>Hướng dẫn cỡ</h3></div>
-                <select name="size" class="form-select" aria-label="Default select example">
-                    <option value="">--Chọn Size--</option>
-                    {% for size in sizes %}
-                        <option value="{{ size.id }}">{{ size.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-                <button id="Shoppingbagbtn" type="submit">Thêm vào giỏ hàng</button>
-            </form>
+            {% if customer_id %}
+                <form action="{% url 'add_to_cart' product.id customer_id %}" method="post">
+                    {% csrf_token %}
+                    <h3>MÀU </h3>
+                    <select id="color" name="color" class="form-select" aria-label="Default select example">
+                        <option value="">--Chọn Color--</option>
+                        {% for color in colors %}
+                            <option value="{{ color.id }}">{{ color.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div id="sizediv">
+                        <div id="sidetoside"><h3>CHỌN CỠ</h3>
+                            <h3>Hướng dẫn cỡ</h3></div>
+                        <select name="size" class="form-select" aria-label="Default select example">
+                            <option value="">--Chọn Size--</option>
+                            {% for size in sizes %}
+                                <option value="{{ size.id }}">{{ size.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button id="Shoppingbagbtn" type="submit">Thêm vào giỏ hàng</button>
+                </form>
+            {% else %}
+                <p>Vui lòng <a href="{% url 'login' %}">đăng nhập</a> để thêm sản phẩm vào giỏ hàng.</p> 
+            {% endif %}
             <!-- Nút thanh toán -->
             <button id="Buybtn">
                 <a href="{% url 'payProduct' product.pk %}" style="text-decoration:none; color:white;">Thanh Toán</a>
@@ -74,7 +78,7 @@
 
 
     <div id="ProdDesc">
-        <div>
+         <div>
             <h2>Mô tả sản phẩm</h2>
             <p>{{ product.description }}</p>
         </div>

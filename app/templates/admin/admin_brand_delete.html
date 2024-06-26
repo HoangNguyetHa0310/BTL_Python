@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'admin/base/nav.html' %}
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Xóa Thương hiệu</h1>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <p>Bạn có chắc chắn muốn xóa thương hiệu <strong>{{ brand.name }}</strong>?</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Xóa</button>
+                <a href="{% url 'admin_brand_list' %}" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

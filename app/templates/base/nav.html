@@ -1,10 +1,10 @@
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{%static 'app/css/nav.css' %}"/></head>
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/nav.css' %}"/></head>
 {% block main_nav %}
 
 
-<body>
+    <body>
 
     <nav>
         <div id="clearance">
@@ -22,11 +22,19 @@
                      <p>Vị trí cửa hàng </p> 
                 </span>
 
-                <span id="logIn">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2609/2609282.png">
+               <span id="logIn">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2609/2609282.png" style="width: 20px; height: 20px;">
                     <p>
-                        <a style="text-decoration: none; color:black;" href="{% url 'login' %}">Đăng nhập</a> / 
-                        <a style="text-decoration: none; color:black;" href="{% url 'register' %}">Đăng ký</a> 
+                        {% if user.is_authenticated %}
+                            <!-- Hiển thị thông tin user và nút đăng xuất -->
+                            Xin chào, {{ user.username }}! 
+                            
+                            <a href="{% url 'login' %}" style="text-decoration: none; color:black; margin-left: 12px">Đăng xuất</a>
+                        {% else %}
+                            <!-- Hiển thị nút đăng nhập/đăng ký khi chưa đăng nhập -->
+                            <a href="{% url 'login' %}" style="text-decoration: none; color:black;">Đăng nhập</a> /
+                            <a href="{% url 'register' %}" style="text-decoration: none; color:black;">Đăng ký</a>
+                        {% endif %}
                     </p>
                 </span>
             </div>
@@ -34,7 +42,7 @@
                 <div id="logo">
                     <a href="{% url 'index' %}">
                         <img src="{% static 'app/img/logo.jpg' %}" alt="">
-                    </a>  
+                    </a>
 
                 </div>
 
@@ -43,21 +51,21 @@
                         <p class="dropbtn">
                             <a href="{% url 'index' %}"> Trang chủ </a>
                         </p>
-                        
+
                     </div>
                     <div class="dropdown">
                         <p class="dropbtn">
-                            <a href="{% url 'product_man' %}"> Giày nam  </a>
+                            <a href="{% url 'product_man' %}"> Giày nam </a>
                         </p>
                     </div>
                     <div class="dropdown">
                         <p class="dropbtn">
-                            <a href="{% url 'product_woman' %}"> Giày nữ  </a>
+                            <a href="{% url 'product_woman' %}"> Giày nữ </a>
                         </p>
                     </div>
                     <div class="dropdown">
                         <p class="dropbtn">
-                            <a href="{% url 'product_kid' %}"> Giày trẻ em  </a>
+                            <a href="{% url 'product_kid' %}"> Giày trẻ em </a>
                         </p>
                     </div>
                     <div class="dropdown">
@@ -81,106 +89,22 @@
                         </p>
                     </div>
                 </div>
-<!--                <div id="searchCart">-->
-<!--                    <div class="search-box">-->
-<!--                        <button class="btn-search"><i class="fas fa-search"></i></button>-->
-<!--                        <input type="text" class="input-search" placeholder="Tìm kiếm theo loại...">-->
-<!--                        <ul class="search-suggestions"></ul>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div id="searchCart">
+                    <div class="search-box">
+                        <button class="btn-search"><i class="fas fa-search"></i></button>
+                        <input type="text" class="input-search" placeholder="Tìm kiếm theo loại...">
+                        <ul class="search-suggestions"></ul>
+                    </div>
 
-<!--                <script>-->
-<!--                    const searchInput = document.querySelector('.input-search');-->
-<!--                    const suggestionsList = document.querySelector('.search-suggestions');-->
-<!--                    -->
-
-<!--                    searchInput.addEventListener('input', function() {-->
-<!--                      const inputValue = this.value.toLowerCase();-->
-
-<!--                      fetch('/get_products/') // Endpoint API-->
-<!--                        .then(response => response.json())-->
-<!--                        .then(products => {-->
-<!--                          const filteredSuggestions = products.filter(product => product.name.toLowerCase().includes(inputValue));-->
-
-<!--                          suggestionsList.innerHTML = '';-->
-<!--                          if (filteredSuggestions.length > 0) {-->
-<!--                            filteredSuggestions.forEach(suggestion => {-->
-<!--                              const listItem = document.createElement('li');-->
-<!--                              listItem.textContent = suggestion.name;-->
-<!--                              // Thêm thuộc tính href cho link-->
-<!--                              listItem.innerHTML = `<a href="/detail_product/${suggestion.id}/">${suggestion.name}</a>`;-->
-<!--                              listItem.addEventListener('click', function () {-->
-<!--                                searchInput.value = suggestion.name;-->
-<!--                                suggestionsList.innerHTML = '';-->
-<!--                              });-->
-<!--                              suggestionsList.appendChild(listItem);-->
-<!--                            });-->
-<!--                          } else {-->
-<!--                            suggestionsList.innerHTML = '<li>Không tìm thấy kết quả</li>';-->
-<!--                          }-->
-<!--                          suggestionsList.style.display = 'block';-->
-<!--                        })-->
-<!--                        .catch(error => {-->
-<!--                          console.error('Lỗi khi lấy dữ liệu:', error);-->
-<!--                        });-->
-<!--                    });-->
-<!--                </script>-->
-              <div id="searchCart">
-    <div class="search-box">
-        <button class="btn-search"><i class="fas fa-search"></i></button>
-        <input type="text" class="input-search" placeholder="Tìm kiếm theo loại...">
-        <ul class="search-suggestions"></ul>
-    </div>
-</div>
-
-<script>
-    const searchInput = document.querySelector('.input-search');
-    const suggestionsList = document.querySelector('.search-suggestions');
-
-    searchInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            const searchTerm = this.value;
-            window.location.href = `/product_man?q=${searchTerm}`; // Chuyển hướng đến trang product_man với tham số tìm kiếm
-        }
-    });
-
-    searchInput.addEventListener('input', function() {
-        const inputValue = this.value.toLowerCase();
-
-        fetch('/get_products/') // Endpoint API
-            .then(response => response.json())
-            .then(products => {
-                const filteredSuggestions = products.filter(product => product.name.toLowerCase().includes(inputValue));
-
-                suggestionsList.innerHTML = '';
-                if (filteredSuggestions.length > 0) {
-                    filteredSuggestions.forEach(suggestion => {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = suggestion.name;
-                        listItem.innerHTML = `<a href="/detail_product/${suggestion.id}/">${suggestion.name}</a>`;
-                        listItem.addEventListener('click', function () {
-                            searchInput.value = suggestion.name;
-                            suggestionsList.innerHTML = '';
-                        });
-                        suggestionsList.appendChild(listItem);
-                    });
-                } else {
-                    suggestionsList.innerHTML = '<li>Không tìm thấy kết quả</li>';
-                }
-                suggestionsList.style.display = 'block';
-            })
-            .catch(error => {
-                console.error('Lỗi khi lấy dữ liệu:', error);
-            });
-    });
-</script>
-                    {% if customer.pk %}
-                        <a href="{% url 'cart' customer.pk %}">
+                    {% if user.is_authenticated %}
+                        <!-- Hiển thị giỏ hàng khi đã đăng nhập -->
+                        <a href="{% url 'cart' user.customer.pk %}">
                             <i id="cartA" class="fa-solid fa-bag-shopping"></i>
                         </a>
                     {% endif %}
                 </div>
             </div>
+
         </div>
         <hr>
 
@@ -193,8 +117,47 @@
                 <span>MỖI NGÀY</span>
             </div>
         </div>
-
     </nav>
-   
+    <script>
+        const searchInput = document.querySelector('.input-search');
+        const suggestionsList = document.querySelector('.search-suggestions');
+
+        searchInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                const searchTerm = this.value;
+                window.location.href = `/product_man?q=${searchTerm}`; // Chuyển hướng đến trang product_man với tham số tìm kiếm
+            }
+        });
+
+        searchInput.addEventListener('input', function () {
+            const inputValue = this.value.toLowerCase();
+
+            fetch('/get_products/') // Endpoint API
+                .then(response => response.json())
+                .then(products => {
+                    const filteredSuggestions = products.filter(product => product.name.toLowerCase().includes(inputValue));
+
+                    suggestionsList.innerHTML = '';
+                    if (filteredSuggestions.length > 0) {
+                        filteredSuggestions.forEach(suggestion => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = suggestion.name;
+                            listItem.innerHTML = `<a href="/detail_product/${suggestion.id}/">${suggestion.name}</a>`;
+                            listItem.addEventListener('click', function () {
+                                searchInput.value = suggestion.name;
+                                suggestionsList.innerHTML = '';
+                            });
+                            suggestionsList.appendChild(listItem);
+                        });
+                    } else {
+                        suggestionsList.innerHTML = '<li>Không tìm thấy kết quả</li>';
+                    }
+                    suggestionsList.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy dữ liệu:', error);
+                });
+        });
+    </script>
 {% endblock %}
 

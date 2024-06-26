@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'admin/base/nav.html' %}
+<div class="container-fluid">
+  <h1 class="h3 mb-2 text-gray-800">Chi tiết đơn hàng #{{ order.id }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Thông tin khách hàng</h6>
+    </div>
+    <div class="card-body">
+      <p>
+        <strong>Tên khách hàng:</strong>
+        {{ order.customer.user.first_name }}
+        {{ order.customer.user.last_name }}
+      </p>
+      <p><strong>Số điện thoại:</strong> {{ order.phone }}</p>
+      <p><strong>Địa chỉ:</strong> {{ order.shipping_address }}</p>
+      <p><strong>Thành phố:</strong> {{ order.city }}</p>
+      <p><strong>Quốc gia:</strong> {{ order.country }}</p>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Chi tiết đơn hàng</h6>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Sản phẩm</th>
+            <th>Size</th>
+            <th>Màu sắc</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Thành tiền</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order_item in order_items %}
+          <tr>
+            <td>{{ order_item.product.name }}</td>
+            <td>{{ order_item.size }}</td>
+            <td>{{ order_item.color }}</td>
+            <td>{{ order_item.quantity }}</td>
+            <td>{{ order_item.price }}</td>
+            <td>
+              {% widthratio order_item.price 1 order_item.quantity as total_item_price %}
+              {{ total_item_price }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5" class="text-right"><strong>Tổng cộng:</strong></td>
+            <td><strong>{{ order.get_total_price }}</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  <a href="{% url 'admin_order_list' %}" class="btn btn-secondary"
+    >Quay lại danh sách đơn hàng</a
+  >
+</div>
+</body>
+</html>

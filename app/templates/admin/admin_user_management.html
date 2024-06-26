@@ -13,52 +13,63 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        {% include "admin/base/nav.html" %}
+<div class="container">
+    {% include "admin/base/nav.html" %}
 
-        <hr>
-        <!-- Nội dung hiển thị danh sách sản phẩm -->
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Danh mục</th>
-                    <th>Thương hiệu</th>
-                    <th>Giá</th>
-                    <th>Giảm giá</th>
-                    <th>Số lượng</th>
-                    <th>Hoạt động</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for product in products %}
-                <tr>
-                    <td>{{ product.id }}</td>
-                    <td>{{ product.name }}</td>
-                    <td>{{ product.category.name }}</td>
-                    <td>{{ product.brand.name }}</td>
-                    <td>{{ product.price }}</td>
-                    <td>{{ product.discount }}</td>
-                    <td>{{ product.stock }}</td>
-                    <td>{% if product.active %}Có{% else %}Không{% endif %}</td>
-                    <td>
-                        <a href="{% url 'admin_product_detail' product.pk %}" class="btn btn-sm btn-primary">Chi tiết</a>
-                        <a href="{% url 'admin_product_update' product.pk %}" class="btn btn-sm btn-warning">Sửa</a>
-                        <form method="POST" action="{% url 'admin_product_delete' product.pk %}" style="display: inline;">
-                            {% csrf_token %}
-                            <input type="hidden" name="_method" value="DELETE"/>
-                            <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <hr>
+    <!-- Nội dung hiển thị danh sách sản phẩm -->
+    <div class="container-fluid">
+        <h1 class="h3 mb-2 text-gray-800">Quản lý Người dùng</h1>
+
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách Người dùng</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên người dùng</th>
+                            <th>Email</th>
+                            <th>Họ và tên</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for customer in customers %}
+                            <tr>
+                                <td>{{ customer.user.id }}</td>
+                                <td>{{ customer.user.username }}</td>
+                                <td>{{ customer.user.email }}</td>
+                                <td>{{ customer.user.first_name }} {{ customer.user.last_name }}</td>
+                                <td>{{ customer.phone }}</td>
+                                <td>{{ customer.address }}, {{ customer.city }}, {{ customer.country }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye"></i> Chi tiết
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i> Sửa
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i> Xóa
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

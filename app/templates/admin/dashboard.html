@@ -181,7 +181,7 @@
                                 <tbody>
                                     {% for order_item in recent_order_items %}
                                         <tr>
-                                            <td><a href="{% url 'admin_order_management' order_item.order.id %}">#{{ order_item.order.id }}</a></td>
+                                            <td><a href="{% url 'admin_order_detail' order_item.order.id %}">#{{ order_item.order.id }}</a></td>
                                             <td>{{ order_item.product.name }}</td>
                                             <td>{{ order_item.quantity }}</td>
                                             <td>{{ order_item.size }}</td>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'admin/base/nav.html' %}
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Chi tiết Thương hiệu</h1>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <p><strong>Tên thương hiệu:</strong> {{ brand.name }}</p>
+            <p><strong>Logo:</strong> 
+                {% if brand.LogoUrl %}
+                    <img src="{{ brand.LogoUrl }}" alt="{{ brand.name }}" height="100">
+                {% else %}
+                    N/A
+                {% endif %}
+            </p>
+            <p><strong>Mô tả:</strong> {{ brand.description }}</p>
+            <a href="{% url 'admin_brand_list' %}" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

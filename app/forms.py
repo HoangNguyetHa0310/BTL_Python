@@ -28,3 +28,13 @@ class OrderForm(forms.ModelForm):
         if 'customer' in kwargs:
             customer = kwargs.pop('customer')
             self.initial['shipping_address'] = customer.address
+
+class BrandForm(forms.ModelForm):
+    class Meta:
+        model = Brand
+        fields = ['name', 'logo', 'description']
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'image', 'description', 'parent']

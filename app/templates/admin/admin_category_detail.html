@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'admin/base/nav.html' %}
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Chi tiết Danh mục</h1>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <p><strong>Tên danh mục:</strong> {{ category.name }}</p>
+            <p><strong>Hình ảnh:</strong> 
+                {% if category.ImageUrl %}
+                    <img src="{{ category.ImageUrl }}" alt="{{ category.name }}" height="100">
+                {% else %}
+                    N/A
+                {% endif %}
+            </p>
+            <p><strong>Mô tả:</strong> {{ category.description }}</p>
+            <p><strong>Danh mục cha:</strong> 
+                {% if category.parent %}
+                    {{ category.parent.name }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </p>
+            <a href="{% url 'admin_category_list' %}" class="btn btn-secondary">Quay lại</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends 'admin/base/nav.html' %}
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Chỉnh sửa Danh mục</h1>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data"> 
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Lưu</button>
+                <a href="{% url 'admin_category_list' %}" class="btn btn-secondary">Hủy</a>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -26,15 +26,7 @@
 <div class="K7">
     <div class="K71">
         <div class="K72">
-            <div class="K721">
-                <select id="KS1" name="sort">
-                    <option value="">Sắp Xếp Theo:</option>
-                    <option value="ascending" {% if sort_by == 'ascending' %}selected{% endif %}>A-Z</option>
-                    <option value="descending" {% if sort_by == 'descending' %}selected{% endif %}>Z-A</option>
-                </select>
-            </div>
-
-            <div class="filter-options">
+            <div class="filter-options" style="margin: 50px 0 50px 20%;">
                 <div>
                     Chọn Kích Thước
                     <select id="size-filter" name="size">
@@ -97,6 +89,9 @@
     </div>
 </div>
 
+
+</div>
+
 <script>
     // Xử lý thay đổi bộ lọc và sắp xếp
     const filterOptions = document.querySelector('.filter-options');
@@ -151,29 +146,6 @@
     brandFilter.value = selectedFilters.brand;
     sortSelect.value = selectedFilters.sort;
 </script>
-
-       
-
-
-    <div id="K722">
-        {% if products %}
-            {% for product in products %}
-                <a href="{% url 'detail_product1' product.id %}" class="product-card">
-                    <img src="{{ product.image.url }}" alt="Product Image" class="product-image"> 
-                    <h2>{{ product.name }}</h2>
-                    <p class="price" style="font-size: 24px;">
-                        <strike class="original-price" style="font-size: 18px; opacity: 0.6;">150.00 VND</strike>
-                        <b>${{ product.price|floatformat }} VND</b> 
-                    </p>
-                </a>
-            {% endfor %}
-        {% else %}
-            <h2 >HẾT HÀNG VUI LÒNG CHỌN LẠI GIÚP SHOP<br>XIN CẢM ƠN.</h2>
-        {% endif %}
-    </div>
-</div>
-
-
 <script>
     // Xử lý thay đổi bộ lọc và sắp xếp
     const filterOptions = document.querySelector('.filter-options');
@@ -209,5 +181,6 @@
         window.location.href = newUrl;
     });
 </script>
-    {% include "base/footer.html" %}
+
+{% include "base/footer.html" %}
 

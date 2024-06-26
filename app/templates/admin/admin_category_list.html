@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Sản phẩm</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            width: auto;
+            max-width: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    {% include "admin/base/nav.html" %}
+
+    <hr>
+    <!-- Nội dung hiển thị danh sách sản phẩm -->
+    <div class="container-fluid">
+        <h1 class="h3 mb-2 text-gray-800">Quản lý Danh mục</h1>
+        <a href="{% url 'admin_category_create' %}" class="btn btn-primary mb-3">
+            <i class="fas fa-plus"></i> Thêm mới
+        </a>
+
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="categoryTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên danh mục</th>
+                            <th>Hình ảnh</th>
+                            <th>Mô tả</th>
+                            <th>Danh mục cha</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for category in categories %}
+                            <tr>
+                                <td>{{ category.id }}</td>
+                                <td>{{ category.name }}</td>
+                                <td>
+                                    {% if category.ImageUrl %}
+                                        <img src="{{ category.ImageUrl }}" alt="{{ category.name }}" height="50">
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                                <td>{{ category.description|truncatechars:50 }}</td>
+                                <td>
+                                    {% if category.parent %}
+                                        {{ category.parent.name }}
+                                    {% else %}
+                                        ---
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'admin_category_detail' category.id %}"
+                                       class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{% url 'admin_category_update' category.id %}"
+                                       class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'admin_category_delete' category.id %}"
+                                       class="btn btn-sm btn-danger"
+                                       onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

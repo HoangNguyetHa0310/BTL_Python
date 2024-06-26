@@ -351,29 +351,34 @@ def yourorder(request):
     return render(request, 'app/yourorder.html', context)
 
 
+from django.shortcuts import render, get_object_or_404
+
 def detail_product(request, pk):
     product = get_object_or_404(Product, pk=pk)
     sizes = Size.objects.all()
     colors = Color.objects.all()
-    customer_id = request.user.customer.id  # Lấy customer_id từ request.user
+
+    if request.user.is_authenticated:
+        customer_id = request.user.customer.id
+    else:
+        customer_id = None
+
+    # Lấy sản phẩm gợi ý (ví dụ: cùng loại)
+    related_products = Product.objects.filter(
+        category=product.category
+    ).exclude(
+        pk=product.pk
+    )[:9]  # Lấy tối đa 9 sản phẩm
+
     context = {
         'product': product,
         'sizes': sizes,
-        'colors' : colors,
-        # 'products':products,
+        'colors': colors,
+        'customer_id': customer_id,
+        'related_products': related_products,
     }
     return render(request, 'app/detail_product.html', context)
 
-def detail_product1(request,pk):
-    products = Product.objects.get(id=pk)
-    sizes = Size.objects.all()
-    colors = Color.objects.all()
-    context ={
-        'products':products,
-        'sizes': sizes,
-        'colors' : colors,
-    }
-    return render(request, 'app/detail_product.html', context)
 def get_products(request):
     products = Product.objects.all()
     product_data = [{'name': p.name, 'id': p.id} for p in products]  # Thêm ID sản phẩm
@@ -381,120 +386,20 @@ def get_products(request):
 
 
 ########################### view cho admin #########################
-
 @login_required
-def admin_product_list(request):
-    products = Product.objects.all()
-    print("Products:", products)  # Thêm lệnh in ở đây
-    context = {'products': products}
-    return render(request, 'admin/admin_product_list.html', context)
-
-
-@login_required
-def admin_product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {'product': product}
-    return render(request, 'admin/admin_product_detail.html', context)
-
-
-@login_required
-def admin_product_create(request):
-    if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('admin_product_list')
-    else:
-        form = ProductForm()
-    context = {'form': form}
-    return render(request, 'admin/admin_product_create.html', context)
-
-
-@login_required
-def admin_product_update(request, pk):
-    products = get_object_or_404(Product, pk=pk)
-    if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES, instance=products)
-        if form.is_valid():
-            form.save()
-            return redirect('admin_product_list')
-    else:
-        form = ProductForm(instance=products)
-    context = {'form': form, 'product': products}
-    return render(request, 'admin/admin_product_update.html', context)
-
-
-@login_required
-def admin_product_delete(request, pk):
-    products = get_object_or_404(Product, pk=pk)
-    if request.method == 'POST':
-        products.delete()
-        return redirect('admin_product_list')
-    context = {'product': products}
-    return render(request, 'admin/admin_product_delete.html', context)
-
-@login_required
-def admin_product_management(request):
-    products = Product.objects.all()
-    print("Products:", products)  # Thêm lệnh in ở đây
-    context = {'products': products}
-    return render(request, 'admin/admin_product_list.html', context)
-
-@login_required()
-def admin_category_management(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'admin/admin_category_management.html', context)
-
-@login_required()
-def admin_brand_management(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'admin/admin_brand_management.html', context)
-
-@login_required()
-def admin_order_management(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'admin/admin_order_management.html', context)
-
-@login_required()
-def admin_user_management(request):
-    products = Product.objects.all()
-    context = {'products': products}
-    return render(request, 'admin/admin_user_management.html', context)
-
-@login_required()
-def dashboard(request):
-    context = {}
-    return render(request, 'admin/dashboard.html', context)
-
-
-@login_required()
 def dashboard(request):
     today = datetime.now().date()
     last_month = today - timedelta(days=30)
 
-    # Tổng số đơn hàng trong tháng này
     total_orders_this_month = Order.objects.filter(order_date__month=today.month).count()
-
-    # Tổng doanh thu trong tháng này
-    total_revenue_this_month = Order.objects.filter(order_date__month=today.month).aggregate(
-        sum=Sum('total_price')
-    )['sum'] or 0  # Trả về 0 nếu không có đơn hàng nào
-
-    # Tổng số sản phẩm
+    total_revenue_this_month = Order.objects.filter(order_date__month=today.month).aggregate(sum=Sum('total_price'))['sum'] or 0
     total_products = Product.objects.count()
-
-    # Tổng số khách hàng
     total_customers = Customer.objects.count()
 
-    # 5 sản phẩm bán chạy nhất (trong tháng)
     top_selling_products = Product.objects.annotate(
-        total_sold=Count('orderitem', filter=models.Q(orderitem__order__order_date__gte=last_month))
+        total_sold=Count('orderitem', filter=Q(orderitem__order__order_date__gte=last_month))
     ).order_by('-total_sold')[:5]
 
-    # Order items trong tháng này
     recent_order_items = OrderItem.objects.select_related(
         'order', 'product', 'size', 'color'
     ).filter(order__order_date__month=today.month)
@@ -509,9 +414,182 @@ def dashboard(request):
     }
     return render(request, 'admin/dashboard.html', context)
 
+#----------------------- Admin Product Views ------------------------------#
 
-def admin_order_management(request, order_id):
+@login_required
+def admin_product_list(request):
+    products = Product.objects.all()
+    context = {'products': products}
+    return render(request, 'admin/admin_product_list.html', context)
+
+@login_required
+def admin_product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    context = {'product': product}
+    return render(request, 'admin/admin_product_detail.html', context)
+
+@login_required
+def admin_product_create(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Sản phẩm đã được tạo thành công!")
+            return redirect('admin_product_list')
+    else:
+        form = ProductForm()
+    context = {'form': form}
+    return render(request, 'admin/admin_product_create.html', context)
+
+@login_required
+def admin_product_update(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Sản phẩm đã được cập nhật thành công!")
+            return redirect('admin_product_list')
+    else:
+        form = ProductForm(instance=product)
+    context = {'form': form, 'product': product}
+    return render(request, 'admin/admin_product_update.html', context)
+
+@login_required
+def admin_product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        product.delete()
+        messages.success(request, "Sản phẩm đã bị xóa!")
+        return redirect('admin_product_list')
+    context = {'product': product}
+    return render(request, 'admin/admin_product_delete.html', context)
+
+
+#----------------------- Admin Category Views ------------------------------#
+
+@login_required
+def admin_category_list(request):
+    categories = Category.objects.all()
+    context = {'categories': categories}
+    return render(request, 'admin/admin_category_list.html', context)
+
+@login_required
+def admin_category_create(request):
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Danh mục đã được tạo thành công!")
+            return redirect('admin_category_list')
+    else:
+        form = CategoryForm()
+    context = {'form': form}
+    return render(request, 'admin/admin_category_create.html', context)
+
+@login_required
+def admin_category_detail(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    context = {'category': category}
+    return render(request, 'admin/admin_category_detail.html', context)
+
+@login_required
+def admin_category_update(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES, instance=category)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Danh mục đã được cập nhật thành công!")
+            return redirect('admin_category_list')
+    else:
+        form = CategoryForm(instance=category)
+    context = {'form': form, 'category': category}
+    return render(request, 'admin/admin_category_update.html', context)
+
+@login_required
+def admin_category_delete(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    if request.method == 'POST':
+        category.delete()
+        messages.success(request, "Danh mục đã bị xóa!")
+        return redirect('admin_category_list')
+    context = {'category': category}
+    return render(request, 'admin/admin_category_delete.html', context)
+
+#----------------------- Admin Brand Views ------------------------------#
+
+@login_required
+def admin_brand_list(request):
+    brands = Brand.objects.all()
+    context = {'brands': brands}
+    return render(request, 'admin/admin_brand_list.html', context)
+
+@login_required
+def admin_brand_create(request):
+    if request.method == 'POST':
+        form = BrandForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Thương hiệu đã được tạo thành công!")
+            return redirect('admin_brand_list')
+    else:
+        form = BrandForm()
+    context = {'form': form}
+    return render(request, 'admin/admin_brand_create.html', context)
+
+@login_required
+def admin_brand_detail(request, brand_id):
+    brand = get_object_or_404(Brand, pk=brand_id)
+    context = {'brand': brand}
+    return render(request, 'admin/admin_brand_detail.html', context)
+
+@login_required
+def admin_brand_update(request, brand_id):
+    brand = get_object_or_404(Brand, pk=brand_id)
+    if request.method == 'POST':
+        form = BrandForm(request.POST, request.FILES, instance=brand)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Thương hiệu đã được cập nhật thành công!")
+            return redirect('admin_brand_list')
+    else:
+        form = BrandForm(instance=brand)
+    context = {'form': form, 'brand': brand}
+    return render(request, 'admin/admin_brand_update.html', context)
+
+@login_required
+def admin_brand_delete(request, brand_id):
+    brand = get_object_or_404(Brand, pk=brand_id)
+    if request.method == 'POST':
+        brand.delete()
+        messages.success(request, "Thương hiệu đã bị xóa!")
+        return redirect('admin_brand_list')
+    context = {'brand': brand}
+    return render(request, 'admin/admin_brand_delete.html', context)
+
+#----------------------- Admin Order Views ------------------------------#
+
+@login_required
+def admin_order_list(request):
+    orders = Order.objects.all()
+    context = {'orders': orders}
+    return render(request, 'admin/admin_order_list.html', context)
+
+@login_required
+def admin_order_detail(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
-    context = {'order': order}
-    return render(request, 'admin/admin_order_management.html', context)
+    order_items = order.items.all()
+    context = {
+        'order': order,
+        'order_items': order_items,
+    }
+    return render(request, 'admin/admin_order_detail.html', context)
 
+#----------------------- Admin User Views ------------------------------#
+
+@login_required
+def admin_user_management(request):
+    users = User.objects.all()
+    context = {'users': users}
+    return render(request, 'admin/admin_user_management.html', context)

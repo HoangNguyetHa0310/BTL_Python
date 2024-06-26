@@ -27,21 +27,33 @@ urlpatterns = [
     path('get_products/', views.get_products, name='get_products'),
 
     ###################### admin ###################
-    path('admin_product_create/', views.admin_product_create, name="admin_product_create"),
-    path('admin_product_delete/<int:pk>/', views.admin_product_delete, name="admin_product_delete"),
-    path('admin_product_detail/<int:pk>/', views.admin_product_detail, name="admin_product_detail"),
-    path('admin_product_list/', views.admin_product_list, name='admin_product_list'),
-    path('admin_product_update/<int:pk>/', views.admin_product_update, name="admin_product_update"),
-    path('admin_product_management/', views.admin_product_management, name='admin_product_management'),
-    path('admin_category_management/', views.admin_category_management, name='admin_category_management'),
-    path('admin_brand_management/', views.admin_brand_management, name='admin_brand_management'),
-    path('admin_order_management/', views.admin_order_management, name='admin_order_management'),
-    path('admin_user_management/', views.admin_user_management, name='admin_user_management'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('admin_order_management/<int:order_id>/', views.admin_order_management, name='admin_order_management'),
 
+    # Product
+    path('admin_product_list/', views.admin_product_list, name='admin_product_list'),
+    path('admin_product_create/', views.admin_product_create, name='admin_product_create'),
+    path('admin_product_detail/<int:pk>/', views.admin_product_detail, name='admin_product_detail'),
+    path('admin_product_update/<int:pk>/', views.admin_product_update, name='admin_product_update'),
+    path('admin_product_delete/<int:pk>/', views.admin_product_delete, name='admin_product_delete'),
 
+    # Category
+    path('admin_category_list/', views.admin_category_list, name='admin_category_list'),
+    path('admin_category_create/', views.admin_category_create, name='admin_category_create'),
+    path('admin_category_detail/<int:category_id>/', views.admin_category_detail, name='admin_category_detail'),
+    path('admin_category_update/<int:category_id>/', views.admin_category_update, name='admin_category_update'),
+    path('admin_category_delete/<int:category_id>/', views.admin_category_delete, name='admin_category_delete'),
 
+    # Brand
+    path('admin_brand_list/', views.admin_brand_list, name='admin_brand_list'),
+    path('admin_brand_create/', views.admin_brand_create, name='admin_brand_create'),
+    path('admin_brand_detail/<int:brand_id>/', views.admin_brand_detail, name='admin_brand_detail'),
+    path('admin_brand_update/<int:brand_id>/', views.admin_brand_update, name='admin_brand_update'),
+    path('admin_brand_delete/<int:brand_id>/', views.admin_brand_delete, name='admin_brand_delete'),
 
+    # Order
+    path('admin_order_list/', views.admin_order_list, name='admin_order_list'),
+    path('admin_order_detail/<int:order_id>/', views.admin_order_detail, name='admin_order_detail'),
 
+    # User
+    path('admin_user_management/', views.admin_user_management, name='admin_user_management'),
 ]

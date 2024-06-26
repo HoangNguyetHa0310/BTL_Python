@@ -270,16 +270,3 @@ class OrderItem(models.Model):
             self.product.is_low_stock = True
             self.product.save()
 
-    # def save(self, *args, **kwargs):
-    #     """
-    #     Override save() để cập nhật trạng thái is_low_stock của sản phẩm
-    #     """
-    #     super().save(*args, **kwargs)
-    #
-    #     # Kiểm tra xem OrderItem.quantity có lớn hơn 50% stock của Product không
-    #     if self.quantity > (self.product.stock * 0.5):
-    #         # Cập nhật trạng thái is_low_stock của Product
-    #         self.product.is_low_stock = True
-    #         self.product.save()
-
-

@@ -7,29 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="{%static 'app/css/login.css' %}" />
     {% include "base/nav.html" %}
-
-
-
-    {% comment %} <div class="L1">
-      <div class="l1">
-          <div class="dangnhap"><p >Đăng nhập</p></div>
-          <div class="help">Cần trợ giúp?</div>
-      </div>
-  </div>
-  <div class="login-form">
-      <form action="">
-          <label for="E-mail">Địa chỉ E-mail</label>
-          <input  type="text"/> <br>
-          <label for="Password">Mật khẩu</label>
-          <input type="password" id="pass"/> <br>
-          <a href="#">Quên mật khẩu của bạn?</a><br>
-          <div style="display: flex; align-items: center;">
-              <input type="checkbox" id="check"><label style="color:#798188;">&nbsp; Ghi nhớ đăng nhập</label>
-          </div>
-          <input type="submit" value="ĐĂNG NHẬP" style ="background: #000000;" />
-          <p>Bạn chưa có tài khoản Clarks?<a href="{% url 'register' %}" style="margin-left:5%;"> TẠO MỘT TÀI KHOẢN</a>  </p>
-      </form>
-  </div> {% endcomment %}
   
 <!-- login.html -->
 <div class="L1">
@@ -60,12 +37,7 @@
         <p>Bạn chưa có tài khoản Clarks?<a href="{% url 'register' %}" style="margin-left:5%;"> TẠO MỘT TÀI KHOẢN</a></p>
     </form>
 </div>
-</div>
-</div>
 
-  
-
-  
 
 <script>
     document.getElementById("show").addEventListener("click",()=>{
