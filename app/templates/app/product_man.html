@@ -6,8 +6,6 @@
 
 {% include "base/nav.html" %}
 
-{% comment %} {% include "base/nav.html" %} {% endcomment %}
-
 
 <div class="K5">
     <div class="K51">
@@ -154,11 +152,62 @@
     sortSelect.value = selectedFilters.sort;
 </script>
 
-        
+       
 
 
+    <div id="K722">
+        {% if products %}
+            {% for product in products %}
+                <a href="{% url 'detail_product1' product.id %}" class="product-card">
+                    <img src="{{ product.image.url }}" alt="Product Image" class="product-image"> 
+                    <h2>{{ product.name }}</h2>
+                    <p class="price" style="font-size: 24px;">
+                        <strike class="original-price" style="font-size: 18px; opacity: 0.6;">150.00 VND</strike>
+                        <b>${{ product.price|floatformat }} VND</b> 
+                    </p>
+                </a>
+            {% endfor %}
+        {% else %}
+            <h2 >HẾT HÀNG VUI LÒNG CHỌN LẠI GIÚP SHOP<br>XIN CẢM ƠN.</h2>
+        {% endif %}
     </div>
 </div>
 
 
-{% include "base/footer.html" %}
+<script>
+    // Xử lý thay đổi bộ lọc và sắp xếp
+    const filterOptions = document.querySelector('.filter-options');
+    const sortSelect = document.getElementById('KS1');
+    const sizeFilter = document.getElementById('size-filter');
+    const priceFilter = document.getElementById('price-filter');
+    const colorFilter = document.getElementById('color-filter');
+    const brandFilter = document.getElementById('brand-filter');
+
+    filterOptions.addEventListener('change', function() {
+        // Lấy giá trị của các bộ lọc
+        const size = sizeFilter.value;
+        const price = priceFilter.value;
+        const color = colorFilter.value;
+        const brand = brandFilter.value;
+        const sort = sortSelect.value;
+
+        // Tạo URL mới với các giá trị bộ lọc
+        const newUrl = `?size=${size}&price=${price}&color=${color}&brand=${brand}&sort=${sort}`;
+
+        // Chuyển hướng đến URL mới
+        window.location.href = newUrl;
+    });
+
+    sortSelect.addEventListener('change', function() {
+        // Lấy giá trị của sắp xếp
+        const sort = sortSelect.value;
+
+        // Tạo URL mới với giá trị sắp xếp
+        const newUrl = `?size=${selected_size}&price=${selected_price}&color=${selected_color}&brand=${selected_brand}&sort=${sort}`;
+
+        // Chuyển hướng đến URL mới
+        window.location.href = newUrl;
+    });
+</script>
+    {% include "base/footer.html" %}
+

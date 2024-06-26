@@ -1,14 +1,9 @@
 {% load static %}
+
 <link rel="stylesheet" type="text/css" href="{%static 'app/css/nav.css' %}"/></head>
+{% block main_nav %}
 
-<style>
-    .dropbtn a {
-        text-decoration: none;
-        color: black;
-    }
-</style>   
 
-    
 <body>
 
     <nav>
@@ -200,3 +195,6 @@
         </div>
 
     </nav>
+   
+{% endblock %}
+

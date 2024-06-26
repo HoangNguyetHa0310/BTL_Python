@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.contrib import messages  # Import messages
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
+from django.db.models import Q
 from .models import *
 from .forms import *
 from django.http import JsonResponse
@@ -247,6 +248,7 @@ def product_man(request):
     sort_by = request.GET.get('sort')  # Lấy giá trị sort
     q = request.GET.get('q')
 
+
     # Lọc sản phẩm
     products = Product.objects.all()
     if selected_size:
@@ -357,8 +359,19 @@ def detail_product(request, pk):
     context = {
         'product': product,
         'sizes': sizes,
-        'colors': colors,
-        'customer_id': customer_id
+        'colors' : colors,
+        # 'products':products,
+    }
+    return render(request, 'app/detail_product.html', context)
+
+def detail_product1(request,pk):
+    products = Product.objects.get(id=pk)
+    sizes = Size.objects.all()
+    colors = Color.objects.all()
+    context ={
+        'products':products,
+        'sizes': sizes,
+        'colors' : colors,
     }
     return render(request, 'app/detail_product.html', context)
 def get_products(request):
@@ -399,25 +412,25 @@ def admin_product_create(request):
 
 @login_required
 def admin_product_update(request, pk):
-    product = get_object_or_404(Product, pk=pk)
+    products = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES, instance=product)
+        form = ProductForm(request.POST, request.FILES, instance=products)
         if form.is_valid():
             form.save()
             return redirect('admin_product_list')
     else:
-        form = ProductForm(instance=product)
-    context = {'form': form, 'product': product}
+        form = ProductForm(instance=products)
+    context = {'form': form, 'product': products}
     return render(request, 'admin/admin_product_update.html', context)
 
 
 @login_required
 def admin_product_delete(request, pk):
-    product = get_object_or_404(Product, pk=pk)
+    products = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
-        product.delete()
+        products.delete()
         return redirect('admin_product_list')
-    context = {'product': product}
+    context = {'product': products}
     return render(request, 'admin/admin_product_delete.html', context)
 
 @login_required
