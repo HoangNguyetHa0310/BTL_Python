@@ -236,43 +236,54 @@ def order_confirmation(request, order_id):
 
 
 def product_man(request):
+    # Lấy tất cả các giá trị cho các bộ lọc
     sizes = Size.objects.all()
     prices = Product.objects.values_list('price', flat=True).distinct()
     colors = Color.objects.all()
     brands = Brand.objects.all()
 
-    # Lấy dữ liệu từ request
-    selected_size = request.GET.get('size')
-    selected_price = request.GET.get('price')
-    selected_color = request.GET.get('color')
+    # Lấy các giá trị bộ lọc từ URL
+    selected_sizes = request.GET.getlist('size')
+    selected_min_price = request.GET.get('min_price')
+    selected_max_price = request.GET.get('max_price')
+    selected_colors = request.GET.getlist('color')
     selected_brand = request.GET.get('brand')
-    sort_by = request.GET.get('sort')  # Lấy giá trị sort
-    q = request.GET.get('q')
+    selected_sort = request.GET.get('sort')
+    q = request.GET.get('q')  # Lấy từ khóa tìm kiếm
 
-
-    # Lọc sản phẩm
+    # Lọc sản phẩm theo các tiêu chí đã chọn
     products = Product.objects.all()
-    if selected_size:
-        products = products.filter(size=selected_size)
-    if selected_price:
-        products = products.filter(price=selected_price)
-    if selected_color:
-        products = products.filter(color=selected_color)
-    if selected_brand:
-        products = products.filter(brand=selected_brand)
-    if q:
-        # q_normalized = unicodedata.normalize('NFKD', q).encode('ascii', 'ignore').decode('ascii').lower()
-        # products = products.filter(
-        #     # Kiểm tra xem name có chứa bất kỳ ký tự nào trong q hay không
-        #     name__iregex=r'.*[' + q_normalized + r'].*'
-        # )
-        products = products.filter(name__icontains=q)
+    filter_kwargs = {}
 
-        # Sắp xếp sản phẩm
-    if sort_by == 'ascending':
-        products = products.order_by('name')  # Sắp xếp theo tên A-Z
-    elif sort_by == 'descending':
-        products = products.order_by('-name')  # Sắp xếp theo tên Z-A
+    if selected_sizes and any(selected_sizes):
+        filter_kwargs['size__in'] = [size for size in selected_sizes if size]
+
+    if selected_min_price and selected_min_price.isdigit():
+        filter_kwargs['price__gte'] = selected_min_price
+
+    if selected_max_price and selected_max_price.isdigit():
+        filter_kwargs['price__lte'] = selected_max_price
+
+    if selected_colors and any(selected_colors):
+        filter_kwargs['color__in'] = [color for color in selected_colors if color]
+
+    if selected_brand:
+        filter_kwargs['brand_id'] = selected_brand
+
+    if filter_kwargs:
+        products = products.filter(**filter_kwargs)
+
+    # Tìm kiếm sản phẩm dựa trên từ khóa
+    if q and q != 'None':
+        products = products.filter(
+            Q(name__icontains=q) | Q(description__icontains=q)
+        )
+
+    # Sắp xếp sản phẩm
+    if selected_sort == 'ascending':
+        products = products.order_by('name')
+    elif selected_sort == 'descending':
+        products = products.order_by('-name')
 
     context = {
         'products': products,
@@ -280,13 +291,13 @@ def product_man(request):
         'prices': prices,
         'colors': colors,
         'brands': brands,
-        'selected_size': selected_size,
-        'selected_price': selected_price,
-        'selected_color': selected_color,
+        'selected_sizes': selected_sizes,  # Truyền giá trị bộ lọc vào template
+        'selected_min_price': selected_min_price,
+        'selected_max_price': selected_max_price,
+        'selected_colors': selected_colors,
         'selected_brand': selected_brand,
-        'sort_by': sort_by,  # Truyền giá trị sort_by vào template
-        'search_term': q,
-
+        'selected_sort': selected_sort,
+        'search_term': q,  # Truyền từ khóa tìm kiếm vào template
     }
     return render(request, 'app/product_man.html', context)
 

@@ -1,17 +1,12 @@
 {% load static %}
-
-
 {% include "base/header.html" %}
 <link rel="stylesheet" type="text/css" href="{% static 'app/css/product.css' %}"/>
-
 {% include "base/nav.html" %}
-
 
 <div class="K5">
     <div class="K51">
         <h1>SẢN PHẨM BÁN CHẠY NHẤT CHO NAM</h1>
-        <p>Các kiểu dáng phổ biến nhất của chúng tôi cho nam trong mùa này.
-        </p>
+        <p>Các kiểu dáng phổ biến nhất của chúng tôi cho nam trong mùa này.</p>
         <div class="K52">
             <button><a href="" onclick="return false">TẤT CẢ CÁC KIỂU DÁNG CHO NAM</a></button>
             <button><a href="" onclick="return false">SẢN PHẨM MỚI NHẤT CHO NAM</a></button>
@@ -23,40 +18,40 @@
     <button><a href="{% url 'index' %}">TRANG CHỦ</a></button>
     <button><a href="./bestsellers.html">SẢN PHẨM BÁN CHẠY NHẤT CHO NAM</a></button>
 </div>
+
 <div class="K7">
     <div class="K71">
-        <div class="K72">
-            <div class="filter-options" style="margin: 50px 0 50px 20%;">
+        <form id="filter-form">
+            <div class="filter-options">
+                <div>
+                    Chọn Sắp Xếp
+                    <select id="sort-filter" name="sort">
+                        <option value="">Mặc định</option>
+                        <option value="ascending" {% if selected_sort == 'ascending' %}selected{% endif %}>Tên A-Z</option>
+                        <option value="descending" {% if selected_sort == 'descending' %}selected{% endif %}>Tên Z-A</option>
+                    </select>
+                </div>
                 <div>
                     Chọn Kích Thước
-                    <select id="size-filter" name="size">
-                        <option value="">Chọn size</option>
+                    <select id="size-filter" name="size" multiple>
                         {% for size in sizes %}
-                            <option value="{{ size.id }}" {% if selected_size == size.id %}selected{% endif %}>{{ size.name }}</option>
+                            <option value="{{ size.id }}" {% if size.id|stringformat:"i" in selected_sizes %}selected{% endif %}>{{ size.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
-
                 <div>
-                    Chọn Phạm Vi Giá
-                    <select id="price-filter" name="price">
-                        <option value="">Mức giá</option>
-                        {% for price in prices %}
-                            <option value="{{ price }}" {% if selected_price == price %}selected{% endif %}>${{ price|floatformat }}</option>
-                        {% endfor %}
-                    </select>
+                    Chọn Khoảng Giá
+                    <input type="number" id="min-price-filter" name="min_price" placeholder="Giá thấp nhất" value="{{ selected_min_price }}">
+                    <input type="number" id="max-price-filter" name="max_price" placeholder="Giá cao nhất" value="{{ selected_max_price }}">
                 </div>
-
                 <div>
                     Chọn Màu Sắc
-                    <select id="color-filter" name="color">
-                        <option value="">Màu</option>
+                    <select id="color-filter" name="color" multiple>
                         {% for color in colors %}
-                            <option value="{{ color.id }}" {% if selected_color == color.id %}selected{% endif %}>{{ color.name }}</option>
+                            <option value="{{ color.id }}" {% if color.id|stringformat:"i" in selected_colors %}selected{% endif %}>{{ color.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
-
                 <div>
                     Chọn Nhãn Hiệu
                     <select id="brand-filter" name="brand">
@@ -66,20 +61,25 @@
                         {% endfor %}
                     </select>
                 </div>
+                <div>
+                    <input type="hidden" id="search-input" name="q" placeholder="Tìm kiếm sản phẩm..." value="{{ search_term }}">
+                </div>
+                <button type="submit">Lọc</button>
             </div>
-        </div>
+        </form>
     </div>
-
     <div id="K722">
         {% if products %}
             {% for product in products %}
                 <a href="{% url 'detail_product' product.pk %}" class="product-card">
-                    <img src="{{ product.ImageUrl }}" alt="Desert Boot" class="product-image" style="height: 50%">
+                    <img src="{{ product.ImageUrl }}" alt="{{ product.name }}" class="product-image" style="height: 50%">
                     <h2>{{ product.name }}</h2>
-                    <p style="font-size: 18px;">Brown Suede<br>Mens Originals</p>
+                    <p style="font-size: 18px;">{{ product.description|truncatechars:50 }}</p>
                     <p class="price" style="font-size: 24px;">
-                        <strike class="original-price" style="font-size: 18px; opacity: 0.6; ">150.00 VND</strike>
-                        <b>${{ product.price | floatformat }} VND</b>
+                        {% if product.discount > 0 %}
+                            <strike class="original-price" style="font-size: 18px; opacity: 0.6; ">${{ product.price|floatformat }} VND</strike>
+                        {% endif %}
+                        <b>${{ product.discounted_price|floatformat }} VND</b>
                     </p>
                 </a>
             {% endfor %}
@@ -89,98 +89,65 @@
     </div>
 </div>
 
-
-</div>
-
 <script>
-    // Xử lý thay đổi bộ lọc và sắp xếp
-    const filterOptions = document.querySelector('.filter-options');
-    const sortSelect = document.getElementById('KS1');
+document.getElementById('filter-form').addEventListener('submit', function(event) {
+    event.preventDefault();  // Ngăn chặn việc gửi form mặc định
+
+    // Lấy giá trị của các bộ lọc
     const sizeFilter = document.getElementById('size-filter');
-    const priceFilter = document.getElementById('price-filter');
+    const selectedSizes = Array.from(sizeFilter.selectedOptions).map(option => option.value);
+
+    const minPriceFilter = document.getElementById('min-price-filter');
+    const minPrice = minPriceFilter.value;
+
+    const maxPriceFilter = document.getElementById('max-price-filter');
+    const maxPrice = maxPriceFilter.value;
+
     const colorFilter = document.getElementById('color-filter');
+    const selectedColors = Array.from(colorFilter.selectedOptions).map(option => option.value);
+
     const brandFilter = document.getElementById('brand-filter');
+    const selectedBrand = brandFilter.value;
 
-    // Lưu trữ giá trị của các bộ lọc đã chọn
-    let selectedFilters = {
-        size: '',
-        price: '',
-        color: '',
-        brand: '',
-        sort: ''
-    };
+    const sortFilter = document.getElementById('sort-filter');
+    const selectedSort = sortFilter.value;
 
-    // Hàm cập nhật URL
-    function updateUrl() {
-        // Lấy giá trị hiện tại của các bộ lọc
-        selectedFilters.size = sizeFilter.value;
-        selectedFilters.price = priceFilter.value;
-        selectedFilters.color = colorFilter.value;
-        selectedFilters.brand = brandFilter.value;
-        selectedFilters.sort = sortSelect.value;
+    const searchInput = document.getElementById('search-input');
+    const searchQuery = searchInput.value;
 
-        // Tạo URL mới với các giá trị bộ lọc
-        const newUrl = `?size=${selectedFilters.size}&price=${selectedFilters.price}&color=${selectedFilters.color}&brand=${selectedFilters.brand}&sort=${selectedFilters.sort}`;
-
-        // Chuyển hướng đến URL mới
-        window.location.href = newUrl;
+    // Tạo URL mới với các giá trị bộ lọc
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('size', selectedSizes.filter(size => size).join(','));
+    if (minPrice) {
+        newUrl.searchParams.set('min_price', minPrice);
+    } else {
+        newUrl.searchParams.delete('min_price');
+    }
+    if (maxPrice) {
+        newUrl.searchParams.set('max_price', maxPrice);
+    } else {
+        newUrl.searchParams.delete('max_price');
+    }
+    newUrl.searchParams.set('color', selectedColors.filter(color => color).join(','));
+    if (selectedBrand) {
+        newUrl.searchParams.set('brand', selectedBrand);
+    } else {
+        newUrl.searchParams.delete('brand');
+    }
+    if (selectedSort) {
+        newUrl.searchParams.set('sort', selectedSort);
+    } else {
+        newUrl.searchParams.delete('sort');
+    }
+    if (searchQuery) {
+        newUrl.searchParams.set('q', searchQuery);
+    } else {
+        newUrl.searchParams.delete('q');
     }
 
-    // Thêm sự kiện thay đổi cho mỗi bộ lọc
-    filterOptions.addEventListener('change', updateUrl);
-    sortSelect.addEventListener('change', updateUrl);
-
-    // Khởi tạo giá trị của các bộ lọc từ URL (nếu có)
-    const urlParams = new URLSearchParams(window.location.search);
-    selectedFilters.size = urlParams.get('size');
-    selectedFilters.price = urlParams.get('price');
-    selectedFilters.color = urlParams.get('color');
-    selectedFilters.brand = urlParams.get('brand');
-    selectedFilters.sort = urlParams.get('sort');
-
-
-    // Đặt giá trị ban đầu cho các bộ lọc
-    sizeFilter.value = selectedFilters.size;
-    priceFilter.value = selectedFilters.price;
-    colorFilter.value = selectedFilters.color;
-    brandFilter.value = selectedFilters.brand;
-    sortSelect.value = selectedFilters.sort;
-</script>
-<script>
-    // Xử lý thay đổi bộ lọc và sắp xếp
-    const filterOptions = document.querySelector('.filter-options');
-    const sortSelect = document.getElementById('KS1');
-    const sizeFilter = document.getElementById('size-filter');
-    const priceFilter = document.getElementById('price-filter');
-    const colorFilter = document.getElementById('color-filter');
-    const brandFilter = document.getElementById('brand-filter');
-
-    filterOptions.addEventListener('change', function() {
-        // Lấy giá trị của các bộ lọc
-        const size = sizeFilter.value;
-        const price = priceFilter.value;
-        const color = colorFilter.value;
-        const brand = brandFilter.value;
-        const sort = sortSelect.value;
-
-        // Tạo URL mới với các giá trị bộ lọc
-        const newUrl = `?size=${size}&price=${price}&color=${color}&brand=${brand}&sort=${sort}`;
-
-        // Chuyển hướng đến URL mới
-        window.location.href = newUrl;
-    });
-
-    sortSelect.addEventListener('change', function() {
-        // Lấy giá trị của sắp xếp
-        const sort = sortSelect.value;
-
-        // Tạo URL mới với giá trị sắp xếp
-        const newUrl = `?size=${selected_size}&price=${selected_price}&color=${selected_color}&brand=${selected_brand}&sort=${sort}`;
-
-        // Chuyển hướng đến URL mới
-        window.location.href = newUrl;
-    });
+    // Chuyển hướng đến URL mới
+    window.location.href = newUrl.toString();
+});
 </script>
 
 {% include "base/footer.html" %}
-
