@@ -1,6 +1,7 @@
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -192,29 +193,39 @@ def checkout(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
         if form.is_valid():
-            order = form.save(commit=False)
-            order.customer = customer
-            order.total_price = total_price
-            # Lưu trữ phương thức thanh toán vào order
-            order.payment_method = request.POST.get('payment_method')
-            order.save()
+            # Sử dụng transaction.atomic để đảm bảo tính nguyên tử
+            with transaction.atomic():
+                # Kiểm tra số lượng sản phẩm trước khi tạo đơn hàng
+                for cart_item in cart_items:
+                    if cart_item.quantity > cart_item.product.stock:
+                        messages.error(
+                            request,
+                            f"Số lượng sản phẩm '{cart_item.product.name}' trong kho không đủ."
+                        )
+                        return redirect('cart', customer_id=customer.id)
 
-            for cart_item in cart_items:
-                order.items.add(cart_item)
-                OrderItem.objects.create(
-                    order=order,
-                    product=cart_item.product,
-                    quantity=cart_item.quantity,
-                    price=cart_item.product.price,
-                    size=cart_item.size,
-                    color=cart_item.color,
-                )
+                order = form.save(commit=False)
+                order.customer = customer
+                order.total_price = total_price
+                order.payment_method = request.POST.get('payment_method')
+                order.save()
 
-            if cart:  # Only delete the cart if it exists
-                cart.delete()
+                for cart_item in cart_items:
+                    order.items.add(cart_item)
+                    OrderItem.objects.create(
+                        order=order,
+                        product=cart_item.product,
+                        quantity=cart_item.quantity,
+                        price=cart_item.product.price,
+                        size=cart_item.size,
+                        color=cart_item.color,
+                    )
+                    # Giảm số lượng sản phẩm trong kho sau khi tạo OrderItem
+                    cart_item.product.stock -= cart_item.quantity
+                    cart_item.product.save()
 
-            messages.success(request, "Đơn hàng của bạn đã được đặt thành công! Cảm ơn bạn.")
-            # Chuyển hướng đến trang xác nhận đơn hàng
+                if cart:
+                    cart.delete()
             return redirect('order_confirmation', order_id=order.pk)
     else:
         form = OrderForm(initial={'customer': customer})
